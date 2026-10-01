@@ -1,1 +1,5 @@
 luxurylaneassistance.gr.conf
+
+.deploy/
+__pycache__/
+.wrangler/

@@ -862,5 +862,139 @@ document.getElementById('om-form').addEventListener('submit',function(e){
   closeOffer();
 });
 </script>
+
+<!-- ===== CMS content renderer: γεμίζει τη σελίδα από το content.json ===== -->
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function T(sel,v,root){var n=$(sel,root); if(n&&v!=null)n.textContent=v; return n}
+  function I(sel,src,alt,root){var im=$(sel,root); if(im&&src){im.src=src; if(alt!=null)im.alt=alt}}
+  function B(sel,v,root){ /* κρατάει το svg μέσα στο κουμπί, αλλάζει μόνο το κείμενο */
+    var b=sel?$(sel,root):root; if(!b||b.nodeType!==1||v==null)return;
+    var ns=[].slice.call(b.childNodes),hit=null,i;
+    for(i=ns.length-1;i>=0;i--){if(ns[i].nodeType===3&&ns[i].nodeValue.trim()){hit=ns[i];break}}
+    if(hit)hit.nodeValue=' '+v+' '; else b.appendChild(document.createTextNode(' '+v+' '));
+  }
+  function HEAD(scope,h){
+    if(!h)return; var s=$(scope); if(!s)return;
+    var t=$('h2',s); if(t)t.innerHTML=esc(h.title)+(h.em?' <em>'+esc(h.em)+'</em>':'');
+    var d=$('.data',s); if(d&&h.data!=null)d.textContent=h.data;
+    var p=$('p',s); if(p&&h.intro!=null)p.textContent=h.intro;
+  }
+  function each(list,sel,cb,root){ if(!list||!list.length)return; var els=$$(sel,root); list.forEach(function(item,i){if(els[i])cb(els[i],item,i)}); }
+
+  function apply(c){
+    if(!c||typeof c!=='object')return;
+    window.LA_CONTENT=c;
+    var h=window.LA_H=$;
+
+    /* ---- HERO ---- */
+    var hero=c.hero||{};
+    T('.hero .kick b',hero.kick1); T('.hero .kick > span',hero.kick2);
+    T('.hero h1 .l1',hero.l1); T('.hero h1 .l2',hero.l2); T('.hero h1 .l3',hero.l3);
+    T('.hero .sub',hero.sub);
+    B('.hero .acts .btn.hz',hero.cta1); B('.hero .acts .btn.out',hero.cta2);
+
+    /* ---- ABOUT ---- */
+    var a=c.about||{},ac='#about .band .c';
+    T(ac+' .data',a.label); T(ac+' h2',a.title);
+    (function(){var ps=$$(ac+' p'); if(ps[0]&&a.p1!=null)ps[0].textContent=a.p1; if(ps[1]&&a.p2!=null)ps[1].textContent=a.p2})();
+    T(ac+' .promise',a.promise);
+
+    /* ---- ΓΙΑΤΙ ΝΑ ΜΑΣ ΕΜΠΙΣΤΕΥΤΕΙΤΕ ---- */
+    HEAD('#why .hd',(c.headings||{}).why);
+    each(c.why,'#why .grid6 > div',function(el,it){T('h3',it.title,el); T('p',it.desc,el)});
+
+    /* ---- ΥΠΗΡΕΣΙΕΣ ---- */
+    HEAD('#services .hd',(c.headings||{}).services);
+    each(c.serviceGroups,'#services .gtitle',function(el,g){T('b',g.title,el); T('span',g.sub,el)});
+    each(c.services,'.svc article',function(el,s){
+      T('.idx .no',s.code,el); T('.idx .code',s.cat,el);
+      I('.plate img',s.img,s.alt,el);
+      T('.c h3',s.title,el); T('.c .lede',s.desc,el);
+    });
+
+    /* ---- ΚΑΛΥΨΗ ---- */
+    var cov=c.coverage||{};
+    var ch=$('#coverage .cover .l h2');
+    if(ch)ch.innerHTML=esc(cov.title||'')+'<br><em>'+esc(cov.title2||'')+'</em>';
+    T('#coverage .cover .l p',cov.p); T('#coverage .cover .l .slogan',cov.slogan);
+    each(cov.pickup,'#coverage .cover .r > div:nth-child(1) .pts span',function(el,v){el.textContent=v});
+    each(cov.delivery,'#coverage .cover .r > div:nth-child(2) .pts span',function(el,v){el.textContent=v});
+
+    /* ---- ΒΡΕΙΤΕ ΜΑΣ ---- */
+    HEAD('#location .hd',(c.headings||{}).location);
+    var mq=(c.location||{}).mapQuery;
+    if(mq){var fr=$('#location .mapframe iframe'); if(fr)fr.src='https://www.google.com/maps?q='+encodeURIComponent(mq)+'&z=15&hl=el&output=embed'}
+
+    /* ---- ΔΙΑΔΙΚΑΣΙΑ ---- */
+    HEAD('#process .hd',(c.headings||{}).process);
+    each(c.process,'.steps .step',function(el,s){
+      T('.n',(s.n||'')+' —',el); T('h4',s.title,el); T('p',s.desc,el);
+    });
+
+    /* ---- ROADSIDE ---- */
+    var ah=(c.headings||{}).assistance;
+    if(ah){var ah2=$('#assistance h2'); if(ah2)ah2.innerHTML=esc(ah.title)+' <em>'+esc(ah.em)+'</em>'}
+    var rs=c.roadside||{};
+    T('#assistance p',rs.p);
+
+    /* ---- REVIEWS ---- */
+    HEAD('#reviews .hd',(c.headings||{}).reviews);
+    each(c.reviews,'.rev-card',function(el,rv){
+      T('.who',rv.name,el); T('.when',rv.when,el); T('p',rv.text,el);
+      I('img.ava',rv.img,rv.name,el);
+    });
+
+    /* ---- CTA ---- */
+    var e=c.end||{};
+    T('.end .eyebrow',e.eyebrow);
+    var eh=$('.end h2'); if(eh)eh.innerHTML=esc(e.title||'')+' <span>'+esc(e.title2||'')+'</span>';
+    T('.end p',e.p);
+    var ec=$('.end .cats'); if(ec)ec.innerHTML=esc(e.cats||'')+'<br>Greece · Greek Islands · 24/7 Assistance';
+
+    /* ---- ΕΠΙΚΟΙΝΩΝΙΑ ---- */
+    var ct=c.contact||{};
+    if(ct.phoneE164){$$('a[href^="tel:"]').forEach(function(x){x.setAttribute('href','tel:'+ct.phoneE164)})}
+    if(ct.phoneDisplay){
+      $$('a[href^="tel:"]').forEach(function(x){if(x.querySelector('svg'))B('',ct.phoneDisplay,x);else x.textContent=ct.phoneDisplay});
+      T('#cmodal h3',ct.phoneDisplay);
+      B('.end .acts .btn.out',(e.contactLabel||'Επικοινωνήστε μαζί μας')+' · '+ct.phoneDisplay);
+      T('.foot .data','Athens · Greece · 24/7 · '+ct.phoneDisplay);
+    }
+    if(ct.whatsappNumber){
+      $$('a[href*="wa.me"]').forEach(function(x){x.setAttribute('href','https://wa.me/'+ct.whatsappNumber)});
+      $$('a[href^="viber:"]').forEach(function(x){x.setAttribute('href','viber://chat?number=%2B'+ct.whatsappNumber)});
+    }
+    if(ct.email)$$('a[href^="mailto:"]').forEach(function(x){x.setAttribute('href','mailto:'+ct.email)});
+    if(ct.instagram)$$('a[href*="instagram.com"]').forEach(function(x){x.setAttribute('href',ct.instagram)});
+
+    document.documentElement.setAttribute('data-cms-applied','1');
+  }
+
+  window.LA_apply=apply;
+
+  /* live preview από το admin */
+  window.addEventListener('message',function(ev){
+    var d=ev.data; if(!d||typeof d!=='object')return;
+    if(d.type==='lla-content'&&d.content)apply(d.content);
+    if(d.type==='lla-scroll'&&d.target){var t=document.querySelector(d.target); if(t){t.classList.add('on'); t.scrollIntoView({behavior:'smooth',block:'start'})}}
+  });
+  function ready(){try{if(window.parent!==window)window.parent.postMessage({type:'lla-ready'},'*')}catch(e){}}
+
+  try{
+    function load(u){return fetch(u,{cache:'no-store'}).then(function(r){
+      var ct=r.headers.get('content-type')||'';
+      if(!r.ok||ct.indexOf('json')<0)throw new Error('no json');
+      return r.json();
+    })}
+    load('api/content').catch(function(){return load('content.json')})
+      .then(function(c){if(c)apply(c);ready()})
+      .catch(function(){ready()});
+  }catch(e){ready()}
+})();
+</script>
 </body>
 </html>

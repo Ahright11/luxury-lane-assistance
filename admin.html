@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Luxury Lane Assistance · Διαχείριση περιεχομένου</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#fff; --line:#e6e8ee; --ink:#16181d; --mut:#7a8194;
+    --acc:#c8a24a; --ok:#1f9d55; --err:#d64545; --rad:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;color:var(--ink);background:#f4f5f8;overflow:hidden}
+  button,input,select,textarea{font:inherit;color:inherit}
+
+  /* ---------- header ---------- */
+  header{height:56px;display:flex;align-items:center;gap:14px;padding:0 16px;background:var(--bg);color:#fff;flex:0 0 auto}
+  header .brand{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:.2px}
+  header .brand b{color:var(--acc)}
+  header .brand small{display:block;font-weight:400;font-size:11px;color:#9aa2b5;letter-spacing:.3px}
+  header .grow{flex:1}
+  header .pill{font-size:12px;padding:5px 11px;border-radius:99px;background:#232733;color:#c3c9d8;white-space:nowrap}
+  header .pill.ok{background:#12331f;color:#7ee2a8}
+  header .pill.warn{background:#3a2a12;color:#f0c274}
+  header .pill.err{background:#3a1616;color:#f19b9b}
+  .hbtn{border:1px solid #333a49;background:#1b1f28;color:#dfe4ef;padding:7px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+  .hbtn:hover{background:#252b37;border-color:#454e61}
+  .hbtn.primary{background:var(--acc);border-color:var(--acc);color:#1a1409;font-weight:600}
+  .hbtn.primary:hover{filter:brightness(1.07)}
+  .hbtn[disabled]{opacity:.5;cursor:default}
+  .segs{display:flex;border:1px solid #333a49;border-radius:9px;overflow:hidden}
+  .segs button{background:#1b1f28;border:0;color:#c3c9d8;padding:7px 11px;cursor:pointer;font-size:12px}
+  .segs button+button{border-left:1px solid #333a49}
+  .segs button[aria-pressed="true"]{background:var(--acc);color:#1a1409;font-weight:600}
+
+  /* ---------- layout ---------- */
+  main{display:flex;height:calc(100% - 56px)}
+  .side{width:460px;flex:0 0 460px;background:var(--panel);border-right:1px solid var(--line);overflow-y:auto;overscroll-behavior:contain}
+  .stage{flex:1;display:flex;flex-direction:column;background:#eceef3;min-width:0}
+  .stage .bar{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);background:#fff;font-size:12px;color:var(--mut)}
+  .stage .holder{flex:1;overflow:auto;padding:14px;display:flex;justify-content:center}
+  .frameWrap{background:#fff;box-shadow:0 10px 34px rgba(16,20,32,.16);border-radius:10px;overflow:hidden;height:100%;width:100%;transition:width .18s ease}
+  iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+
+  /* ---------- section list ---------- */
+  .sec{border-bottom:1px solid var(--line)}
+  .sec>h3{margin:0;font-size:14px}
+  .sec>h3>button{width:100%;display:flex;align-items:center;gap:10px;padding:14px 16px;background:none;border:0;cursor:pointer;text-align:left;font-weight:600}
+  .sec>h3>button:hover{background:#fafbfd}
+  .sec .n{width:22px;height:22px;flex:0 0 22px;border-radius:50%;background:#eef0f5;color:var(--mut);font-size:11px;display:grid;place-items:center;font-weight:600}
+  .sec.open .n{background:var(--acc);color:#1a1409}
+  .sec>h3 .chev{margin-left:auto;color:var(--mut);transition:transform .16s}
+  .sec.open>h3 .chev{transform:rotate(90deg)}
+  .sec .body{display:none;padding:2px 16px 18px}
+  .sec.open .body{display:block}
+  .grp{margin:14px 0 8px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut);font-weight:600}
+  .fld{margin-bottom:12px}
+  .fld label{display:block;font-size:12px;color:var(--mut);margin-bottom:4px}
+  .fld input[type=text],.fld input[type=tel],.fld input[type=url],.fld input[type=email],.fld textarea{
+    width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;outline:0;transition:border-color .12s,box-shadow .12s}
+  .fld input:focus,.fld textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(200,162,74,.16)}
+  .fld textarea{resize:vertical;min-height:74px}
+  .fld .hint{font-size:11px;color:var(--mut);margin-top:3px}
+  .card{border:1px solid var(--line);border-radius:var(--rad);padding:12px;margin:0 0 10px;background:#fcfcfe}
+  .card .head{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;color:var(--mut);font-weight:600}
+  .card .head .tag{background:#eef0f5;border-radius:6px;padding:2px 7px;font-size:11px}
+  .imgrow{display:flex;gap:10px;align-items:center}
+  .imgrow img{width:74px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#f0f1f5}
+  .imgrow .meta{flex:1;min-width:0}
+  .imgrow .meta code{font-size:11px;color:var(--mut);word-break:break-all;display:block}
+  .sm{border:1px solid var(--line);background:#fff;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;white-space:nowrap}
+  .sm:hover{border-color:#cbd0dc;background:#fafbfd}
+  .addbtn{border:1px dashed #cbd0dc;background:#fff;color:var(--mut);width:100%;padding:8px;border-radius:10px;cursor:pointer}
+  .addbtn:hover{color:var(--ink);border-color:var(--acc)}
+
+  /* ---------- modal ---------- */
+  .modal{position:fixed;inset:0;background:rgba(12,14,20,.5);display:none;place-items:center;z-index:50;padding:20px}
+  .modal.on{display:grid}
+  .modal .box{background:#fff;border-radius:16px;max-width:520px;width:100%;padding:22px;max-height:80vh;overflow:auto}
+  .modal h4{margin:0 0 6px;font-size:16px}
+  .modal p{color:var(--mut);font-size:13px;margin:0 0 14px}
+  .modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:#16181d;color:#fff;padding:11px 18px;border-radius:11px;opacity:0;transition:.2s;z-index:80;font-size:13px;max-width:80vw}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .toast.err{background:#7e2020}
+  @media (max-width:1000px){
+    .side{position:absolute;inset:0;width:100%;flex:1 1 auto;z-index:10}
+    .stage{flex:1}
+    body.previewing .side{display:none}
+    .stage{display:none}
+    body.previewing .stage{display:flex}
+  }
+</style>
+</head>
+<body>
+<header>
+  <span class="brand">🚗 <span><b>Luxury Lane</b> Assistance<small>Διαχείριση περιεχομένου</small></span></span>
+  <span class="grow"></span>
+  <span class="pill" id="status">Φόρτωση…</span>
+  <span class="segs" id="devices">
+    <button data-w="" aria-pressed="true">Desktop</button>
+    <button data-w="820px" aria-pressed="false">Tablet</button>
+    <button data-w="390px" aria-pressed="false">Κινητό</button>
+  </span>
+  <button class="hbtn" id="loginBtn">Σύνδεση</button>
+  <button class="hbtn" id="reloadBtn">Επαναφορά</button>
+  <button class="hbtn primary" id="saveBtn">Αποθήκευση</button>
+  <button class="hbtn" id="previewBtn">Προβολή ↗</button>
+</header>
+
+<main>
+  <div class="side" id="side"></div>
+  <div class="stage">
+    <div class="bar"><span id="previewNote">Ζωντανή προβολή — οι αλλαγές φαίνονται αμέσως, αλλά είναι ορατές μόνο σε εσάς μέχρι να πατήσετε Αποθήκευση.</span></div>
+    <div class="holder"><div class="frameWrap" id="frameWrap"><iframe id="pv" src="index.html?cms=1"></iframe></div></div>
+  </div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <h4>Σύνδεση</h4>
+    <p>Βάλτε τον κωδικό διαχείρισης για να μπορείτε να αποθηκεύετε αλλαγές.</p>
+    <div class="fld"><label>Κωδικός</label><input type="password" id="pass" autocomplete="current-password"></div>
+    <div class="row">
+      <button class="sm" id="modalClose">Κλείσιμο</button>
+      <button class="hbtn primary" id="modalSave">Σύνδεση</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   LLA CMS — split view editor
+   Αριστερά: πεδία. Δεξιά: η πραγματική σελίδα (live).
+   ========================================================= */
+
+/* ---------- schema ---------- */
+const T = (k, label, hint) => ({ t:'text', k, label, hint });
+const A = (k, label, hint) => ({ t:'area', k, label, hint });
+const IMG = (k, label) => ({ t:'img', k, label });
+
+const SCHEMA = [
+  { id:'hero', title:'Αρχική οθόνη (Hero)', anchor:'header.hero', groups:[
+    { name:'Επάνω γραμμή', fields:[ T('hero.kick1','Μικρό κείμενο'), T('hero.kick2','Δεύτερο μικρό κείμενο') ]},
+    { name:'Τίτλοι', fields:[ T('hero.l1','Τίτλος γραμμή 1'), T('hero.l2','Τίτλος γραμμή 2'), T('hero.l3','Τίτλος γραμμή 3 (ελληνικά)') ]},
+    { name:'Κείμενο & κουμπιά', fields:[ A('hero.sub','Περιγραφή'), T('hero.cta1','Κουμπί 1'), T('hero.cta2','Κουμπί 2') ]},
+  ]},
+  { id:'about', title:'Σχετικά με εμάς', anchor:'#about', groups:[
+    { fields:[ T('about.label','Μικρή ετικέτα'), A('about.title','Επικεφαλίδα'), A('about.p1','Παράγραφος 1'), A('about.p2','Παράγραφος 2'), T('about.promise','Σλόγκαν') ]},
+  ]},
+  { id:'why', title:'Γιατί να μας εμπιστευτείτε', anchor:'#why', groups:[
+    { name:'Τίτλοι', fields:[ T('headings.why.title','Επικεφαλίδα'), T('headings.why.em','Τονισμένη λέξη'), T('headings.why.data','Δεξιά ετικέτα') ]},
+    { name:'Οι 6 λόγοι', list:'why', card:'Λόγος {n}', fields:[ T('title','Τίτλος'), A('desc','Περιγραφή') ]},
+  ]},
+  { id:'services', title:'Υπηρεσίες', anchor:'#services', groups:[
+    { name:'Τίτλοι', fields:[ T('headings.services.title','Επικεφαλίδα'), T('headings.services.em','Τονισμένη λέξη'), A('headings.services.intro','Εισαγωγικό κείμενο') ]},
+    { name:'Τίτλοι ομάδων', list:'serviceGroups', card:'Ομάδα {n}', fields:[ T('title','Τίτλος ομάδας'), T('sub','Υπότιτλος ομάδας') ]},
+    { name:'Κάρτες υπηρεσιών', list:'services', card:'Κάρτα {n}', fields:[ T('code','Κωδικός (Υ-01)'), T('cat','Ετικέτα'), T('title','Τίτλος'), A('desc','Περιγραφή'), IMG('img','Φωτογραφία'), T('alt','Περιγραφή εικόνας (SEO)') ]},
+  ]},
+  { id:'coverage', title:'Κάλυψη — Ελλάδα & Νησιά', anchor:'#coverage', groups:[
+    { fields:[ T('coverage.title','Τίτλος γραμμή 1'), T('coverage.title2','Τίτλος γραμμή 2'), A('coverage.p','Κείμενο'), A('coverage.slogan','Σλόγκαν') ]},
+    { name:'Παραλαβή από (6 σημεία)', list:'coverage.pickup', card:'Σημείο {n}', simple:true, fields:[ T('','Κείμενο') ]},
+    { name:'Παράδοση σε (6 σημεία)', list:'coverage.delivery', card:'Σημείο {n}', simple:true, fields:[ T('','Κείμενο') ]},
+  ]},
+  { id:'location', title:'Βρείτε μας (χάρτης)', anchor:'#location', groups:[
+    { name:'Τίτλοι', fields:[ T('headings.location.title','Επικεφαλίδα'), T('headings.location.em','Τονισμένη λέξη'), T('headings.location.data','Διεύθυνση') ]},
+    { fields:[ T('location.mapQuery','Διεύθυνση χάρτη Google') ]},
+  ]},
+  { id:'process', title:'Η διαδικασία μας', anchor:'#process', groups:[
+    { name:'Τίτλοι', fields:[ T('headings.process.title','Επικεφαλίδα'), T('headings.process.em','Τονισμένη λέξη'), T('headings.process.data','Δεξιά ετικέτα') ]},
+    { name:'Τα 6 βήματα', list:'process', card:'Βήμα {n}', fields:[ T('n','Αριθμός (01)'), T('title','Τίτλος'), A('desc','Περιγραφή') ]},
+  ]},
+  { id:'roadside', title:'24/7 Οδική βοήθεια', anchor:'#assistance', groups:[
+    { name:'Τίτλοι', fields:[ T('headings.assistance.title','Επικεφαλίδα'), T('headings.assistance.em','Τονισμένη λέξη') ]},
+    { fields:[ A('roadside.p','Κείμενο') ]},
+  ]},
+  { id:'reviews', title:'Αξιολογήσεις Google', anchor:'#reviews', groups:[
+    { name:'Τίτλοι', fields:[ T('headings.reviews.title','Επικεφαλίδα'), T('headings.reviews.em','Τονισμένη λέξη'), T('headings.reviews.data','Δεξιά ετικέτα') ]},
+    { name:'Κριτικές', list:'reviews', card:'Κριτική {n}', fields:[ T('name','Όνομα'), T('when','Πότε'), A('text','Κείμενο'), IMG('img','Φωτογραφία προφίλ') ]},
+  ]},
+  { id:'end', title:'Τελευταίο κάλεσμα (CTA)', anchor:'#contact', groups:[
+    { fields:[ T('end.eyebrow','Μικρή ετικέτα'), T('end.title','Τίτλος'), T('end.title2','Τίτλος (2ο μέρος)'), A('end.p','Κείμενο'), A('end.cats','Λίστα υπηρεσιών') ]},
+  ]},
+  { id:'contact', title:'Στοιχεία επικοινωνίας', anchor:'footer.foot', groups:[
+    { fields:[ T('contact.phoneDisplay','Τηλέφωνο (όπως φαίνεται)'), T('contact.phoneE164','Τηλέφωνο για κλήση (+30…)'), T('contact.whatsappNumber','WhatsApp / Viber (3069…)'), T('contact.email','Email'), T('contact.instagram','Instagram URL') ]},
+  ]},
+];
+
+/* ---------- helpers ---------- */
+const getP = (o,p) => p.split('.').reduce((a,k)=> (a==null?a:a[k]), o);
+function setP(o,p,v){
+  const ks = p.split('.'); let cur = o;
+  for (let i=0;i<ks.length-1;i++){ const k = /^\d+$/.test(ks[i]) ? +ks[i] : ks[i]; if (cur[k]==null) cur[k] = /^\d+$/.test(ks[i+1]) ? [] : {}; cur = cur[k]; }
+  const last = ks[ks.length-1];
+  cur[/^\d+$/.test(last) ? +last : last] = v;
+}
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let content = {};       // το περιεχόμενο όπως είναι
+let pending = {};       // path -> File (εικόνες που δεν έχουν ανέβει ακόμα)
+let dirty = false;
+const $ = s => document.querySelector(s);
+const toastEl = $('#toast');
+function toast(msg, err){
+  toastEl.textContent = msg;
+  toastEl.className = 'toast on' + (err ? ' err' : '');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>{ toastEl.className='toast' }, 3600);
+}
+function status(msg, kind){ const p=$('#status'); p.textContent = msg; p.className = 'pill' + (kind?' '+kind:''); }
+
+/* ---------- preview ---------- */
+let ready = false;
+const pv = $('#pv');
+pv.addEventListener('load', ()=>{ ready = false; setTimeout(()=>{ ready = true; push(true) }, 250) });
+function push(full){
+  const w = pv.contentWindow; if (!w) return;
+  try { w.postMessage({ type:'lla-content', content }, '*'); } catch(e){}
+}
+let scrollTimer;
+function scrollTo(anchor){
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(()=>{ try{ pv.contentWindow.postMessage({type:'lla-scroll', target:anchor}, '*') }catch(e){} }, 200);
+}
+
+/* ---------- form ---------- */
+function buildForm(){
+  const side = $('#side'); side.innerHTML = '';
+  SCHEMA.forEach((sec, i) => {
+    const el = document.createElement('section');
+    el.className = 'sec' + (i===0 ? ' open' : '');
+    el.dataset.id = sec.id;
+    el.innerHTML = `<h3><button type="button"><span class="n">${i+1}</span>${esc(sec.title)}<span class="chev">›</span></button></h3><div class="body"></div>`;
+    const body = el.querySelector('.body');
+    sec.groups.forEach((g, gi) => {
+      if (g.name) { const t = document.createElement('div'); t.className = 'grp'; t.textContent = g.name; body.appendChild(t); }
+      if (g.list) renderList(body, g, sec);
+      else renderFields(body, g.fields, '');
+    });
+    el.querySelector('h3>button').addEventListener('click', ()=>{
+      const open = el.classList.contains('open');
+      document.querySelectorAll('.sec').forEach(s=>s.classList.remove('open'));
+      if (!open) { el.classList.add('open'); scrollTo(sec.anchor); }
+    });
+    side.appendChild(el);
+  });
+}
+
+function renderFields(container, fields, base){
+  fields.forEach(f => {
+    const path = base ? base + '.' + f.k : f.k;
+    const wrap = document.createElement('div'); wrap.className = 'fld';
+    const label = document.createElement('label'); label.textContent = f.label;
+    wrap.appendChild(label);
+    if (f.t === 'img') wrap.appendChild(imgField(path));
+    else {
+      const inp = document.createElement(f.t === 'area' ? 'textarea' : 'input');
+      if (f.t !== 'area') inp.type = 'text';
+      inp.value = getP(content, path) ?? '';
+      inp.dataset.path = path;
+      inp.addEventListener('input', ()=>{ setP(content, path, inp.value); markDirty(); push(); });
+      wrap.appendChild(inp);
+    }
+    if (f.hint) { const h = document.createElement('div'); h.className='hint'; h.textContent = f.hint; wrap.appendChild(h); }
+    container.appendChild(wrap);
+  });
+}
+
+function imgField(path){
+  const cur = getP(content, path) || '';
+  const row = document.createElement('div'); row.className = 'imgrow';
+  row.innerHTML = `<img src="${esc(cur)}" alt=""><div class="meta"><code>${esc(cur||'—')}</code></div><button type="button" class="sm">Αλλαγή</button><input type="file" accept="image/*" hidden>`;
+  const file = row.querySelector('input');
+  row.querySelector('.sm').addEventListener('click', ()=>file.click());
+  file.addEventListener('change', ()=>{
+    const f = file.files && file.files[0]; if (!f) return;
+    pending[path] = f;
+    const url = URL.createObjectURL(f);
+    row.querySelector('img').src = url;
+    row.querySelector('code').textContent = f.name + '  (θα ανέβει με την αποθήκευση)';
+    setP(content, path, url); markDirty(); push();
+  });
+  return row;
+}
+
+function renderList(container, g, sec){
+  const arr = getP(content, g.list);
+  if (!Array.isArray(arr)) { return; }
+  arr.forEach((item, idx) => {
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `<div class="head"><span class="tag">${esc((g.card||'#{n}').replace('{n}', sec.id==='process' ? (item.n||idx+1) : idx+1))}</span></div>`;
+    if (g.simple) {
+      const f = document.createElement('div'); f.className='fld';
+      const inp = document.createElement('input'); inp.type='text'; inp.value = item ?? '';
+      inp.addEventListener('input', ()=>{ arr[idx] = inp.value; markDirty(); push(); });
+      f.appendChild(inp); card.appendChild(f);
+    } else {
+      renderFields(card, g.fields, g.list + '.' + idx);
+    }
+    container.appendChild(card);
+  });
+}
+
+function markDirty(){ dirty = true; status('Μη αποθηκευμένες αλλαγές', 'warn'); }
+
+/* ---------- device switcher ---------- */
+$('#devices').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  $('#devices').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+  $('#frameWrap').style.width = b.dataset.w || '';
+});
+
+/* ---------- save ---------- */
+let authed = false;
+const API = 'api/';
+
+async function uploadImage(file){
+  const name = Date.now() + '-' + slug(file.name) + (file.name.match(/\.[a-z0-9]+$/i) ? file.name.slice(file.name.lastIndexOf('.')).toLowerCase() : '.jpg');
+  const r = await fetch(API + 'upload?name=' + encodeURIComponent(name), { method:'POST', headers:{'Content-Type': file.type || 'image/jpeg'}, body:file });
+  if (r.status === 401) throw new Error('unauthorized');
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error || 'upload failed');
+  return j.path;
+}
+const slug = s => String(s).toLowerCase().replace(/\.[^.]+$/, '').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'image';
+
+async function save(){
+  const btn = $('#saveBtn'); btn.disabled = true; const btnText = btn.textContent; btn.textContent = 'Αποθήκευση…';
+  try {
+    if (!authed) { openLogin('Για να αποθηκεύσετε χρειάζεται να συνδεθείτε.'); throw new Error('Συνδεθείτε πρώτα'); }
+    /* 1) ανέβασμα εικόνων */
+    for (const path of Object.keys(pending)) {
+      setP(content, path, await uploadImage(pending[path]));
+      delete pending[path];
+    }
+    /* 2) αποθήκευση περιεχομένου */
+    const r = await fetch(API + 'save', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({content}) });
+    if (r.status === 401) { authed = false; reflectAuth(); openLogin('Η σύνδεση έληξε. Ξαναβάλτε τον κωδικό.'); throw new Error('Συνδεθείτε ξανά'); }
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || 'save failed');
+    dirty = false;
+    status('Αποθηκευμένο', 'ok');
+    toast('Αποθηκεύτηκε. Οι αλλαγές είναι πλέον live στο site.');
+    setTimeout(()=>{ status('Έτοιμο') }, 4000);
+  } catch (e) {
+    if (String(e.message) !== 'Συνδεθείτε πρώτα' && String(e.message) !== 'Συνδεθείτε ξανά') status('Σφάλμα αποθήκευσης', 'err');
+    toast(String(e.message || e), true);
+  } finally {
+    btn.disabled = false; btn.textContent = btnText;
+  }
+}
+
+/* ---------- login ---------- */
+function reflectAuth(){
+  const b = $('#loginBtn');
+  if (b) b.textContent = authed ? 'Αποσύνδεση' : 'Σύνδεση';
+}
+function openLogin(msg){
+  if (msg) toast(msg);
+  $('#pass').value = '';
+  $('#modal').classList.add('on');
+  setTimeout(()=> $('#pass').focus(), 50);
+}
+async function doLogin(){
+  const pass = $('#pass').value;
+  if (!pass) return;
+  const r = await fetch(API + 'login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({pass}) });
+  const j = await r.json().catch(()=>({}));
+  if (!r.ok || !j.ok) { toast(j.error || 'Λάθος κωδικός', true); return; }
+  authed = true; reflectAuth();
+  $('#modal').classList.remove('on');
+  toast('Συνδεθήκατε');
+  status('Έτοιμο', 'ok');
+}
+$('#loginBtn').addEventListener('click', async ()=>{
+  if (authed) { await fetch(API + 'login', { method:'DELETE' }); authed = false; reflectAuth(); toast('Αποσυνδεθήκατε'); return; }
+  openLogin();
+});
+$('#modalClose').addEventListener('click', ()=>$('#modal').classList.remove('on'));
+$('#modalSave').addEventListener('click', doLogin);
+$('#pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin() });
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') e.currentTarget.classList.remove('on') });
+
+/* ---------- misc buttons ---------- */
+$('#saveBtn').addEventListener('click', save);
+$('#reloadBtn').addEventListener('click', ()=>{ if (!dirty || confirm('Υπάρχουν μη αποθηκευμένες αλλαγές. Να γίνει επαναφορά;')) location.reload() });
+$('#previewBtn').addEventListener('click', ()=>{ window.open('index.html', '_blank') });
+
+window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = '' } });
+document.addEventListener('keydown', e => { if ((e.metaKey||e.ctrlKey) && e.key === 's') { e.preventDefault(); save() } });
+
+/* ---------- boot ---------- */
+(async function boot(){
+  try {
+    const r = await fetch(API + 'content?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    content = await r.json();
+  } catch (e) {
+    status('Δεν βρέθηκε περιεχόμενο', 'err');
+    toast('Δεν μπόρεσα να διαβάσω το περιεχόμενο', true);
+    return;
+  }
+  buildForm();
+  try { const j = await (await fetch(API + 'login')).json(); authed = !!j.authed; } catch(e){ authed = false; }
+  reflectAuth();
+  status(authed ? 'Έτοιμο' : 'Δείτε — μόνο προβολή', authed ? 'ok' : 'warn');
+  setTimeout(()=>{ ready = true; }, 600);
+  setTimeout(()=>{ push(true) }, 900);
+})();
+</script>
+</body>
+</html>
