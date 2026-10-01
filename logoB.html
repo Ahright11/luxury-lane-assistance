@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luxury Lane Assistance — Identity Mark / Direction B: Lane Geometry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#14161A;
+    --deep:#0B0C0E;
+    --paper:#FFFFFF;
+    --platinum:#C8CCD2;
+    --steel:#6E757E;
+    --rule:#E3E5E9;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:"Manrope",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--graphite);
+    font-family:var(--sans);
+    font-weight:500;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+  /* ---------- masthead ---------- */
+  .masthead{border-bottom:1px solid var(--graphite);padding:40px 0 22px;margin-bottom:0}
+  .masthead-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .doc-title{font-size:13px;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin:0}
+  .doc-meta{font-family:var(--mono);font-size:11px;color:var(--steel);letter-spacing:.04em;text-align:right;line-height:1.7}
+  .doc-lede{margin:26px 0 0;max-width:56ch;font-size:17px;line-height:1.55;font-weight:400;color:#3A3F47}
+  .doc-lede b{font-weight:700;color:var(--graphite)}
+
+  /* ---------- plate system ---------- */
+  .plate{border-bottom:1px solid var(--rule);padding:56px 0}
+  .plate:last-of-type{border-bottom:0}
+  .plate-head{display:flex;align-items:baseline;gap:16px;margin-bottom:36px}
+  .plate-num{font-family:var(--mono);font-size:11px;color:var(--platinum);letter-spacing:.08em;
+    border:1px solid var(--rule);padding:3px 7px;border-radius:2px;color:var(--steel)}
+  .plate-title{font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin:0}
+  .plate-note{font-family:var(--mono);font-size:11px;color:var(--steel);margin-left:auto;letter-spacing:.03em}
+
+  .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--steel);margin-top:14px}
+
+  /* ---------- the mark ---------- */
+  .markbox{display:inline-flex;align-items:center;justify-content:center}
+  svg{display:block}
+
+  /* ---------- lockups ---------- */
+  .lockups{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  @media (max-width:560px){.lockups{grid-template-columns:1fr}}
+  .lock{background:var(--paper);padding:48px 32px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:32px;min-height:280px}
+  .lock .art{flex:1;display:flex;align-items:center;justify-content:center;width:100%}
+
+  /* wordmark typography — the brand setting */
+  .wm{font-family:var(--sans);font-weight:600;text-transform:uppercase;line-height:1;white-space:nowrap}
+  .wm-h{font-size:19px;letter-spacing:.20em}
+  .wm-h .thin{font-weight:400;color:var(--steel)}
+  .wm-s{font-size:15px;letter-spacing:.34em;text-indent:.34em}
+
+  .lockup-h{display:flex;align-items:center;gap:20px}
+  .lockup-h .bar{width:1px;align-self:stretch;background:var(--rule)}
+  .lockup-h .txt{display:flex;flex-direction:column;gap:7px}
+  .lockup-s{display:flex;flex-direction:column;align-items:center;gap:20px}
+
+  /* ---------- size ladder ---------- */
+  .ladder{display:flex;align-items:flex-end;gap:56px;flex-wrap:wrap}
+  .rung{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .rung .cap{margin-top:0}
+
+  /* ---------- inversion ---------- */
+  .invert{background:var(--deep);color:var(--paper)}
+  .invert .plate-title,.invert .doc-title{color:var(--paper)}
+  .invert .cap,.invert .plate-note{color:#8E959E}
+  .invert .plate-num{border-color:#2A2E34;color:#8E959E}
+  .invert .lockups{background:#22262C;border-color:#22262C}
+  .invert .lock{background:var(--deep)}
+  .invert .lockup-h .bar{background:#2A2E34}
+  .invert .wm-h .thin{color:#9AA1AA}
+  .invert .plate{border-bottom-color:#22262C}
+
+  /* ---------- construction ---------- */
+  .constr{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:56px;align-items:start}
+  .spec{list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:12px;line-height:1.9;color:#3A3F47}
+  .spec li{display:flex;gap:14px;border-bottom:1px dotted var(--rule);padding:7px 0}
+  .spec b{color:var(--platinum);color:var(--steel);font-weight:500;min-width:78px}
+  .spec span{color:var(--graphite)}
+
+  /* ---------- truck door mock ---------- */
+  .truck{background:#DDE1E6;padding:64px 40px;display:flex;justify-content:center}
+  .door{
+    width:min(560px,100%);aspect-ratio:5/4;background:#FBFCFD;border-radius:6px;position:relative;
+    box-shadow:0 1px 0 #fff inset, 0 26px 60px -24px rgba(10,14,20,.45);
+    display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;
+    overflow:hidden;
+  }
+  .door::before{ /* panel seam */
+    content:"";position:absolute;left:0;right:0;top:14%;height:1px;background:linear-gradient(90deg,transparent,#D6DBE1 12%,#D6DBE1 88%,transparent);
+  }
+  .door::after{ /* lower body swage */
+    content:"";position:absolute;left:0;right:0;bottom:16%;height:2px;background:linear-gradient(90deg,transparent,#E7EAEE 10%,#E7EAEE 90%,transparent);
+  }
+  .handle{position:absolute;right:7%;top:26%;width:74px;height:15px;border-radius:8px;background:#C9CFD6;box-shadow:0 1px 0 #fff}
+  .door-art{display:flex;align-items:center;gap:22px;margin-top:2%}
+  .door-art .bar{width:1px;height:56px;background:#D6DBE1}
+  .door-sub{position:absolute;bottom:9%;left:0;right:0;text-align:center;
+    font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.2em;color:#5B626B;text-transform:uppercase}
+
+  /* ---------- footer ---------- */
+  .foot{padding:48px 0 72px;font-family:var(--mono);font-size:11px;color:var(--steel);line-height:1.9;
+    display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;border-top:1px solid var(--graphite);margin-top:8px}
+  .foot p{margin:0;max-width:46ch}
+
+  .favrow{display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap}
+  .fav{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .favtile{background:var(--graphite);display:flex;align-items:center;justify-content:center}
+  .favtile.lite{background:var(--paper);border:1px solid var(--rule)}
+
+  @media (max-width:760px){
+    .wrap{padding:0 20px}
+    .constr{grid-template-columns:1fr;gap:36px}
+    .ladder{gap:32px}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .lock,.rung{transition:opacity .2s}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ MARK DEFINITION (single source of truth) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- LLA "Lane Transfer" mark. Plan view. Two constant-width lane edges.
+         Grid: 102 x 84 units. Edge stroke 10u. Lane channel 22u. -->
+    <symbol id="lla" viewBox="0 0 102 84">
+      <g fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10">
+        <path d="M5 84 V26 H65 V0"/>
+        <path d="M37 84 V58 H97 V0"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="masthead-top">
+      <h1 class="doc-title">Luxury Lane Assistance — Identity Mark</h1>
+      <div class="doc-meta">
+        DIRECTION B · LANE GEOMETRY<br>
+        SHEET 1/1 · ONE-COLOUR · VECTOR
+      </div>
+    </div>
+    <p class="doc-lede">The lane, seen from directly above. Two lane edges holding a constant 22-unit channel through a
+      <b>lane transfer</b> — the manoeuvre a flatbed makes to take a car out of traffic and onto its own protected line.
+      No vanishing point, no illustration: a drafted mark of four strokes that reduces to a favicon and cuts as one-colour vinyl.</p>
+  </header>
+
+  <!-- ============ 01 · THE MARK ============ -->
+  <section class="plate">
+    <div class="plate-head">
+      <span class="plate-num">01</span>
+      <h2 class="plate-title">The mark</h2>
+      <span class="plate-note">2 paths · 4 vertices · no curves</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:20px 0 8px">
+      <span class="markbox" style="color:var(--graphite)"><svg width="300" height="247"><use href="#lla"/></svg></span>
+    </div>
+    <p class="cap" style="text-align:center">Primary mark · graphite on paper</p>
+  </section>
+
+  <!-- ============ 02 · CONSTRUCTION ============ -->
+  <section class="plate">
+    <div class="plate-head">
+      <span class="plate-num">02</span>
+      <h2 class="plate-title">Construction</h2>
+      <span class="plate-note">unit grid = 1/102 of mark width</span>
+    </div>
+    <div class="constr">
+      <div>
+        <svg width="100%" viewBox="-14 -16 146 116" role="img" aria-label="Construction drawing of the mark on a unit grid">
+          <!-- grid -->
+          <g stroke="#EAECEF" stroke-width="0.5">
+            <path d="M0 0V84M17 0V84M34 0V84M51 0V84M68 0V84M85 0V84M102 0V84"/>
+            <path d="M0 0H102M0 21H102M0 42H102M0 63H102M0 84H102"/>
+          </g>
+          <!-- bounding box -->
+          <rect x="0" y="0" width="102" height="84" fill="none" stroke="#C8CCD2" stroke-width="0.7"/>
+          <!-- centrelines of each lane edge -->
+          <g fill="none" stroke="#C8CCD2" stroke-width="0.7" stroke-dasharray="4 3">
+            <path d="M5 84 V26 H65 V0"/>
+            <path d="M37 84 V58 H97 V0"/>
+          </g>
+          <!-- the mark itself, light so the drafting reads -->
+          <g fill="none" stroke="#14161A" stroke-width="10" opacity="0.14">
+            <path d="M5 84 V26 H65 V0"/>
+            <path d="M37 84 V58 H97 V0"/>
+          </g>
+          <!-- dimension: lane channel 22u -->
+          <g stroke="#6E757E" stroke-width="0.6">
+            <path d="M10 76 H32"/><path d="M10 73 V79"/><path d="M32 73 V79"/>
+          </g>
+          <text x="21" y="70" font-family="JetBrains Mono, monospace" font-size="5" fill="#6E757E" text-anchor="middle">22u</text>
+          <!-- dimension: edge 10u -->
+          <g stroke="#6E757E" stroke-width="0.6">
+            <path d="M0 -5 H10"/><path d="M0 -8 V-2"/><path d="M10 -8 V-2"/>
+          </g>
+          <text x="5" y="-10" font-family="JetBrains Mono, monospace" font-size="5" fill="#6E757E" text-anchor="middle">10u</text>
+          <!-- transfer offset 32u -->
+          <g stroke="#6E757E" stroke-width="0.6">
+            <path d="M108 26 V58"/><path d="M105 26 H111"/><path d="M105 58 H111"/>
+          </g>
+          <text x="114" y="44" font-family="JetBrains Mono, monospace" font-size="5" fill="#6E757E">32u</text>
+        </svg>
+        <p class="cap">Plate 02 · unit grid, dimension lines</p>
+      </div>
+      <ul class="spec">
+        <li><b>GRID</b><span>102 × 84 units, no fractional coordinates</span></li>
+        <li><b>EDGE</b><span>10u constant stroke, butt caps, mitre joins</span></li>
+        <li><b>CHANNEL</b><span>22u, identical on all three runs</span></li>
+        <li><b>TRANSFER</b><span>32u lateral shift at 90°</span></li>
+        <li><b>GEOMETRY</b><span>orthogonal only — cuts clean on vinyl and on a plotter</span></li>
+        <li><b>CLEAR SPACE</b><span>10u (one edge width) on all four sides</span></li>
+        <li><b>MINIMUM</b><span>16px tall · edge holds at 1.9px</span></li>
+        <li><b>COLOUR</b><span>Graphite #14161A / Paper #FFFFFF / Platinum #C8CCD2</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 03 · LOCKUPS ============ -->
+  <section class="plate">
+    <div class="plate-head">
+      <span class="plate-num">03</span>
+      <h2 class="plate-title">Lockups</h2>
+      <span class="plate-note">Manrope · 600 / 400 · Greek + Latin</span>
+    </div>
+    <div class="lockups">
+      <div class="lock">
+        <div class="art"><span class="markbox" style="color:var(--graphite)"><svg width="86" height="71"><use href="#lla"/></svg></span></div>
+        <p class="cap">A · Mark alone</p>
+      </div>
+      <div class="lock">
+        <div class="art">
+          <div class="lockup-h">
+            <span class="markbox" style="color:var(--graphite)"><svg width="62" height="51"><use href="#lla"/></svg></span>
+            <span class="bar"></span>
+            <span class="txt">
+              <span class="wm wm-h">Luxury Lane</span>
+              <span class="wm wm-h thin">Assistance</span>
+            </span>
+          </div>
+        </div>
+        <p class="cap">B · Horizontal lockup</p>
+      </div>
+      <div class="lock">
+        <div class="art">
+          <div class="lockup-s">
+            <span class="markbox" style="color:var(--graphite)"><svg width="72" height="59"><use href="#lla"/></svg></span>
+            <span class="wm wm-s">Luxury Lane Assistance</span>
+          </div>
+        </div>
+        <p class="cap">C · Stacked lockup</p>
+      </div>
+      <div class="lock">
+        <div class="art">
+          <div class="favrow" style="justify-content:center">
+            <div class="fav">
+              <span class="favtile" style="width:64px;height:64px;color:var(--paper)"><svg width="34" height="28"><use href="#lla"/></svg></span>
+              <span class="cap" style="margin:0">64</span>
+            </div>
+            <div class="fav">
+              <span class="favtile" style="width:32px;height:32px;color:var(--paper)"><svg width="17" height="14"><use href="#lla"/></svg></span>
+              <span class="cap" style="margin:0">32</span>
+            </div>
+            <div class="fav">
+              <span class="favtile" style="width:16px;height:16px;color:var(--paper)"><svg width="9" height="7"><use href="#lla"/></svg></span>
+              <span class="cap" style="margin:0">16</span>
+            </div>
+          </div>
+        </div>
+        <p class="cap">D · Favicon / app tile</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 · SIZE LADDER ============ -->
+  <section class="plate">
+    <div class="plate-head">
+      <span class="plate-num">04</span>
+      <h2 class="plate-title">Legibility ladder</h2>
+      <span class="plate-note">rendered at true pixel height</span>
+    </div>
+    <div class="ladder">
+      <div class="rung"><span class="markbox" style="color:var(--graphite)"><svg width="29" height="24"><use href="#lla"/></svg></span><span class="cap">24 px</span></div>
+      <div class="rung"><span class="markbox" style="color:var(--graphite)"><svg width="58" height="48"><use href="#lla"/></svg></span><span class="cap">48 px</span></div>
+      <div class="rung"><span class="markbox" style="color:var(--graphite)"><svg width="117" height="96"><use href="#lla"/></svg></span><span class="cap">96 px</span></div>
+      <div class="rung"><span class="markbox" style="color:var(--graphite)"><svg width="291" height="240"><use href="#lla"/></svg></span><span class="cap">240 px</span></div>
+    </div>
+    <p class="cap" style="max-width:60ch;line-height:1.8">At 24px the edge stroke lands on 2.9px and the channel on 6.3px — both above the
+      1px hairline threshold that killed the dashed centre line in the previous mark. Nothing thins, nothing fills in.</p>
+  </section>
+</div>
+
+<!-- ============ 05 · INVERSION ============ -->
+<div class="invert">
+  <div class="wrap">
+    <section class="plate">
+      <div class="plate-head">
+        <span class="plate-num">05</span>
+        <h2 class="plate-title">Inversion</h2>
+        <span class="plate-note">white on black · identical geometry</span>
+      </div>
+      <div class="lockups">
+        <div class="lock">
+          <div class="art"><span class="markbox" style="color:var(--paper)"><svg width="86" height="71"><use href="#lla"/></svg></span></div>
+          <p class="cap">A · Mark alone</p>
+        </div>
+        <div class="lock">
+          <div class="art">
+            <div class="lockup-h" style="color:var(--paper)">
+              <span class="markbox"><svg width="62" height="51"><use href="#lla"/></svg></span>
+              <span class="bar"></span>
+              <span class="txt">
+                <span class="wm wm-h">Luxury Lane</span>
+                <span class="wm wm-h thin">Assistance</span>
+              </span>
+            </div>
+          </div>
+          <p class="cap">B · Horizontal lockup</p>
+        </div>
+        <div class="lock">
+          <div class="art">
+            <div class="lockup-s" style="color:var(--paper)">
+              <span class="markbox"><svg width="72" height="59"><use href="#lla"/></svg></span>
+              <span class="wm wm-s">Luxury Lane Assistance</span>
+            </div>
+          </div>
+          <p class="cap">C · Stacked lockup</p>
+        </div>
+        <div class="lock">
+          <div class="art">
+            <div class="ladder" style="gap:28px;align-items:flex-end;justify-content:center;color:var(--paper)">
+              <div class="rung"><svg width="29" height="24"><use href="#lla"/></svg><span class="cap">24</span></div>
+              <div class="rung"><svg width="58" height="48"><use href="#lla"/></svg><span class="cap">48</span></div>
+            </div>
+          </div>
+          <p class="cap">D · Small sizes, reversed</p>
+        </div>
+      </div>
+      <p class="cap" style="max-width:62ch;line-height:1.8">Reversed, the negative channel becomes the black lane and the mark still reads.
+        This is the case that matters: reflective vinyl on the truck at night, and the app icon on a dark home screen.</p>
+    </section>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- ============ 06 · APPLICATION ============ -->
+  <section class="plate">
+    <div class="plate-head">
+      <span class="plate-num">06</span>
+      <h2 class="plate-title">Application — Atego cab door</h2>
+      <span class="plate-note">single-colour cut vinyl, graphite</span>
+    </div>
+  </section>
+</div>
+<div class="truck">
+  <div class="door">
+    <span class="handle"></span>
+    <div class="door-art" style="color:var(--graphite)">
+      <span class="markbox"><svg width="88" height="72"><use href="#lla"/></svg></span>
+      <span class="bar"></span>
+      <span class="txt" style="display:flex;flex-direction:column;gap:8px">
+        <span class="wm wm-h" style="font-size:22px">Luxury Lane</span>
+        <span class="wm wm-h thin" style="font-size:22px">Assistance</span>
+      </span>
+    </div>
+    <span class="door-sub">Οδική βοήθεια 24/7 · Αθήνα &amp; νησιά</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="plate" style="padding-top:28px">
+    <p class="cap" style="text-align:center">One cut, one colour. The same file drives the door, the invoice and the favicon.</p>
+  </section>
+
+  <footer class="foot">
+    <p><b style="color:var(--graphite);font-weight:500">TYPEFACE</b> — Manrope (Google Fonts). Full Greek and Latin coverage,
+      geometric skeleton, closed apertures. Wordmark set at 600 with .20em tracking; secondary line at 400 to separate
+      the name from the service.</p>
+    <p><b style="color:var(--graphite);font-weight:500">PALETTE</b> — Graphite #14161A, Paper #FFFFFF, Platinum #C8CCD2.
+      Platinum is a rule-and-detail colour only, never the mark.</p>
+    <p><b style="color:var(--graphite);font-weight:500">SUPERSEDES</b> — perspective road illustration, dashed centre line,
+      EST. 2024, grey gradient.</p>
+  </footer>
+</div>
+
+</body>
+</html>

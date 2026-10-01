@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luxury Lane Assistance — Wordmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B0B0B;
+  --paper:#FCFCFA;
+  --nickel:#8E9296;
+  --hair:#DCDCD6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Commissioner",system-ui,sans-serif;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{max-width:1180px;margin:0 auto;padding:0 40px 140px}
+
+/* ---------- type utilities ---------- */
+.lbl{
+  font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--nickel);
+}
+.note{font-size:13px;line-height:1.65;color:#3A3A38;max-width:52ch}
+.note b{font-weight:500;color:var(--ink)}
+
+/* ---------- masthead ---------- */
+.masthead{padding:96px 0 56px;border-bottom:1px solid var(--hair)}
+.masthead h1{
+  margin:0 0 18px;font-weight:200;font-size:clamp(26px,3.4vw,42px);
+  letter-spacing:-.015em;line-height:1.08;
+}
+.masthead h1 em{font-style:normal;color:var(--nickel)}
+.mast-row{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-end;justify-content:space-between}
+.mast-meta{display:flex;gap:38px;flex-wrap:wrap}
+.mast-meta div{max-width:20ch}
+.mast-meta .lbl{display:block;margin-bottom:7px}
+.mast-meta p{margin:0;font-size:13px;line-height:1.55}
+
+/* ---------- panels ---------- */
+section{padding:72px 0;border-bottom:1px solid var(--hair)}
+.sec-head{display:flex;align-items:baseline;gap:20px;margin-bottom:40px}
+.sec-head .lbl{white-space:nowrap}
+.sec-head .rule{flex:1;height:1px;background:var(--hair)}
+.sec-head .cap{font-size:12px;color:var(--nickel);white-space:nowrap}
+
+.stage{padding:56px 0}
+.stage svg{display:block;width:100%;height:auto}
+
+.cols{display:grid;gap:56px}
+@media(min-width:820px){ .cols-3{grid-template-columns:1.35fr .8fr .55fr} }
+.col > .lbl{display:block;margin-bottom:22px}
+.col .cap{font-size:12px;color:var(--nickel);margin-top:18px;display:block;line-height:1.5}
+
+.box{border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;padding:26px}
+.box.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* ---------- scale ladder ---------- */
+.ladder{display:flex;gap:34px;align-items:flex-end;flex-wrap:wrap}
+.rung{display:flex;flex-direction:column;gap:10px}
+.rung .px{font-size:10px;letter-spacing:.18em;color:var(--nickel)}
+.chip{border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;background:#fff}
+.linescale{display:flex;flex-direction:column;gap:26px;margin-top:8px}
+.linescale .row{display:flex;align-items:center;gap:20px}
+.linescale .px{font-size:10px;letter-spacing:.18em;color:var(--nickel);width:44px;flex:none;text-align:right}
+.linescale .verdict{font-size:11px;color:var(--nickel);letter-spacing:.04em}
+.linescale .verdict.no{color:#0B0B0B;border-bottom:1px solid var(--hair)}
+
+/* ---------- invert ---------- */
+.invert{background:var(--ink);color:#fff;margin:0 -40px;padding:76px 40px}
+.invert .lbl{color:#77787A}
+.invert .sec-head .rule{background:#2A2A2A}
+.invert .sec-head .cap{color:#77787A}
+.invert .inv-grid{display:grid;gap:56px;margin-top:14px}
+@media(min-width:820px){ .invert .inv-grid{grid-template-columns:1fr 1fr;align-items:end} }
+.invert .cap{color:#77787A;font-size:12px;margin-top:16px;display:block}
+
+/* ---------- notes ---------- */
+.notes{display:grid;gap:40px}
+@media(min-width:760px){ .notes{grid-template-columns:repeat(3,1fr)} }
+.notes .lbl{display:block;margin-bottom:12px}
+
+@media(max-width:620px){
+  .sheet{padding:0 22px 90px}
+  .invert{margin:0 -22px;padding:60px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ GLYPH + LOCKUP LIBRARY (all geometrically constructed) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <!-- cap height 100 · stem 12 · flat-sided geometric construction -->
+  <path id="g_L" fill="currentColor" d="M0 0H12V88H56V100H0Z"/>
+  <path id="g_U" fill="currentColor" d="M0 0H12V88H60V0H72V100H0Z"/>
+  <path id="g_X" fill="currentColor" d="M0 0H14.8L72 100H57.2ZM57.2 0H72L14.8 100H0Z"/>
+  <path id="g_R" fill="currentColor" d="M0 0H34A30 26 0 0 1 34 52H40L66 100H52L28 52H12V100H0ZM12 12V40H34A18 14 0 0 0 34 12Z"/>
+  <path id="g_Y" fill="currentColor" d="M0 0H14.8L34 34L53.2 0H68L40 47V100H28V47Z"/>
+  <path id="g_N" fill="currentColor" d="M0 0H14L60 74V0H74V100H60L14 26V100H0Z"/>
+  <path id="g_E" fill="currentColor" d="M0 0H58V12H12V42H50V54H12V88H58V100H0Z"/>
+  <path id="g_I" fill="currentColor" d="M0 0H12V100H0Z"/>
+  <path id="g_T" fill="currentColor" d="M0 0H64V12H38V100H26V12H0Z"/>
+  <path id="g_A" fill="currentColor" d="M0 100L31 0H44L74 100H61L37.5 22L13 100ZM11.8 62H62.6L66.2 74H8.1Z"/>
+  <path id="g_C" fill="currentColor" d="M60.8 19.2A34 50 0 1 0 60.8 80.8L51.3 73.4A22 38 0 1 1 51.3 26.6Z"/>
+  <path id="g_S" fill="none" stroke="currentColor" stroke-width="12" d="M57.5 37.3A27 22 0 1 0 33 50A27 22 0 1 1 8.5 81.3"/>
+
+  <!-- ---- PRIMARY: one line, word-spaces replaced by centre-line rules ---- -->
+  <g id="lk_primary">
+    <use href="#g_L" x="0"/><use href="#g_U" x="82"/><use href="#g_X" x="180"/>
+    <use href="#g_U" x="278"/><use href="#g_R" x="376"/><use href="#g_Y" x="469"/>
+    <rect x="560" y="46" width="64" height="8" fill="currentColor"/>
+    <use href="#g_L" x="647"/><use href="#g_A" x="729"/><use href="#g_N" x="829"/><use href="#g_E" x="929"/>
+    <rect x="1010" y="46" width="64" height="8" fill="currentColor"/>
+    <use href="#g_A" x="1097"/><use href="#g_S" x="1197"/><use href="#g_S" x="1289"/>
+    <use href="#g_I" x="1381"/><use href="#g_S" x="1419"/><use href="#g_T" x="1511"/>
+    <use href="#g_A" x="1601"/><use href="#g_N" x="1701"/><use href="#g_C" x="1801"/><use href="#g_E" x="1895"/>
+  </g>
+
+  <!-- ---- STACKED: three justified lines, one centre-line rule ---- -->
+  <g id="lk_stacked">
+    <g>
+      <use href="#g_L" x="0"/><use href="#g_U" x="114.6"/><use href="#g_X" x="245.2"/>
+      <use href="#g_U" x="375.8"/><use href="#g_R" x="506.4"/><use href="#g_Y" x="632"/>
+    </g>
+    <g transform="translate(0,148)">
+      <use href="#g_L" x="0"/><use href="#g_A" x="202"/><use href="#g_N" x="422"/><use href="#g_E" x="642"/>
+    </g>
+    <rect x="0" y="268" width="700" height="8" fill="currentColor"/>
+    <g transform="translate(0,296) scale(0.62)">
+      <use href="#g_A" x="0"/><use href="#g_S" x="130.34"/><use href="#g_S" x="252.68"/>
+      <use href="#g_I" x="375.02"/><use href="#g_S" x="443.36"/><use href="#g_T" x="565.7"/>
+      <use href="#g_A" x="686.04"/><use href="#g_N" x="816.38"/><use href="#g_C" x="946.72"/>
+      <use href="#g_E" x="1071.06"/>
+    </g>
+  </g>
+
+  <!-- ---- REDUCTION: LL — two stems on one continuous lane, one centre dash ---- -->
+  <g id="lk_ll" fill="currentColor">
+    <rect x="0" y="0" width="12" height="100"/>
+    <rect x="74" y="0" width="12" height="100"/>
+    <rect x="0" y="88" width="130" height="12"/>
+    <rect x="28" y="44" width="30" height="10"/>
+  </g>
+</defs></svg>
+
+<div class="sheet">
+
+  <!-- ============ MASTHEAD ============ -->
+  <header class="masthead">
+    <div class="lbl" style="margin-bottom:26px">Ταυτότητα · Πρόταση Γ</div>
+    <div class="mast-row">
+      <h1>Καθαρό λεκτικό σήμα.<br><em>Χωρίς εικονογράφηση.</em></h1>
+      <div class="mast-meta">
+        <div><span class="lbl">Πελάτης</span><p>Luxury Lane Assistance</p></div>
+        <div><span class="lbl">Χρώμα</span><p>Ένα — μαύρο ή λευκό</p></div>
+        <div><span class="lbl">Αρχείο</span><p>Καθαρά SVG paths</p></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PRIMARY ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="lbl">01 · Κύριο σήμα</span>
+      <span class="rule"></span>
+      <span class="cap">Οριζόντιο lockup</span>
+    </div>
+    <div class="stage">
+      <svg viewBox="-6 -6 1965 112" role="img" aria-label="Luxury Lane Assistance">
+        <use href="#lk_primary"/>
+      </svg>
+    </div>
+    <p class="note" style="margin-top:34px">
+      Το κενό ανάμεσα στις λέξεις δεν είναι κενό — είναι <b>γραμμή</b>. Η διαγράμμιση του δρόμου
+      μπαίνει μέσα στο ίδιο το όνομα και γίνεται το σημείο που το κάνει αναγνωρίσιμο.
+      Δεν είναι εικόνα αυτοκινήτου· είναι τυπογραφία.
+    </p>
+  </section>
+
+  <!-- ============ CONSTRUCTION ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="lbl">02 · Κατασκευή</span>
+      <span class="rule"></span>
+      <span class="cap">Μονάδα 12 · ύψος κεφαλαίου 100</span>
+    </div>
+    <div class="stage" style="padding-top:24px">
+      <svg viewBox="-26 -34 344 168" style="max-width:760px" role="img" aria-label="Construction grid">
+        <g stroke="var(--nickel)" stroke-width=".5" opacity=".34">
+          <path d="M0 -18V118M12 -18V118M24 -18V118M36 -18V118M48 -18V118M60 -18V118
+                   M72 -18V118M84 -18V118M96 -18V118M108 -18V118M120 -18V118M132 -18V118
+                   M144 -18V118M156 -18V118M168 -18V118M180 -18V118M192 -18V118M204 -18V118
+                   M216 -18V118M228 -18V118M240 -18V118M252 -18V118M264 -18V118M276 -18V118M288 -18V118"/>
+          <path d="M-20 12H300M-20 40H300M-20 52H300M-20 62H300M-20 74H300M-20 88H300"/>
+        </g>
+        <g stroke="var(--nickel)" stroke-width=".9">
+          <path d="M-20 0H300M-20 100H300"/>
+        </g>
+        <g fill="var(--nickel)" font-family="Commissioner, sans-serif" font-size="7.5" letter-spacing="1.3">
+          <text x="-20" y="-9">ΥΨΟΣ 100</text>
+          <text x="-20" y="116">ΒΑΣΗ</text>
+          <text x="238" y="-9">ΚΟΡΜΟΣ 12</text>
+        </g>
+        <g style="color:var(--ink)">
+          <use href="#g_L" x="0"/>
+          <use href="#g_A" x="96"/>
+          <use href="#g_R" x="216"/>
+        </g>
+      </svg>
+    </div>
+    <p class="note" style="margin-top:20px">
+      Κάθε γράμμα είναι σχεδιασμένο πάνω σε μονάδα 12: κορμός 12, ύψος 100, οριζόντιες
+      κεραίες <b>ψηλά</b> (η μεσαία γραμμή του R και του E πάνω από το οπτικό κέντρο).
+      Δεν είναι στοιχειοθετημένο κείμενο σε γραμματοσειρά — είναι σχεδιασμένο σχήμα.
+    </p>
+  </section>
+
+  <!-- ============ LOCKUPS ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="lbl">03 · Το σετ</span>
+      <span class="rule"></span>
+      <span class="cap">Στοίβα · σμίκρυνση · favicon</span>
+    </div>
+    <div class="cols cols-3">
+      <div class="col">
+        <span class="lbl">Στοίβα</span>
+        <div class="box" style="padding:44px">
+          <svg viewBox="-6 -6 712 370" style="width:100%;height:auto" role="img" aria-label="Stacked lockup">
+            <use href="#lk_stacked"/>
+          </svg>
+        </div>
+        <span class="cap">Τετράγωνη αναλογία για social, στολή, τιμολόγιο.</span>
+      </div>
+      <div class="col">
+        <span class="lbl">Σμίκρυνση — LL</span>
+        <div class="box" style="padding:44px">
+          <svg viewBox="-6 -6 142 112" style="width:100%;height:auto" role="img" aria-label="LL mark">
+            <use href="#lk_ll"/>
+          </svg>
+        </div>
+        <span class="cap">Τα δύο L μοιράζονται μία συνεχή βάση — τη λωρίδα. Η παύλα στη μέση είναι η ίδια με του λεκτικού.</span>
+      </div>
+      <div class="col">
+        <span class="lbl">Favicon</span>
+        <div style="display:flex;gap:14px">
+          <div class="box dark" style="flex:1;aspect-ratio:1/1;padding:22px">
+            <svg viewBox="0 0 130 100" style="width:100%;height:auto"><use href="#lk_ll"/></svg>
+          </div>
+          <div class="box" style="flex:1;aspect-ratio:1/1;padding:22px">
+            <svg viewBox="0 0 130 100" style="width:100%;height:auto"><use href="#lk_ll"/></svg>
+          </div>
+        </div>
+        <span class="cap">WhatsApp, app icon, σφραγίδα.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCALE ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="lbl">04 · Κλίμακα</span>
+      <span class="rule"></span>
+      <span class="cap">24 · 48 · 96 · 240 px</span>
+    </div>
+
+    <span class="lbl" style="display:block;margin-bottom:20px">Σωστό lockup ανά μέγεθος πλαισίου</span>
+    <div class="ladder">
+      <div class="rung"><span class="px">24</span>
+        <div class="chip" style="width:24px;height:24px;padding:2px">
+          <svg viewBox="-4 -4 138 108" style="width:100%"><use href="#lk_ll"/></svg></div></div>
+      <div class="rung"><span class="px">48</span>
+        <div class="chip" style="width:48px;height:48px;padding:5px">
+          <svg viewBox="-4 -4 138 108" style="width:100%"><use href="#lk_ll"/></svg></div></div>
+      <div class="rung"><span class="px">96</span>
+        <div class="chip" style="width:96px;height:96px;padding:12px">
+          <svg viewBox="-8 -8 716 374" style="width:100%"><use href="#lk_stacked"/></svg></div></div>
+      <div class="rung"><span class="px">240</span>
+        <div class="chip" style="width:240px;height:240px;padding:26px">
+          <svg viewBox="-8 -8 716 374" style="width:100%"><use href="#lk_stacked"/></svg></div></div>
+    </div>
+
+    <span class="lbl" style="display:block;margin:52px 0 8px">Το οριζόντιο λεκτικό σε πλάτος</span>
+    <div class="linescale">
+      <div class="row"><span class="px">240</span>
+        <svg viewBox="-6 -6 1965 112" style="width:240px;height:auto"><use href="#lk_primary"/></svg>
+        <span class="verdict">όριο</span></div>
+      <div class="row"><span class="px">480</span>
+        <svg viewBox="-6 -6 1965 112" style="width:480px;height:auto"><use href="#lk_primary"/></svg>
+        <span class="verdict">καθαρό</span></div>
+      <div class="row"><span class="px">960</span>
+        <svg viewBox="-6 -6 1965 112" style="width:min(960px,100%);height:auto"><use href="#lk_primary"/></svg></div>
+    </div>
+    <p class="note" style="margin-top:28px">
+      Κάτω από 240 px πλάτος το οριζόντιο λεκτικό σταματά να διαβάζεται. Εκεί δουλεύει το <b>LL</b>:
+      δύο κορμοί, μία βάση, μία παύλα — τέσσερα σχήματα που κρατάνε ακόμα και στα 16 px.
+    </p>
+  </section>
+
+</div>
+
+<!-- ============ INVERSION ============ -->
+<div class="sheet" style="padding-bottom:0">
+  <div class="invert">
+    <div class="sec-head">
+      <span class="lbl">05 · Αντιστροφή</span>
+      <span class="rule"></span>
+      <span class="cap">Λευκό σε μαύρο — ίδια αρχεία</span>
+    </div>
+    <div style="padding:30px 0 10px">
+      <svg viewBox="-6 -6 1965 112" style="width:100%;height:auto;color:#fff"><use href="#lk_primary"/></svg>
+    </div>
+    <div class="inv-grid">
+      <div>
+        <svg viewBox="-6 -6 712 370" style="width:min(360px,100%);height:auto;color:#fff;margin-top:34px"><use href="#lk_stacked"/></svg>
+        <span class="cap">Στοίβα σε μαύρο</span>
+      </div>
+      <div>
+        <div style="display:flex;gap:26px;align-items:flex-end;margin-top:34px">
+          <svg viewBox="-4 -4 138 108" style="width:120px;height:auto;color:#fff"><use href="#lk_ll"/></svg>
+          <svg viewBox="-4 -4 138 108" style="width:48px;height:auto;color:#fff"><use href="#lk_ll"/></svg>
+          <svg viewBox="-4 -4 138 108" style="width:24px;height:auto;color:#fff"><use href="#lk_ll"/></svg>
+        </div>
+        <span class="cap">Χωρίς ντεγκραντέ, χωρίς σκιές — ένα χρώμα, κοπτικό βινύλιο.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" style="padding-top:0">
+
+  <!-- ============ APPLICATION ============ -->
+  <section style="border-top:1px solid var(--hair)">
+    <div class="sec-head">
+      <span class="lbl">06 · Εφαρμογή</span>
+      <span class="rule"></span>
+      <span class="cap">Λευκή πόρτα Mercedes Atego · μαύρο βινύλιο</span>
+    </div>
+    <div class="stage" style="padding-top:20px">
+      <svg viewBox="0 0 900 760" style="width:100%;height:auto" role="img" aria-label="Truck door application">
+        <rect width="900" height="760" fill="#EFEFEC"/>
+        <!-- door -->
+        <rect x="60" y="40" width="780" height="680" fill="#FFFFFF" stroke="#DDDDD8"/>
+        <!-- window -->
+        <rect x="96" y="76" width="708" height="190" fill="#E4E7E8" stroke="#CFD3D4"/>
+        <rect x="96" y="76" width="708" height="190" fill="none" stroke="#F5F6F6" stroke-width="6"/>
+        <!-- mirror arm hint -->
+        <rect x="812" y="120" width="10" height="140" fill="#D6D8D8"/>
+        <!-- handle -->
+        <rect x="678" y="316" width="126" height="24" rx="12" fill="#D2D5D5"/>
+        <rect x="678" y="316" width="126" height="8" rx="4" fill="#C2C6C6"/>
+        <!-- lower seam -->
+        <path d="M96 640H804" stroke="#E7E7E3"/>
+        <!-- applied wordmark: 640 wide -->
+        <g transform="translate(130,430) scale(0.3277)" style="color:#0B0B0B">
+          <use href="#lk_primary"/>
+        </g>
+        <!-- LL stamp near seam -->
+        <g transform="translate(130,668) scale(0.4)" style="color:#0B0B0B">
+          <use href="#lk_ll"/>
+        </g>
+        <g fill="#0B0B0B" font-family="Commissioner, sans-serif" font-size="15" font-weight="300" letter-spacing="3.4">
+          <text x="200" y="702">ΑΘΗΝΑ &amp; ΝΗΣΙΑ · 24/7</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ NOTES ============ -->
+  <section style="border-bottom:none">
+    <div class="sec-head">
+      <span class="lbl">07 · Λογική</span>
+      <span class="rule"></span>
+    </div>
+    <div class="notes">
+      <div>
+        <span class="lbl">Γιατί λεκτικό</span>
+        <p class="note">Ο πελάτης εμπιστεύεται ένα αυτοκίνητο αξίας σπιτιού. Ένα εικονίδιο δρόμου
+        υπόσχεται· ένα σωστά σχεδιασμένο όνομα βεβαιώνει. Οι πιο ακριβές αυτοκινητιστικές
+        ταυτότητες είναι λεκτικές.</p>
+      </div>
+      <div>
+        <span class="lbl">Η υπογραφή</span>
+        <p class="note">Η διαχωριστική παύλα στη θέση του κενού. Είναι ταυτόχρονα η διαγράμμιση
+        του δρόμου και ένα καθαρά τυπογραφικό εργαλείο — επαναλαμβάνεται στο LL και στη στοίβα.</p>
+      </div>
+      <div>
+        <span class="lbl">Παραγωγή</span>
+        <p class="note">Ένα χρώμα. Κοπτικό βινύλιο, κέντημα, ανάγλυφη σφραγίδα, φως σε σκούρο
+        φόντο. Χωρίς ντεγκραντέ, χωρίς λεπτομέρεια που χάνεται στα 16 px.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

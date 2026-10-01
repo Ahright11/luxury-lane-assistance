@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luxury Lane Assistance — Identity Sheet A / LL Monogram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@200;300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0C;
+    --paper:#E3E3E0;      /* cool neutral concrete */
+    --card:#F2F2F0;
+    --line:#C4C6C3;
+    --platinum:#9BA1A8;   /* the one metallic: brushed platinum */
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+    --sans:'Commissioner',system-ui,-apple-system,'Helvetica Neue',sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);font-weight:300;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:1180px;margin:0 auto;padding:clamp(24px,5vw,72px) clamp(18px,4vw,56px) 96px}
+
+  /* ---------- sheet header ---------- */
+  .masthead{border-top:2px solid var(--ink);padding-top:18px;margin-bottom:56px}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:8px 28px;
+    font-family:var(--mono);font-size:10.5px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--platinum);
+  }
+  .meta b{color:var(--ink);font-weight:500}
+  h1{
+    font-size:clamp(30px,5.4vw,58px);font-weight:200;line-height:1.02;
+    letter-spacing:-.02em;margin:22px 0 0;max-width:16ch;
+  }
+  h1 em{font-style:normal;font-weight:500}
+  .deck{
+    margin:18px 0 0;max-width:56ch;font-size:15px;line-height:1.6;
+    color:#3A3B3E;font-weight:300;
+  }
+
+  /* ---------- section scaffolding ---------- */
+  .block{margin-top:clamp(48px,8vw,88px)}
+  .block-head{
+    display:flex;align-items:baseline;gap:16px;
+    border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:28px;
+  }
+  .code{
+    font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.16em;
+    color:var(--platinum);white-space:nowrap;
+  }
+  .block-head h2{
+    margin:0;font-size:13px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  }
+  .note{
+    margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+    color:var(--platinum);text-align:right;
+  }
+
+  .grid{display:grid;gap:20px}
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    padding:34px 30px;display:flex;flex-direction:column;
+  }
+  .card.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+  .card-label{
+    font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--platinum);margin-bottom:auto;
+  }
+  .card .stage{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    padding:38px 8px;min-height:150px;
+  }
+
+  /* ---------- the mark ---------- */
+  .mk{display:block;color:currentColor}
+  .card.dark .mk{color:#fff}
+
+  /* ---------- wordmark ---------- */
+  .wm{
+    font-weight:500;text-transform:uppercase;line-height:1.12;
+    letter-spacing:.28em;white-space:nowrap;
+  }
+  .wm .thin{font-weight:300;letter-spacing:.3em;display:block}
+
+  .lockup-h{display:flex;align-items:center;gap:26px}
+  .lockup-h .rule{width:1px;align-self:stretch;background:var(--line)}
+  .card.dark .lockup-h .rule{background:#3A3B3E}
+  .lockup-v{display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+
+  /* ---------- size ladder ---------- */
+  .ladder{
+    display:flex;align-items:flex-end;gap:clamp(22px,5vw,54px);
+    flex-wrap:wrap;padding:34px 30px;background:var(--card);border:1px solid var(--line);
+  }
+  .rung{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .rung .px{
+    font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--platinum);
+  }
+  .ladder-split{display:grid;gap:20px;grid-template-columns:1fr}
+  .ladder.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+  .ladder.dark .px{color:#7E848C}
+
+  /* ---------- construction ---------- */
+  .construct{display:grid;gap:20px;grid-template-columns:1fr}
+  .spec-list{
+    font-family:var(--mono);font-size:11.5px;line-height:2.1;letter-spacing:.02em;
+    list-style:none;margin:0;padding:0;
+  }
+  .spec-list li{display:flex;gap:14px;border-bottom:1px dotted var(--line);padding:4px 0}
+  .spec-list span:first-child{color:var(--platinum);min-width:96px}
+
+  /* ---------- truck door ---------- */
+  .bay{
+    background:#1A1B1D;border:1px solid var(--ink);padding:clamp(24px,5vw,56px);
+    display:flex;justify-content:center;
+  }
+  .door{
+    width:100%;max-width:640px;aspect-ratio:5/4;background:#FCFCFB;
+    border-radius:3px;position:relative;overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.7), inset 0 0 0 1px #E4E4E1;
+  }
+  .door::before{ /* body crease */
+    content:"";position:absolute;left:0;right:0;top:64%;height:2px;
+    background:linear-gradient(#EDEDEA,#F7F7F5);
+  }
+  .door::after{ /* window rebate */
+    content:"";position:absolute;left:6%;right:6%;top:5%;height:5%;
+    background:#F2F2EF;border-radius:2px;
+  }
+  .handle{
+    position:absolute;right:8%;top:46%;width:19%;height:4.5%;
+    background:#EAEAE7;border:1px solid #DCDCD8;border-radius:3px;
+  }
+  .door-art{
+    position:absolute;left:9%;top:24%;display:flex;align-items:center;gap:5%;
+    color:var(--ink);
+  }
+  .door-art .mk{width:clamp(48px,11vw,82px);height:auto}
+  .door-wm{font-size:clamp(11px,2.05vw,16px)}
+  .door-strip{
+    position:absolute;left:9%;right:9%;top:72%;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    font-family:var(--mono);font-size:clamp(7.5px,1.28vw,10px);
+    letter-spacing:.14em;text-transform:uppercase;color:#4A4B4E;
+    border-top:1px solid #DEDEDA;padding-top:10px;
+  }
+
+  /* ---------- favicon row ---------- */
+  .fav{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+  .chip{
+    background:var(--ink);display:flex;align-items:center;justify-content:center;
+    color:#fff;flex:none;
+  }
+  .browser{
+    display:flex;align-items:center;gap:9px;background:#F2F2F0;border:1px solid var(--line);
+    padding:8px 16px 8px 10px;border-radius:2px;
+    font-family:var(--mono);font-size:11px;color:#4A4B4E;letter-spacing:.04em;
+  }
+
+  .foot{
+    margin-top:80px;border-top:1px solid var(--line);padding-top:16px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--platinum);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+
+  @media (min-width:760px){
+    .grid.two{grid-template-columns:1fr 1fr}
+    .grid.three{grid-template-columns:repeat(3,1fr)}
+    .ladder-split{grid-template-columns:1fr 1fr}
+    .construct{grid-template-columns:1.15fr .85fr}
+  }
+
+  .reveal{animation:rise .7s cubic-bezier(.22,.7,.3,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.reveal{animation:none}}
+</style>
+</head>
+<body>
+
+<!-- ============ THE MARK: two hand-written paths, one colour, no gradients ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lla-mark" viewBox="0 0 120 120">
+    <!-- L, upright: stem 4–32 x, foot 4–72 x -->
+    <path d="M4 48 H32 V88 H72 V116 H4 Z" fill="currentColor"/>
+    <!-- L, rotated 180° about (60,60) -->
+    <path d="M116 72 H88 V32 H48 V4 H116 Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<main class="sheet reveal">
+
+  <header class="masthead">
+    <div class="meta">
+      <span><b>LUXURY LANE ASSISTANCE</b></span>
+      <span>Identity sheet <b>A</b></span>
+      <span>Direction — <b>LL monogram</b></span>
+      <span>Sheet 1 of 1</span>
+    </div>
+    <h1>Two L's, and the <em>lane</em> between them.</h1>
+    <p class="deck">The old mark drew the road. This one leaves it empty. One L stands upright, the second is the
+      same L turned 180° — set at a fixed 16-unit remove, so the negative space that separates them cuts a clean
+      diagonal lane through the mark. Nothing illustrated, nothing to lose at small sizes: the letters carry the
+      name, the gap carries the meaning, and the interlock reads as a cradle — the truck holding the car.</p>
+  </header>
+
+  <!-- ============ 01 MARK ============ -->
+  <section class="block">
+    <div class="block-head">
+      <span class="code">MK-01</span>
+      <h2>Primary mark</h2>
+      <span class="note">One colour · positive &amp; reversed</span>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <span class="card-label">Positive — 100K on white</span>
+        <div class="stage"><svg class="mk" width="180" height="180" role="img" aria-label="Luxury Lane Assistance monogram"><use href="#lla-mark"/></svg></div>
+      </div>
+      <div class="card dark">
+        <span class="card-label">Reversed — white on 100K</span>
+        <div class="stage"><svg class="mk" width="180" height="180" role="img" aria-label="Luxury Lane Assistance monogram reversed"><use href="#lla-mark"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 CONSTRUCTION ============ -->
+  <section class="block">
+    <div class="block-head">
+      <span class="code">MK-02</span>
+      <h2>Construction</h2>
+      <span class="note">30 × 30 unit field · u = 4</span>
+    </div>
+    <div class="construct">
+      <div class="card">
+        <span class="card-label">Grid derivation</span>
+        <div class="stage">
+          <svg width="300" height="300" viewBox="-6 -6 132 132" role="img" aria-label="Monogram construction grid">
+            <defs>
+              <pattern id="g4" width="4" height="4" patternUnits="userSpaceOnUse">
+                <path d="M4 0 V4 M0 4 H4" fill="none" stroke="#C8CBCE" stroke-width=".3"/>
+              </pattern>
+              <pattern id="g20" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M20 0 V20 M0 20 H20" fill="none" stroke="#9BA1A8" stroke-width=".6"/>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="120" height="120" fill="url(#g4)"/>
+            <rect x="0" y="0" width="120" height="120" fill="url(#g20)"/>
+            <rect x="0" y="0" width="120" height="120" fill="none" stroke="#9BA1A8" stroke-width=".9"/>
+            <use href="#lla-mark" color="#0B0B0C" opacity=".9"/>
+            <!-- dimension callouts -->
+            <path d="M32 42 H48" stroke="#0B0B0C" stroke-width=".8"/>
+            <path d="M32 39 V45 M48 39 V45" stroke="#0B0B0C" stroke-width=".8"/>
+            <path d="M4 124 H32" stroke="#0B0B0C" stroke-width=".8"/>
+            <path d="M4 121 V127 M32 121 V127" stroke="#0B0B0C" stroke-width=".8"/>
+            <text x="40" y="37" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="6" fill="#0B0B0C">4u</text>
+            <text x="18" y="133" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="6" fill="#0B0B0C">7u</text>
+          </svg>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-label">Specification</span>
+        <ul class="spec-list" style="margin-top:26px">
+          <li><span>Field</span><span>120 × 120 (30u × 30u)</span></li>
+          <li><span>Stroke</span><span>7u — every arm, no optical taper</span></li>
+          <li><span>Lane gap</span><span>4u — constant, both crossings</span></li>
+          <li><span>Margin</span><span>1u to field edge</span></li>
+          <li><span>Symmetry</span><span>180° rotational about centre</span></li>
+          <li><span>Corners</span><span>square, 0 radius</span></li>
+          <li><span>Clear space</span><span>7u (one stroke) all sides</span></li>
+          <li><span>Min size</span><span>16 px / 6 mm printed</span></li>
+          <li><span>Geometry</span><span>2 closed paths, 12 points</span></li>
+          <li><span>Vinyl</span><span>single-colour cut, no traps</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 LOCKUPS ============ -->
+  <section class="block">
+    <div class="block-head">
+      <span class="code">LK-01 / LK-02</span>
+      <h2>Lockups</h2>
+      <span class="note">Commissioner — Kostas Bartsokas · full Greek</span>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <span class="card-label">Horizontal — primary</span>
+        <div class="stage">
+          <div class="lockup-h">
+            <svg class="mk" width="76" height="76"><use href="#lla-mark"/></svg>
+            <span class="rule"></span>
+            <div class="wm" style="font-size:19px">LUXURY LANE<span class="thin">ASSISTANCE</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card dark">
+        <span class="card-label">Stacked — secondary</span>
+        <div class="stage">
+          <div class="lockup-v">
+            <svg class="mk" width="76" height="76"><use href="#lla-mark"/></svg>
+            <div class="wm" style="font-size:15px">LUXURY LANE<span class="thin">ASSISTANCE</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:20px">
+      <div class="card">
+        <span class="card-label">Horizontal — single line, wide applications</span>
+        <div class="stage">
+          <div class="lockup-h" style="gap:20px">
+            <svg class="mk" width="46" height="46"><use href="#lla-mark"/></svg>
+            <div class="wm" style="font-size:14px;letter-spacing:.24em">LUXURY LANE ASSISTANCE</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-label">Greek endorsement — Ελληνικά</span>
+        <div class="stage">
+          <div class="lockup-h" style="gap:20px">
+            <svg class="mk" width="46" height="46"><use href="#lla-mark"/></svg>
+            <div class="wm" style="font-size:13px;letter-spacing:.2em">ΜΕΤΑΦΟΡΑ ΟΧΗΜΑΤΩΝ<span class="thin" style="letter-spacing:.22em">ΟΔΙΚΗ ΒΟΗΘΕΙΑ 24/7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 SCALE ============ -->
+  <section class="block">
+    <div class="block-head">
+      <span class="code">MK-03</span>
+      <h2>Scale test</h2>
+      <span class="note">Actual pixel sizes — do not zoom</span>
+    </div>
+    <div class="ladder-split">
+      <div class="ladder">
+        <div class="rung"><svg class="mk" width="24" height="24"><use href="#lla-mark"/></svg><span class="px">24 px</span></div>
+        <div class="rung"><svg class="mk" width="48" height="48"><use href="#lla-mark"/></svg><span class="px">48 px</span></div>
+        <div class="rung"><svg class="mk" width="96" height="96"><use href="#lla-mark"/></svg><span class="px">96 px</span></div>
+        <div class="rung"><svg class="mk" width="240" height="240"><use href="#lla-mark"/></svg><span class="px">240 px</span></div>
+      </div>
+      <div class="ladder dark">
+        <div class="rung"><svg class="mk" width="24" height="24"><use href="#lla-mark"/></svg><span class="px">24 px</span></div>
+        <div class="rung"><svg class="mk" width="48" height="48"><use href="#lla-mark"/></svg><span class="px">48 px</span></div>
+        <div class="rung"><svg class="mk" width="96" height="96"><use href="#lla-mark"/></svg><span class="px">96 px</span></div>
+        <div class="rung"><svg class="mk" width="240" height="240"><use href="#lla-mark"/></svg><span class="px">240 px</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 FAVICON ============ -->
+  <section class="block">
+    <div class="block-head">
+      <span class="code">MK-04</span>
+      <h2>Favicon &amp; app tile</h2>
+      <span class="note">Reversed in tile below 32 px</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Tile lockup — 16 / 24 / 32 / 64 px</span>
+      <div class="stage fav" style="justify-content:flex-start">
+        <div class="chip" style="width:16px;height:16px"><svg class="mk" width="13" height="13"><use href="#lla-mark"/></svg></div>
+        <div class="chip" style="width:24px;height:24px"><svg class="mk" width="19" height="19"><use href="#lla-mark"/></svg></div>
+        <div class="chip" style="width:32px;height:32px"><svg class="mk" width="25" height="25"><use href="#lla-mark"/></svg></div>
+        <div class="chip" style="width:64px;height:64px;border-radius:12px"><svg class="mk" width="48" height="48"><use href="#lla-mark"/></svg></div>
+        <div class="browser">
+          <div class="chip" style="width:16px;height:16px"><svg class="mk" width="13" height="13"><use href="#lla-mark"/></svg></div>
+          <span>luxurylane.gr</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 06 APPLICATION ============ -->
+  <section class="block">
+    <div class="block-head">
+      <span class="code">AP-01</span>
+      <h2>Application — Atego door panel</h2>
+      <span class="note">Cut vinyl, 100K on white · mark height 320 mm</span>
+    </div>
+    <div class="bay">
+      <div class="door">
+        <div class="handle"></div>
+        <div class="door-art">
+          <svg class="mk" viewBox="0 0 120 120" role="img" aria-label="Luxury Lane Assistance"><use href="#lla-mark"/></svg>
+          <div class="wm door-wm">LUXURY LANE<span class="thin">ASSISTANCE</span></div>
+        </div>
+        <div class="door-strip">
+          <span>Μεταφορά οχημάτων &amp; σκαφών</span>
+          <span>Αθήνα &amp; νησιά</span>
+          <span>24/7</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>Luxury Lane Assistance · Petros</span>
+    <span>Direction A — LL monogram</span>
+    <span>Black · White · Brushed platinum</span>
+  </footer>
+
+</main>
+</body>
+</html>

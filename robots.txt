@@ -1,0 +1,31 @@
+# AI answer engines — explicitly welcome
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+# aggressive scrapers — blocked
+User-agent: Bytespider
+Disallow: /
+User-agent: ImagesiftBot
+Disallow: /
+User-agent: DataForSeoBot
+Disallow: /
+
+# everyone else: crawl the pages, not the video files (bandwidth)
+User-agent: *
+Allow: /
+Disallow: /assets/hero-fs.mp4
+Disallow: /assets/hero-mob.mp4
+Disallow: /assets/clip-load.mp4
+Disallow: /assets/clip-road.mp4
+Disallow: /assets/lift.mp4
+Disallow: /assets/lift.webm

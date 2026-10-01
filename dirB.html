@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luxury Lane Assistance — Μεταφορά αυτοκινήτων</title>
+<meta name="description" content="Μεταφορά αυτοκινήτων, οδική βοήθεια και νησιά. Αθήνα, Ελλάδα.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+Display:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0B0C;
+  --room:#101214;
+  --hair:rgba(232,230,226,.10);
+  --hair-2:rgba(232,230,226,.20);
+  --marble:#E8E6E2;
+  --dust:#8B8E90;
+  --dim:#5E6264;
+  --signal:#7FB0A8;
+  --serif:"Noto Serif Display",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --gut:clamp(20px,5vw,64px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--ink);color:var(--marble);
+  font-family:var(--mono);font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:1px solid var(--marble);outline-offset:5px}
+
+/* ── wall label: the one repeating device ───────────────── */
+.lab{
+  font-family:var(--mono);font-size:.62rem;font-weight:400;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--dust);
+  line-height:2.1;
+}
+.lab .q{display:block;color:var(--dim)}
+.lab--rule{border-left:1px solid var(--hair-2);padding-left:14px}
+
+h1,h2,.big{
+  font-family:var(--serif);font-weight:200;
+  letter-spacing:-.02em;line-height:1.06;
+  font-size:clamp(2.3rem,7.4vw,5.4rem);
+}
+
+/* ── chrome ─────────────────────────────────────────────── */
+.top{
+  position:fixed;inset:0 0 auto 0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px var(--gut);
+  background:linear-gradient(180deg,rgba(10,11,12,.86),rgba(10,11,12,0));
+}
+.top img{width:34px;height:34px;object-fit:contain;mix-blend-mode:screen;opacity:.9}
+.top .lab{font-size:.58rem}
+
+.wa{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--marble);border:1px solid var(--hair-2);
+  padding:14px 22px;border-radius:999px;
+  transition:border-color .5s ease,background-color .5s ease;
+}
+.wa:hover{border-color:var(--marble);background:rgba(232,230,226,.05)}
+.wa i{width:5px;height:5px;border-radius:50%;background:var(--signal);font-style:normal}
+
+/* ── hero ───────────────────────────────────────────────── */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.hero .plate{position:absolute;inset:0}
+.hero .plate img{width:100%;height:100%;object-fit:cover;object-position:52% 42%;opacity:.62;filter:grayscale(.35) contrast(1.04)}
+.hero .plate::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(10,11,12,.72) 0%,rgba(10,11,12,.1) 34%,rgba(10,11,12,.86) 82%,var(--ink) 100%),
+    radial-gradient(120% 80% at 70% 30%,rgba(10,11,12,0) 30%,rgba(10,11,12,.75) 100%);
+}
+.hero .inner{position:relative;z-index:2;width:100%;padding:0 var(--gut) clamp(40px,9vh,90px)}
+.hero h1{max-width:16ch;margin:22px 0 34px}
+.hero .lab{margin-bottom:0}
+
+/* ── generic section rhythm ─────────────────────────────── */
+section{padding:clamp(90px,17vh,190px) 0}
+.wrap{padding:0 var(--gut);max-width:1560px;margin:0 auto}
+.rule{height:1px;background:var(--hair);width:100%}
+.head{display:grid;gap:26px;margin-bottom:clamp(48px,9vh,110px)}
+@media(min-width:860px){
+  .head{grid-template-columns:1fr auto;align-items:end;gap:40px}
+  .head .lab{text-align:right}
+}
+
+/* ── tracking ───────────────────────────────────────────── */
+.card{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:34px 0}
+.card .row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px}
+.card .veh{font-family:var(--serif);font-weight:300;font-size:clamp(1.3rem,3.4vw,2rem);letter-spacing:-.01em}
+.live{display:inline-flex;align-items:center;gap:9px;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--signal)}
+.live b{width:6px;height:6px;border-radius:50%;background:var(--signal);animation:beat 2.6s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:1}50%{opacity:.22}}
+
+.line{position:relative;margin:48px 0 20px;height:1px;background:var(--hair-2)}
+.line .fill{position:absolute;left:0;top:0;height:1px;width:0;background:var(--signal);transition:width 2.6s cubic-bezier(.16,1,.3,1)}
+.line .dot{position:absolute;top:50%;left:0;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--signal);transition:left 2.6s cubic-bezier(.16,1,.3,1)}
+.stops{display:flex;justify-content:space-between;gap:12px}
+.stops span{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);flex:1}
+.stops span:nth-child(2){text-align:center;color:var(--signal)}
+.stops span:last-child{text-align:right}
+
+/* ── catalogue of plates ────────────────────────────────── */
+.plates{display:grid;gap:clamp(90px,16vh,180px)}
+.pl{display:grid;gap:20px}
+.pl figure{position:relative}
+.pl img,.pl video{
+  width:100%;height:auto;
+  filter:grayscale(.18) contrast(1.05) brightness(.94);
+}
+.pl .fade{
+  position:absolute;inset:-1px;pointer-events:none;
+  background:
+    linear-gradient(180deg,var(--ink) 0%,rgba(10,11,12,0) 18%,rgba(10,11,12,0) 82%,var(--ink) 100%),
+    linear-gradient(90deg,var(--ink) 0%,rgba(10,11,12,0) 14%,rgba(10,11,12,0) 86%,var(--ink) 100%);
+}
+.pl--wide figure{margin-inline:calc(var(--gut) * -1)}
+.pl--tall{max-width:520px}
+.pl--tall.r{margin-left:auto}
+.pl--float{max-width:660px;margin-inline:auto}
+.pl--float video{filter:none;mix-blend-mode:screen}
+@media(min-width:900px){
+  .pl{grid-template-columns:1fr;align-items:end}
+  .pl--tall{max-width:min(46vw,620px)}
+  .pl .lab{max-width:26ch}
+}
+
+/* ── services ───────────────────────────────────────────── */
+.srv{border-top:1px solid var(--hair)}
+.srv a,.srv div{
+  display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+  padding:clamp(26px,4.4vh,46px) 0;border-bottom:1px solid var(--hair);
+}
+.srv .n{font-family:var(--serif);font-weight:200;font-size:clamp(1.7rem,5.4vw,3.4rem);letter-spacing:-.02em;line-height:1.05}
+.srv .lab{white-space:nowrap;font-size:.58rem}
+
+/* ── closing ────────────────────────────────────────────── */
+.end{text-align:center}
+.end .big{max-width:14ch;margin:26px auto 40px}
+.end .wa{padding:18px 30px}
+.foot{padding:0 0 60px;text-align:center}
+.foot .lab{font-size:.58rem;line-height:2.4}
+
+/* ── motion ─────────────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity 1.3s cubic-bezier(.16,1,.3,1),transform 1.3s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .live b{animation:none}
+  .line .fill,.line .dot{transition:none}
+  *{scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="assets/logo.jpg" alt="Luxury Lane Assistance">
+  <div class="lab">Luxury Lane Assistance</div>
+</header>
+
+<!-- 1 · HERO -->
+<main>
+<section class="hero">
+  <div class="plate"><img src="assets/hero-truck.jpg" alt="Κλειστό φορτηγό μεταφοράς αυτοκινήτων"></div>
+  <div class="inner">
+    <div class="lab lab--rule">Μεταφορά αυτοκινήτων<span class="q">Αθήνα · Ελλάδα</span></div>
+    <h1>Αυτοκίνητα που αξίζουν&nbsp;προσοχή.</h1>
+    <a class="wa" href="https://wa.me/306948725763"><i></i>WhatsApp</a>
+  </div>
+</section>
+
+<!-- 2 · TRACKING -->
+<section id="track">
+  <div class="wrap">
+    <div class="head rv">
+      <h2>Ξέρεις πού είναι.</h2>
+      <div class="lab lab--rule">Παρακολούθηση<span class="q">Live · #LLA-4471</span></div>
+    </div>
+
+    <div class="card rv" id="card">
+      <div class="row">
+        <div class="veh">BMW 5-Series</div>
+        <div class="live"><b></b>Σε μεταφορά</div>
+      </div>
+      <div class="line"><span class="fill"></span><span class="dot"></span></div>
+      <div class="stops"><span>Αθήνα</span><span>Ε65 · 14:20</span><span>Θεσσαλονίκη</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · CATALOGUE -->
+<section id="archive">
+  <div class="wrap">
+    <div class="head rv">
+      <h2>Μας εμπιστεύτηκαν.</h2>
+      <div class="lab lab--rule">Αρχείο<span class="q">Επιλογές 2012 — 2026</span></div>
+    </div>
+
+    <div class="plates">
+      <div class="pl pl--wide rv">
+        <figure><img src="assets/car-bmw.jpg" alt="Μαύρη BMW 5-Series πάνω στην πλατφόρμα" loading="lazy"><span class="fade"></span></figure>
+        <div class="lab lab--rule">BMW 5-Series<span class="q">Satin black · κλειστή μεταφορά</span></div>
+      </div>
+
+      <div class="pl pl--tall rv">
+        <figure><img src="assets/car-porsche.jpg" alt="Porsche Boxster" loading="lazy"><span class="fade"></span></figure>
+        <div class="lab lab--rule">Porsche Boxster<span class="q">Παραλαβή από σπίτι</span></div>
+      </div>
+
+      <div class="pl pl--wide rv">
+        <figure><img src="assets/car-evo.jpg" alt="Κόκκινο Mitsubishi Evo" loading="lazy"><span class="fade"></span></figure>
+        <div class="lab lab--rule">Mitsubishi Evo<span class="q">Νυχτερινή φόρτωση</span></div>
+      </div>
+
+      <div class="pl pl--tall r rv">
+        <figure><img src="assets/car-supra.jpg" alt="Toyota Supra MK4" loading="lazy"><span class="fade"></span></figure>
+        <div class="lab lab--rule">Supra MK4<span class="q">Χαμηλό όχημα · ράμπες</span></div>
+      </div>
+
+      <div class="pl pl--float rv">
+        <figure>
+          <video src="assets/lift.mp4" poster="assets/lift-poster.jpg" muted playsinline loop preload="none" aria-label="Ferrari ανεβαίνει στην πλατφόρμα"></video>
+        </figure>
+        <div class="lab lab--rule">Ferrari<span class="q">Φόρτωση · χωρίς επαφή στο κάτω μέρος</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="head rv">
+      <h2>Τι κάνουμε.</h2>
+      <div class="lab lab--rule">Υπηρεσίες</div>
+    </div>
+    <div class="srv rv">
+      <div><span class="n">Μεταφορά αυτοκινήτων</span><span class="lab">Κλειστό φορτηγό</span></div>
+      <div><span class="n">Οδική βοήθεια</span><span class="lab">24/7</span></div>
+      <div><span class="n">Νησιά &amp; πλοία</span><span class="lab">Ferry</span></div>
+      <div><span class="n">Παραλαβή από σπίτι</span><span class="lab">Αττική</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · CONCIERGE -->
+<section id="contact">
+  <div class="wrap end rv">
+    <div class="lab">Concierge</div>
+    <div class="big">Πες μας πού και πότε.</div>
+    <a class="wa" href="https://wa.me/306948725763"><i></i>WhatsApp · 694 872 5763</a>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="rule" style="margin-bottom:34px"></div>
+    <div class="lab">Luxury Lane Assistance · Αθήνα<span class="q">Πέτρος — AutoShine Detailing · στα αυτοκίνητα από το 2012</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+      if(e.target.id === 'card' && !reduce){
+        var f = e.target.querySelector('.fill'), d = e.target.querySelector('.dot');
+        setTimeout(function(){ f.style.width = '58%'; d.style.left = '58%'; }, 450);
+      }
+      var v = e.target.querySelector('video');
+      if(v && !reduce){ v.play().catch(function(){}); }
+    });
+  },{threshold:.18,rootMargin:'0px 0px -8%'});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+  if(reduce){
+    var f=document.querySelector('.fill'), d=document.querySelector('.dot');
+    if(f){ f.style.width='58%'; d.style.left='58%'; }
+  }
+})();
+</script>
+</body>
+</html>

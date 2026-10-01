@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LUXURY LANE ASSISTANCE — Premium Transport. Exceptional Care.</title>
+<meta name="description" content="Μεταφορά premium και luxury οχημάτων, supercars, classic & vintage, ATV & buggies, jet ski και φουσκωτών σκαφών. Ελλάδα & ελληνικά νησιά · 24/7 οδική βοήθεια.">
+<link rel="icon" type="image/png" href="assets/logo-mark.png">
+<meta property="og:title" content="Luxury Lane Assistance — Premium Transport. Exceptional Care.">
+<meta property="og:description" content="Premium vehicle, marine & recreational transport. Ελλάδα & ελληνικά νησιά · 24/7 οδική βοήθεια.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lla-demo.httpal.com/">
+<meta property="og:image" content="https://lla-demo.httpal.com/assets/og-logo.png?v=3">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="1024">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://lla-demo.httpal.com/assets/og-logo.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asphalt:#0B0C0D;
+  --concrete:#15171A;
+  --steel:#1E2126;
+  --white:#FFFFFF;
+  --grey:#9C978F;
+  --hazard:#C9922F;        /* bronze */
+  --hazard-ink:#120C02;
+  --silver:#CAC6BF;
+  --dim:rgba(255,255,255,.45);
+  --hair:rgba(255,255,255,.10);
+  --go:#7FBF9E;
+  --sign:'Roboto Condensed',Impact,sans-serif;
+  --data:'IBM Plex Mono',monospace;
+  --body:'Inter',system-ui,sans-serif;
+  --pad:clamp(18px,4vw,64px);
+}
+*{margin:0;padding:0;box-sizing:border-box;border-radius:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--asphalt);color:var(--white);font-family:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--hazard);outline-offset:2px}
+.wrap{max-width:1400px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+.sign{font-family:var(--sign);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:.94}
+.data{font-family:var(--data);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+
+/* ===== nav ===== */
+.nav{position:fixed;inset:0 0 auto 0;z-index:60;background:linear-gradient(180deg,rgba(11,12,13,.92),rgba(11,12,13,0))}
+.nav.stuck{background:rgba(11,12,13,.96);border-bottom:1px solid var(--hair);backdrop-filter:blur(10px)}
+.nav .in{max-width:1400px;margin:0 auto;padding:14px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mark{display:flex;align-items:center;gap:11px}
+.mark .logo-img{height:clamp(60px,7.5vh,84px);width:auto;display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--sign);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;padding:.72rem 1.25rem;border:1px solid transparent;transition:.18s;cursor:pointer}
+.btn.hz{background:var(--hazard);color:var(--hazard-ink)}
+.btn.hz:hover{background:#D6A345;transform:translateY(-2px)}
+.btn.hz:active{transform:translateY(0)}
+.btn.out{border-color:rgba(255,255,255,.4);color:var(--white)}
+.btn.out:hover{border-color:var(--white);background:rgba(255,255,255,.08)}
+.ctaC-call{display:inline-flex;align-items:center;gap:.6rem;padding:.5rem .8rem;border:1px solid rgba(255,255,255,.28);
+  background:rgba(11,12,13,.42);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+  transition:border-color .18s,background .18s,transform .18s}
+.ctaC-call .ctaC-ico{width:15px;height:15px;flex:0 0 auto;color:var(--hazard);opacity:.95}
+.ctaC-call .ctaC-txt{display:flex;flex-direction:column;line-height:1}
+.ctaC-call .ctaC-lab{font-family:var(--data);font-size:.5rem;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--grey);line-height:1}
+.ctaC-call .ctaC-num{font-family:var(--data);font-size:.94rem;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.06em;line-height:1;color:var(--white);margin-top:.24rem}
+.ctaC-call:hover{border-color:var(--hazard);background:rgba(11,12,13,.62)}
+.ctaC-call:active{transform:translateY(1px)}
+.nav.stuck .ctaC-call{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(max-width:520px){
+  .ctaC-call{padding:.45rem .65rem;gap:.45rem}
+  .ctaC-call .ctaC-ico{width:14px;height:14px}
+  .ctaC-call .ctaC-lab{font-size:.44rem;letter-spacing:.2em}
+  .ctaC-call .ctaC-num{font-size:.86rem;letter-spacing:.02em}
+}
+
+/* ===== hero ===== */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+.hero .vid-mob{display:none}@media(max-width:820px){
+  .hero{min-height:0;height:100svh;display:block;position:relative}
+  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center top}
+  .hero .vid-desk{display:none}
+  .hero .vid-mob{display:block}
+}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(11,12,13,.58) 0%,rgba(11,12,13,.3) 40%,rgba(11,12,13,0) 68%),
+             linear-gradient(0deg,var(--asphalt) 1%,rgba(11,12,13,.1) 26%,transparent 55%)}
+@media(max-width:820px){
+  .hero::after{background:linear-gradient(0deg,var(--asphalt) 2%,rgba(11,12,13,.88) 22%,rgba(11,12,13,.45) 44%,transparent 66%)}
+}
+.hero .in{--gu:9px;position:relative;z-index:2;width:100%;align-self:stretch;display:flex;flex-direction:column;justify-content:flex-end;
+  padding-top:110px;padding-bottom:clamp(26px,4.5vh,44px)}
+.hero .col{position:relative;max-width:min(46%,560px)}
+.hero .col::before{content:"";position:absolute;z-index:-1;pointer-events:none;
+  top:calc(var(--gu) * -9);bottom:calc(var(--gu) * -6);left:-50vw;right:calc(var(--gu) * -10);
+  background:linear-gradient(96deg,rgba(11,12,13,.82) 0%,rgba(11,12,13,.74) 62%,rgba(11,12,13,.3) 86%,rgba(11,12,13,0) 100%);
+  backdrop-filter:blur(5px) saturate(115%);-webkit-backdrop-filter:blur(5px) saturate(115%);
+  -webkit-mask-image:linear-gradient(96deg,#000 0%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%);
+          mask-image:linear-gradient(96deg,#000 0%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%)}
+.kick{display:flex;align-items:baseline;gap:calc(var(--gu) * 1);
+  padding-bottom:calc(var(--gu) * .9);margin-bottom:calc(var(--gu) * 1.6);
+  border-bottom:1px solid rgba(255,255,255,.28)}
+.kick b{font-family:var(--data);font-weight:600;font-size:.64rem;letter-spacing:.16em;color:var(--hazard)}
+.kick span{font-family:var(--data);font-weight:400;font-size:.64rem;letter-spacing:.22em;color:rgba(255,255,255,.86);text-transform:uppercase}
+.kick span::before{content:"/";color:var(--dim);margin-right:calc(var(--gu) * 1.2)}
+.hero h1{font-family:var(--sign);font-weight:800;text-transform:uppercase;line-height:.9;
+  font-size:clamp(2.5rem,6vw,4.8rem);text-wrap:balance;text-shadow:0 2px 24px rgba(11,12,13,.6)}
+.hero h1 span{display:block}
+.hero h1 .l1{letter-spacing:-.035em;color:var(--white)}
+.hero h1 .l2{font-size:.4em;line-height:1;letter-spacing:-.012em;color:var(--silver);margin-top:calc(var(--gu) * .6)}
+.hero h1 .l3{font-size:.22em;line-height:1;font-weight:700;letter-spacing:.2em;color:var(--hazard);margin-top:calc(var(--gu) * 1.2)}
+.hero .sub{margin-top:calc(var(--gu) * 1.6);max-width:44ch;color:var(--grey);
+  font-size:clamp(.86rem,.9vw,.95rem);line-height:1.5;text-shadow:0 1px 10px rgba(11,12,13,.7)}
+.acts{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem}
+.hero .acts{margin-top:calc(var(--gu) * 2.2)}
+@media(max-width:820px){
+  .hero{min-height:0}
+  .hero .in{--gu:7px;position:absolute;left:0;right:0;bottom:0;padding-top:76px;padding-bottom:1.3rem;z-index:3}
+  .hero .col{max-width:none}
+  .hero .col::before{top:calc(var(--gu) * -4);bottom:calc(var(--gu) * -2);
+    left:calc(var(--pad) * -1);right:calc(var(--pad) * -1);
+    background:linear-gradient(0deg,rgba(11,12,13,.62) 0%,rgba(11,12,13,.5) 55%,rgba(11,12,13,0) 100%);
+    -webkit-mask-image:linear-gradient(0deg,#000 0%,#000 55%,transparent 100%);
+            mask-image:linear-gradient(0deg,#000 0%,#000 55%,transparent 100%)}
+  .kick{padding-bottom:calc(var(--gu) * .8);margin-bottom:calc(var(--gu) * 1.2)}
+  .hero h1{font-size:clamp(1.7rem,7.6vw,2.4rem)}
+  .hero .sub{margin-top:calc(var(--gu) * 1.2);font-size:.8rem;max-width:none}
+  .hero .acts{margin-top:calc(var(--gu) * 1.6)}
+  .hero .acts .btn{padding:.62rem .95rem;font-size:.76rem}
+}
+
+/* ===== facts strip ===== */
+.strip{position:relative;z-index:4;min-height:88px;display:flex;align-items:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+  backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);
+  border-top:1px solid rgba(255,255,255,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 -12px 34px rgba(0,0,0,.35)}
+.strip .sin{display:grid;grid-template-columns:repeat(4,1fr);width:100%}
+.strip .sin>div{padding:.9rem 1.3rem;border-right:1px solid rgba(255,255,255,.13);display:flex;flex-direction:column;gap:.28rem;justify-content:center}
+.strip .sin>div:first-child{padding-left:0}
+.strip .sin>div:last-child{border-right:none}
+.strip .n{font-family:var(--sign);font-weight:700;font-size:1.05rem;line-height:1;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.strip .n b{color:var(--hazard)}
+.strip .l{font-family:var(--data);font-size:.56rem;letter-spacing:.14em;color:rgba(255,255,255,.72);text-transform:uppercase}
+@media(max-width:820px){
+  .strip .sin{grid-template-columns:1fr 1fr}
+  .strip .sin>div{padding:.7rem .6rem;align-items:center;text-align:center}
+  .strip .sin>div:nth-child(2){border-right:none}
+  .strip .sin>div:nth-child(1),.strip .sin>div:nth-child(2){border-bottom:1px solid rgba(255,255,255,.13)}
+  .strip .n{font-size:.85rem}
+  .strip .l{font-size:.46rem;letter-spacing:.1em}
+}
+
+/* ===== section frame ===== */
+.sec{padding-top:clamp(56px,8vh,104px);padding-bottom:clamp(56px,8vh,104px)}
+.hd{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:clamp(28px,4vh,48px);flex-wrap:wrap}
+.hd h2{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:.95;letter-spacing:-.015em}
+.hd h2 em{font-style:normal;color:var(--hazard)}
+.hd p{color:var(--grey);max-width:56ch;margin-top:1rem}
+
+/* ===== about band ===== */
+.band{display:grid;grid-template-columns:1.1fr 1fr;border:1px solid var(--hair);background:var(--concrete)}
+.band .m{position:relative;min-height:340px;overflow:hidden}
+.band .m video,.band .m img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.band .c{padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:center}
+.band h2{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:.98}
+.band p{color:#BEB9B2;margin-top:1rem;max-width:44ch;font-size:.95rem}
+.band .promise{font-family:var(--sign);font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--hazard);margin-top:1.4rem;font-size:1rem}
+@media(max-width:900px){.band{grid-template-columns:1fr}.band .m{min-height:250px}}
+
+/* ===== why us / standard grids ===== */
+.grid6{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);background:var(--hair);gap:1px}
+.grid6>div{background:var(--concrete);padding:clamp(22px,2.6vw,36px)}
+.grid6 h3{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:1.08rem;line-height:1.05}
+.grid6 p{color:#BEB9B2;font-size:.88rem;margin-top:.6rem}
+@media(max-width:860px){.grid6{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.grid6{grid-template-columns:1fr}}
+
+/* ===== services: spec dossiers ===== */
+.svc{--mount:clamp(11px,1.15vw,15px);
+  display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(16px,1.9vw,26px)}
+.svc article{position:relative;display:flex;flex-direction:column;
+  padding:0 var(--mount) var(--mount);
+  background:linear-gradient(180deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.014) 38%,rgba(255,255,255,0) 78%),var(--concrete);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15),
+             inset 1px 0 0 rgba(255,255,255,.045), inset -1px 0 0 rgba(255,255,255,.045),
+             inset 0 -1px 0 rgba(0,0,0,.72);
+  transition:background-color .3s ease}
+.svc article:hover,.svc article:focus-within{background-color:var(--steel)}
+.svc article::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hazard);
+  transform:scaleX(0);transform-origin:0 50%;transition:transform .5s cubic-bezier(.16,1,.3,1);z-index:3}
+.svc article:hover::before,.svc article:focus-within::before{transform:scaleX(1)}
+.svc .idx{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;padding:.9rem 0 .78rem;border-bottom:1px solid var(--hair)}
+.svc .idx .no{font-family:var(--data);font-weight:600;font-size:.72rem;letter-spacing:.1em;font-variant-numeric:tabular-nums;color:var(--hazard)}
+.svc .idx .code{font-family:var(--data);font-weight:500;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--grey)}
+.svc .plate{position:relative;margin-top:var(--mount);aspect-ratio:16/9;overflow:hidden;
+  background:var(--asphalt);box-shadow:inset 0 0 0 1px rgba(0,0,0,.55)}
+.svc .plate img{width:100%;height:100%;object-fit:cover;filter:grayscale(.45) brightness(.66) contrast(1.05);
+  transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}
+.svc article:hover .plate img,.svc article:focus-within .plate img{transform:scale(1.04);filter:grayscale(0) brightness(.86) contrast(1)}
+.svc .plate::after{content:"";position:absolute;right:0;bottom:0;width:14px;height:14px;
+  border-right:2px solid var(--hazard);border-bottom:2px solid var(--hazard);opacity:.9}
+.svc .c{position:relative;z-index:2;padding:var(--mount) 0 0;display:flex;flex-direction:column;flex:1}
+.svc h3{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(1.3rem,1.9vw,1.6rem);line-height:1;letter-spacing:-.01em}
+.svc .lede{color:#BEB9B2;font-size:.9rem;line-height:1.5;margin-top:.55rem;max-width:44ch;margin-bottom:1.1rem}
+.svc .act{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  min-height:52px;padding:.9rem 1rem;font-family:var(--data);font-weight:600;font-size:.66rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--white);
+  border:1px solid var(--hair);background:var(--steel);
+  transition:border-color .2s ease,color .2s ease,transform .18s ease}
+.svc .act span:last-child{color:var(--hazard);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+.svc .act:hover{border-color:var(--hazard);color:var(--hazard);transform:translateY(-2px)}
+.svc .act:hover span:last-child{transform:translateX(4px)}
+.svc .act:active{transform:translateY(0)}
+.svc .act:focus-visible{outline:2px solid var(--hazard);outline-offset:3px}
+.svcgroup{margin-bottom:clamp(34px,5vh,56px)}
+.svcgroup:last-child{margin-bottom:0}
+.svcgroup .gtitle{display:flex;align-items:center;gap:1rem;margin-bottom:clamp(18px,2.6vh,28px)}
+.svcgroup .gtitle b{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:1.05rem;letter-spacing:.08em;color:var(--silver)}
+.svcgroup .gtitle i{flex:1;height:1px;background:var(--hair)}
+.svcgroup .gtitle span{font-family:var(--data);font-size:.62rem;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
+@media(max-width:980px){
+  .svc{grid-template-columns:1fr}
+  .svc .plate{aspect-ratio:21/9}
+}
+
+/* ===== coverage ===== */
+.cover{display:grid;grid-template-columns:1.2fr 1fr;border:1px solid var(--hair);background:var(--concrete)}
+.cover .l{padding:clamp(28px,4vw,56px);border-right:1px solid var(--hair);display:flex;flex-direction:column;justify-content:center}
+.cover h2{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,4.4vw,3.4rem);line-height:.92}
+.cover h2 em{font-style:normal;color:var(--hazard)}
+.cover .l p{color:#BEB9B2;margin-top:1.2rem;max-width:44ch}
+.cover .slogan{margin-top:1.6rem;font-family:var(--data);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--hazard)}
+.cover .r{padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;justify-content:center;gap:2rem}
+.cover .r h4{font-family:var(--data);font-weight:600;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--grey)}
+.cover .r .pts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.8rem}
+.cover .r .pts span{font-family:var(--data);font-size:.66rem;letter-spacing:.08em;color:#D9D4CC;border:1px solid var(--hair);padding:.4rem .7rem}
+@media(max-width:900px){.cover{grid-template-columns:1fr}.cover .l{border-right:none;border-bottom:1px solid var(--hair)}}
+
+/* ===== map ===== */
+.mapframe{border:1px solid var(--hair);background:var(--concrete);padding:clamp(11px,1.15vw,15px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15), inset 0 -1px 0 rgba(0,0,0,.72)}
+.mapframe iframe{display:block;width:100%;height:clamp(300px,45vh,460px);border:0;
+  filter:grayscale(1) invert(.9) contrast(.85) hue-rotate(180deg) saturate(.6)}
+@media(max-width:820px){.mapframe iframe{height:320px}}
+
+/* ===== process ===== */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--hair);background:var(--hair);gap:1px}
+.step{background:var(--concrete);padding:clamp(22px,2.6vw,34px);display:flex;gap:1.1rem;align-items:flex-start}
+.step .n{font-family:var(--data);font-weight:600;font-size:.78rem;color:var(--hazard);letter-spacing:.1em;padding-top:3px;white-space:nowrap}
+.step h4{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:1.02rem;line-height:1.05}
+.step p{color:#BEB9B2;font-size:.85rem;margin-top:.5rem}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.steps{grid-template-columns:1fr}}
+
+/* ===== roadside band ===== */
+.roadside{background:var(--concrete);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.roadside .in2{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2.5rem;padding:clamp(48px,7vh,90px) 0}
+.roadside h2{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,5vw,3.8rem);line-height:.92}
+.roadside h2 em{font-style:normal;color:var(--hazard)}
+.roadside p{color:#BEB9B2;margin-top:1rem;max-width:48ch}
+.roadside .tel{font-family:var(--data);font-weight:600;font-size:clamp(1.4rem,3vw,2.2rem);letter-spacing:.06em;color:var(--white)}
+.roadside .tel a{border-bottom:2px solid var(--hazard);padding-bottom:.2rem}
+.roadside .acts{justify-content:flex-start;margin-top:1.6rem}
+@media(max-width:900px){.roadside .in2{grid-template-columns:1fr}}
+
+/* ===== reviews ===== */
+.rev-sec{background:linear-gradient(180deg,var(--asphalt),var(--concrete) 50%,var(--asphalt))}
+.rev-top{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:clamp(24px,4vw,64px);
+  border:1px solid var(--hair);background:var(--concrete);padding:clamp(24px,3.4vw,44px);margin-bottom:clamp(20px,3vh,32px)}
+.rev-score{display:flex;align-items:center;gap:1.3rem}
+.rev-score .big{font-family:var(--sign);font-weight:900;font-size:clamp(2.8rem,5.4vw,4.2rem);line-height:1}
+.rev-score .side{display:flex;flex-direction:column;gap:.4rem}
+.rev-score .stars{color:var(--hazard);font-size:1rem;letter-spacing:.18em;white-space:nowrap}
+.rev-score .cnt{font-family:var(--data);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+.rev-cta{text-align:right}
+.rev-cta .g{font-family:var(--data);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--grey);display:block;margin-bottom:.9rem}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,1.9vw,26px)}
+.rev-card{border:1px solid var(--hair);background:var(--concrete);padding:clamp(20px,2.4vw,30px);display:flex;flex-direction:column;gap:.8rem}
+.rev-card .rh{display:flex;align-items:center;gap:.85rem}
+.rev-card .ava{width:42px;height:42px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  font-family:var(--sign);font-weight:700;font-size:.88rem;color:var(--hazard);
+  background:var(--steel);border:1px solid var(--hair);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+  object-fit:cover}
+.rev-card .who-wrap{display:flex;flex-direction:column;gap:.25rem;min-width:0;flex:1}
+.rev-card .who{font-family:var(--sign);font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rev-card .stars{color:var(--hazard);letter-spacing:.14em;font-size:.85rem;white-space:nowrap}
+.rev-card .when{font-family:var(--data);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.rev-card p{color:#BEB9B2;font-size:.88rem;line-height:1.55}
+.rev-card .meta{font-family:var(--data);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:auto}
+@media(max-width:900px){.rev-grid{grid-template-columns:1fr}.rev-top{grid-template-columns:1fr;text-align:center}.rev-score{justify-content:center}.rev-cta{text-align:center}}
+
+/* ===== closing ===== */
+.end{position:relative;padding:clamp(56px,9vh,120px) 0;text-align:center;background:var(--concrete);border-top:1px solid var(--hair)}
+.end .eyebrow{font-family:var(--data);font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--hazard)}
+.end h2{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,5vw,3.8rem);line-height:.95;margin-top:1rem;text-wrap:balance}
+.end h2 span{display:block;font-size:.42em;color:var(--silver);margin-top:.6rem;font-weight:700;letter-spacing:.04em}
+.end p{color:var(--grey);margin:1.4rem auto 0;max-width:52ch;font-size:.92rem}
+.end .cats{margin-top:1.4rem;font-family:var(--data);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.end .acts{justify-content:center;margin-top:2rem}
+
+.foot{padding:2rem 0;border-top:1px solid var(--hair)}
+.foot .in{display:flex;justify-content:space-between;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.foot .wm{font-family:var(--sign);font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+.foot .wm small{display:block;font-family:var(--data);font-weight:400;font-size:.54rem;letter-spacing:.22em;color:var(--grey);margin-top:.3rem}
+.foot .links{display:flex;gap:1.4rem;flex-wrap:wrap;font-family:var(--data);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.foot .links a{display:inline-flex;align-items:center;gap:.5rem;transition:color .18s}
+.foot .links a svg{width:15px;height:15px;flex:0 0 auto;opacity:.85}
+.foot .links a:hover{color:var(--hazard)}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+.rv.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ===== offer modal ===== */
+.omodal{position:fixed;inset:0;z-index:100;display:none}
+.omodal.on{display:block}
+.omodal-back{position:absolute;inset:0;background:rgba(5,6,7,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.omodal-plate{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(94vw,470px);
+  background:var(--concrete);border:1px solid var(--hair);padding:clamp(26px,3vw,38px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15), 0 40px 90px rgba(0,0,0,.6)}
+.omodal-plate::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hazard)}
+.omodal-x{position:absolute;top:10px;right:10px;width:40px;height:40px;background:none;border:none;color:var(--grey);
+  font-size:1.3rem;cursor:pointer;line-height:1}
+.omodal-x:hover{color:var(--white)}
+.omodal-plate h3{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:1.5rem;line-height:1;margin-top:.6rem}
+.omodal-plate .hint{color:var(--grey);font-size:.86rem;margin:.7rem 0 1.4rem}
+.omodal-acts{display:flex;flex-direction:column;gap:.55rem}
+.omodal-acts a{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--hair);
+  background:var(--steel);font-family:var(--sign);font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  font-size:.92rem;color:var(--white);transition:border-color .18s,background .18s}
+.omodal-acts a:hover{border-color:var(--hazard);background:#23272d}
+.omodal-acts a svg{width:18px;height:18px;flex:0 0 auto;color:var(--hazard)}
+.omodal-acts a small{margin-left:auto;font-family:var(--data);font-weight:400;font-size:.54rem;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.om-row{display:flex;gap:.6rem;margin-bottom:.7rem}
+.om-field{flex:1;display:flex;flex-direction:column;gap:.34rem;min-width:0}
+.om-field.om-year{flex:0 0 84px}
+.om-toggle{display:flex;border:1px solid var(--hair)}
+.om-toggle button{flex:1;background:none;border:none;color:var(--grey);font-family:'IBM Plex Sans',var(--body);
+  font-size:.8rem;letter-spacing:.04em;padding:.7rem .4rem;cursor:pointer;transition:.18s}
+.om-toggle button.on{background:var(--hazard);color:var(--hazard-ink);font-weight:600}
+.om-field label{font-family:var(--data);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#BEB9B2}
+.om-field input{background:var(--asphalt);border:1px solid var(--hair);color:var(--white);
+  font-family:'IBM Plex Sans',var(--body);font-weight:400;font-size:1rem;padding:.68rem .75rem;width:100%;outline:none;transition:border-color .18s;color-scheme:dark}
+.om-field input:focus{border-color:var(--hazard)}
+.om-field input::placeholder{color:rgba(255,255,255,.48)}
+.om-send{width:100%;margin-top:.4rem;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  font-family:var(--sign);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.9rem;
+  padding:.85rem 1rem;background:var(--white);color:var(--asphalt);border:1px solid transparent;cursor:pointer;transition:.18s}
+.om-send:hover{background:var(--silver)}
+.om-back{width:100%;margin-top:.55rem;background:none;border:none;color:var(--grey);font-family:var(--data);
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;padding:.4rem}
+.om-back:hover{color:var(--white)}
+@media(min-width:1500px){
+  .wrap{max-width:none}
+  .nav .in{max-width:none}
+  :root{--pad:clamp(48px,5vw,110px)}
+}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "AutomotiveBusiness", "name": "Luxury Lane Assistance", "alternateName": "Luxury Lane Assistance — G.Trasias Group", "description": "Μεταφορά premium και luxury οχημάτων, supercars, classic & vintage, ATV, buggies, jet ski και φουσκωτών σκαφών. 24/7 οδική βοήθεια. Ελλάδα και ελληνικά νησιά.", "telephone": "+306948725763", "url": "https://lla-demo.httpal.com", "foundingDate": "2024", "address": {"@type": "PostalAddress", "streetAddress": "Λεωφ. Ηρακλείου 478", "addressLocality": "Ηράκλειο Αττικής", "postalCode": "141 22", "addressCountry": "GR"}, "areaServed": [{"@type": "Place", "name": "Αθήνα"}, {"@type": "Place", "name": "Αττική"}, {"@type": "Place", "name": "Ελλάδα"}, {"@type": "Place", "name": "Ελληνικά νησιά"}], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"}], "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Υπηρεσίες", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Μεταφορά Supercars", "description": "Ferrari, Lamborghini, Porsche, Maserati, McLaren και άλλα premium οχήματα."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Classic & Vintage Cars", "description": "Μεταφορά κλασικών, συλλεκτικών και ιστορικών αυτοκινήτων."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "ATV, Buggies & Γουρούνες", "description": "Μεταφορά ATV, γουρούνων και buggies σε όλη την Ελλάδα."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Jet Ski & Φουσκωτά Σκάφη", "description": "Μεταφορά jet ski και φουσκωτών σκαφών από και προς λιμάνια και μαρίνες."}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Οδική βοήθεια 24/7", "description": "24/7 οδική βοήθεια και μεταφορά οχημάτων."}}]}}</script>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="in">
+    <a class="mark" href="#" aria-label="Luxury Lane Assistance — G.Trasias Group">
+      <img class="logo-img" src="assets/logo-main.png?v=2" alt="Luxury Lane Assistance — G.Trasias Group" width="160" height="128">
+    </a>
+    <a class="ctaC-call" href="#" data-contact aria-label="Επικοινωνία — 694 872 5763">
+  <svg class="ctaC-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"/></svg>
+  <span class="ctaC-txt">
+    <span class="ctaC-lab" aria-hidden="true">Καλέστε 24/7</span>
+    <span class="ctaC-num">694 872 5763</span>
+  </span>
+</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <video class="vid-desk" autoplay muted loop playsinline preload="auto"
+         poster="assets/hero-fs.jpg" aria-label="Supercar πάνω στην πλατφόρμα">
+    <source src="assets/hero-fs.mp4" type="video/mp4">
+  </video>
+  <video class="vid-mob" autoplay muted loop playsinline preload="auto"
+         poster="assets/hero-mob.jpg" aria-label="Supercar πάνω στην πλατφόρμα">
+    <source src="assets/hero-mob.mp4" type="video/mp4">
+  </video>
+  <div class="wrap in">
+   <div class="col">
+    <span class="kick"><b>Est. 2024</b><span>Αθήνα · Ελλάδα · Νησιά</span></span>
+    <h1><span class="l1">Premium Transport.</span><span class="l2">Exceptional Care.</span><span class="l3">Μεταφέρουμε ό,τι έχει αξία για εσάς</span></h1>
+    <p class="sub">Εξειδίκευση στη μεταφορά premium και luxury οχημάτων, supercars, classic &amp; vintage αυτοκινήτων, ATV &amp; γουρούνων, buggies, jet ski και φουσκωτών σκαφών. Από την παραλαβή έως την τελική παράδοση — σε όλη την Ελλάδα και τα ελληνικά νησιά.</p>
+    <div class="acts">
+      <a class="btn hz" href="#" data-offer="Γενική μεταφορά">Ζητήστε προσφορά</a>
+      <a class="btn out" href="#" data-contact>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"/></svg>
+        Καλέστε 24/7
+      </a>
+    </div>
+   </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="wrap sin">
+    <div><span class="n">Est. <b>2024</b></span><span class="l">G.Trasias Group</span></div>
+    <div><span class="n">Ελλάδα &amp; Νησιά</span><span class="l">Από mainland to island</span></div>
+    <div><span class="n">24/7</span><span class="l">Οδική βοήθεια</span></div>
+    <div><span class="n">5.0<b>★</b></span><span class="l">Αξιολογήσεις στο Google</span></div>
+  </div>
+</div>
+
+<!-- ΣΧΕΤΙΚΑ ΜΕ ΕΜΑΣ -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="band rv">
+      <div class="m">
+        <video autoplay muted loop playsinline preload="metadata" poster="assets/clip-load-poster.jpg" aria-label="Φόρτωση στην πλατφόρμα">
+          <source src="assets/clip-load.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="c">
+        <span class="data">Σχετικά με εμάς</span>
+        <h2>Η μεταφορά ενός πολύτιμου οχήματος απαιτεί περισσότερα από μια απλή διαδρομή.</h2>
+        <p>Στη Luxury Lane Assistance γνωρίζουμε ότι κάθε όχημα έχει τις δικές του απαιτήσεις. Ένα supercar, ένα κλασικό ή συλλεκτικό αυτοκίνητο, ένα ATV ή ένα jet ski χρειάζεται σωστή φόρτωση, προσεκτικό χειρισμό και εξοπλισμό κατάλληλο για τη μεταφορά του.</p>
+        <p>Γι’ αυτό αντιμετωπίζουμε κάθε αποστολή ξεχωριστά, με συνέπεια και προσωπική εξυπηρέτηση. Από την πρώτη επικοινωνία μέχρι την παράδοση, παραμένουμε δίπλα σας ώστε η διαδικασία να είναι ξεκάθαρη, οργανωμένη και επαγγελματική.</p>
+        <span class="promise">Precision. Care. Reliability.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ΓΙΑΤΙ ΝΑ ΜΑΣ ΕΜΠΙΣΤΕΥΤΕΙΤΕ -->
+<section class="sec" id="why" style="padding-top:0">
+  <div class="wrap">
+    <div class="hd rv">
+      <h2>Γιατί να μας <em>εμπιστευτείτε</em></h2>
+      <span class="data">06 λόγοι</span>
+    </div>
+    <div class="grid6 rv">
+      <div><h3>Εξειδικευμένος χειρισμός</h3><p>Κάθε όχημα ή σκάφος αντιμετωπίζεται σύμφωνα με τις ιδιαιτερότητές του, με ιδιαίτερη προσοχή κατά τη φόρτωση, τη μεταφορά και την παράδοση.</p></div>
+      <div><h3>Κατάλληλος εξοπλισμός</h3><p>Διαθέτουμε εξοπλισμό για τη μεταφορά premium, χαμηλών και ειδικών οχημάτων, καθώς και recreational vehicles και watercraft.</p></div>
+      <div><h3>Προσωπική εξυπηρέτηση</h3><p>Επικοινωνούμε άμεσα μαζί σας και σας ενημερώνουμε για τη διαδικασία, από την παραλαβή έως τον προορισμό.</p></div>
+      <div><h3>Παραλαβή από όπου χρειάζεστε</h3><p>Αναλαμβάνουμε παραλαβές από κατοικίες, ξενοδοχεία, συνεργεία, εκθέσεις, λιμάνια και μαρίνες.</p></div>
+      <div><h3>Ελλάδα &amp; Νησιά</h3><p>Οργανώνουμε μεταφορές σε όλη την Ελλάδα, καθώς και προς και από τα ελληνικά νησιά.</p></div>
+      <div><h3>24/7 Οδική Βοήθεια</h3><p>Είμαστε διαθέσιμοι όλο το εικοσιτετράωρο για οδική βοήθεια και ανάγκες μεταφοράς οχημάτων.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ΟΙ ΥΠΗΡΕΣΙΕΣ ΜΑΣ -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="hd rv">
+      <h2>Οι υπηρεσίες <em>μας</em></h2>
+      <p>Από το supercar στο jet ski — κάθε μεταφορά σχεδιάζεται για το όχημα που μεταφέρει.</p>
+    </div>
+
+    <div class="svcgroup rv">
+      <div class="gtitle"><b>Premium Vehicle Transport</b><i></i><span>Οχήματα υψηλών απαιτήσεων</span></div>
+      <div class="svc">
+        <article>
+          <div class="idx"><span class="no">Υ-01</span><span class="code">Supercars</span></div>
+          <div class="plate"><img src="assets/car-ferrari.jpg" alt="Ferrari σε μεταφορά" loading="lazy"></div>
+          <div class="c">
+            <h3>Supercars</h3>
+            <p class="lede">Μεταφορά οχημάτων υψηλών επιδόσεων — Ferrari, Lamborghini, Porsche, Maserati, McLaren και άλλων premium κατασκευαστών.</p>
+            <a class="act" href="#" data-offer="supercar" aria-label="Ζητήστε προσφορά για supercar"><span>Ζητήστε προσφορά</span><span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+        <article>
+          <div class="idx"><span class="no">Υ-02</span><span class="code">Luxury &amp; Premium</span></div>
+          <div class="plate"><img src="assets/car-maserati.jpg" alt="Luxury sedan σε μεταφορά" loading="lazy"></div>
+          <div class="c">
+            <h3>Luxury &amp; Premium Cars</h3>
+            <p class="lede">Μεταφορά πολυτελών και premium αυτοκινήτων με ιδιαίτερη προσοχή στη φόρτωση και τη μεταφορά.</p>
+            <a class="act" href="#" data-offer="luxury όχημα" aria-label="Ζητήστε προσφορά για luxury όχημα"><span>Ζητήστε προσφορά</span><span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+        <article>
+          <div class="idx"><span class="no">Υ-03</span><span class="code">Classic &amp; Vintage</span></div>
+          <div class="plate"><img src="assets/car-jaguar.jpg" alt="Κλασικό αυτοκίνητο σε μεταφορά" loading="lazy"></div>
+          <div class="c">
+            <h3>Classic &amp; Vintage Cars</h3>
+            <p class="lede">Μεταφορά κλασικών, συλλεκτικών και ιστορικών αυτοκινήτων με την απαιτούμενη φροντίδα.</p>
+            <a class="act" href="#" data-offer="κλασικό αυτοκίνητο" aria-label="Ζητήστε προσφορά για κλασικό αυτοκίνητο"><span>Ζητήστε προσφορά</span><span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+        <article>
+          <div class="idx"><span class="no">Υ-04</span><span class="code">Low-Clearance</span></div>
+          <div class="plate"><img src="assets/car-porsche.jpg" alt="Χαμηλό όχημα σε μεταφορά" loading="lazy"></div>
+          <div class="c">
+            <h3>Low-Clearance Vehicles</h3>
+            <p class="lede">Εξειδικευμένη μεταφορά οχημάτων με χαμηλό ύψος από το έδαφος — ράμπα χαμηλής γωνίας, χωρίς επαφή με το αμάξωμα.</p>
+            <a class="act" href="#" data-offer="χαμηλό όχημα" aria-label="Ζητήστε προσφορά για χαμηλό όχημα"><span>Ζητήστε προσφορά</span><span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="svcgroup rv">
+      <div class="gtitle"><b>Recreational &amp; Marine Transport</b><i></i><span>ATV · Buggies · Jet Ski · Σκάφη</span></div>
+      <div class="svc">
+        <article>
+          <div class="idx"><span class="no">Υ-05</span><span class="code">ATV &amp; Buggies</span></div>
+          <div class="plate"><img src="assets/hero-truck.jpg" alt="Mercedes Atego — το όχημα μεταφοράς ATV και buggies" loading="lazy"></div>
+          <div class="c">
+            <h3>ATV, Γουρούνες &amp; Buggies</h3>
+            <p class="lede">Μεταφορά ATV, γουρούνων και buggies για ιδιώτες, ξενοδοχεία, τουριστικές επιχειρήσεις και επαγγελματίες — σε όλη την Ελλάδα και προς και από τα ελληνικά νησιά.</p>
+            <a class="act" href="#" data-offer="ATV ή buggy" aria-label="Ζητήστε προσφορά για ATV ή buggy"><span>Ζητήστε προσφορά</span><span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+        <article>
+          <div class="idx"><span class="no">Υ-06</span><span class="code">Jet Ski &amp; Σκάφη</span></div>
+          <div class="plate"><img src="assets/jetski.jpg" alt="Jet ski σε μεταφορά" loading="lazy"></div>
+          <div class="c">
+            <h3>Jet Ski &amp; Φουσκωτά Σκάφη</h3>
+            <p class="lede">Μεταφορά jet ski και φουσκωτών σκαφών από και προς λιμάνια, μαρίνες, κατοικίες και νησιωτικούς προορισμούς, με προσεκτική φόρτωση και παράδοση.</p>
+            <a class="act" href="#" data-offer="jet ski ή σκάφος" aria-label="Ζητήστε προσφορά για jet ski ή σκάφος"><span>Ζητήστε προσφορά</span><span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ΟΛΗ Η ΕΛΛΑΔΑ -->
+<section class="sec" id="coverage" style="padding-top:0">
+  <div class="wrap">
+    <div class="cover rv">
+      <div class="l">
+        <span class="data">Κάλυψη</span>
+        <h2>Ολη η Ελλάδα.<br><em>Ολα τα νησιά.</em></h2>
+        <p>Η Luxury Lane Assistance αναλαμβάνει μεταφορές σε όλη την Ελλάδα και τα ελληνικά νησιά. Οργανώνουμε τη διαδρομή από το σημείο παραλαβής μέχρι τον τελικό προορισμό, συμπεριλαμβανομένης της παραλαβής από λιμάνια και μαρίνες.</p>
+        <span class="slogan">From Mainland to Island — Εσείς επιλέγετε τον προορισμό. Εμείς αναλαμβάνουμε τη μεταφορά.</span>
+      </div>
+      <div class="r">
+        <div>
+          <h4>Παραλαβή από</h4>
+          <div class="pts"><span>Κατοικίες</span><span>Ξενοδοχεία</span><span>Συνεργεία</span><span>Εκθέσεις</span><span>Λιμάνια</span><span>Μαρίνες</span></div>
+        </div>
+        <div>
+          <h4>Παράδοση σε</h4>
+          <div class="pts"><span>Κατοικίες</span><span>Villas</span><span>Ξενοδοχεία</span><span>Συνεργεία</span><span>Μαρίνες</span><span>Επιλεγμένους προορισμούς</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ΒΡΕΙΤΕ ΜΑΣ -->
+<section class="sec" id="location" style="padding-top:0">
+  <div class="wrap">
+    <div class="hd rv">
+      <h2>Βρείτε <em>μας</em></h2>
+      <span class="data">Λεωφ. Ηρακλείου 478 · Ηράκλειο 141 22</span>
+    </div>
+    <div class="mapframe rv">
+      <iframe src="https://www.google.com/maps?q=%CE%9B%CE%B5%CF%89%CF%86.+%CE%97%CF%81%CE%B1%CE%BA%CE%BB%CE%B5%CE%AF%CE%BF%CF%85+478,+%CE%97%CF%81%CE%AC%CE%BA%CE%BB%CE%B5%CE%B9%CE%BF+141+22&z=15&hl=el&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Χάρτης — Luxury Lane Assistance" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- Η ΔΙΑΔΙΚΑΣΙΑ ΜΑΣ -->
+<section class="sec" id="process" style="padding-top:0">
+  <div class="wrap">
+    <div class="hd rv">
+      <h2>Η διαδικασία <em>μας</em></h2>
+      <span class="data">Simple. Clear. Professional.</span>
+    </div>
+    <div class="steps rv">
+      <div class="step"><span class="n">01 —</span><div><h4>Επικοινωνία</h4><p>Επικοινωνείτε μαζί μας τηλεφωνικά, μέσω WhatsApp ή μέσω της φόρμας επικοινωνίας.</p></div></div>
+      <div class="step"><span class="n">02 —</span><div><h4>Πληροφορίες</h4><p>Μας ενημερώνετε για το όχημα ή το σκάφος, το σημείο παραλαβής, τον προορισμό και την επιθυμητή ημερομηνία.</p></div></div>
+      <div class="step"><span class="n">03 —</span><div><h4>Προσφορά</h4><p>Σας ενημερώνουμε για τη διαθέσιμη λύση μεταφοράς και το κόστος.</p></div></div>
+      <div class="step"><span class="n">04 —</span><div><h4>Παραλαβή</h4><p>Παραλαμβάνουμε το όχημα ή το σκάφος από το συμφωνημένο σημείο.</p></div></div>
+      <div class="step"><span class="n">05 —</span><div><h4>Μεταφορά</h4><p>Πραγματοποιούμε τη μεταφορά με τον κατάλληλο εξοπλισμό και την απαιτούμενη προσοχή.</p></div></div>
+      <div class="step"><span class="n">06 —</span><div><h4>Παράδοση</h4><p>Παραδίδουμε στον συμφωνημένο προορισμό και ολοκληρώνουμε τη διαδικασία.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 24/7 ROAD ASSISTANCE -->
+<section class="roadside" id="assistance">
+  <div class="wrap in2 rv">
+    <div>
+      <h2>24/7 Road <em>Assistance</em></h2>
+      <p>Βλάβη, ακινητοποίηση ή ανάγκη μεταφοράς; Η Luxury Lane Assistance παρέχει 24/7 οδική βοήθεια και μεταφορά οχημάτων, με άμεση εξυπηρέτηση και επαγγελματικό χειρισμό. Όταν χρειάζεστε βοήθεια, είμαστε εδώ.</p>
+    </div>
+    <div>
+      <div class="tel"><a href="tel:+306948725763">694 872 5763</a></div>
+      <div class="acts">
+        <a class="btn hz" href="tel:+306948725763">Καλέστε τώρα</a>
+        <a class="btn out" href="https://wa.me/306948725763" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST IS EARNED — GOOGLE REVIEWS -->
+<section class="sec rev-sec" id="reviews">
+  <div class="wrap">
+    <div class="hd rv">
+      <h2>Trust is <em>earned</em></h2>
+      <span class="data">Η εμπιστοσύνη χτίζεται με συνέπεια</span>
+    </div>
+
+    <div class="rev-top rv">
+      <div class="rev-score">
+        <div class="big">5.0</div>
+        <div class="side">
+          <div class="stars">★★★★★</div>
+          <div class="cnt">Αξιολογήσεις πελατών · Google</div>
+        </div>
+      </div>
+      <div class="rev-cta">
+        <span class="g">Πιστοποιημένες κριτικές πελατών</span>
+        <a class="btn out" href="https://www.google.com/maps/place/Luxury+Lane+Assistance/@38.058581,23.7722537,17z/data=!4m6!3m5!1s0x14a1993be17ee0e5:0xc1b0c43a5327482a!8m2!3d38.058581!4d23.7722537!16s%2Fg%2F11xctllrvd" target="_blank" rel="noopener">Δείτε όλες τις αξιολογήσεις</a>
+      </div>
+    </div>
+
+    <div class="rev-grid">
+      <article class="rev-card rv">
+        <div class="rh"><img class="ava" src="assets/reviews/dimitris-rallis.jpg" alt="" width="42" height="42" loading="lazy"><div class="who-wrap"><span class="who">Dimitris Rallis</span><span class="when">πριν από 2 μήνες</span></div><span class="stars">★★★★★</span></div>
+        <p>«Εξαιρετική οδική βοήθεια! Η ανταπόκριση ήταν άμεση και ο επαγγελματισμός του προσωπικού πραγματικά υποδειγματικός. Ήρθαν πολύ γρήγορα, αντιμετώπισαν το πρόβλημα με ψυχραιμία και αποτελεσματικότητα και με έκαναν να νιώσω ασφάλεια από την πρώτη στιγμή. Ευγενικοί, πρόθυμοι και άριστα καταρτισμένοι. Τους συνιστώ ανεπιφύλακτα.»</p>
+        <span class="meta">Google Review</span>
+      </article>
+      <article class="rev-card rv">
+        <div class="rh"><img class="ava" src="assets/reviews/christos-m.jpg" alt="" width="42" height="42" loading="lazy"><div class="who-wrap"><span class="who">Christos M.</span><span class="when">πριν από 3 μήνες</span></div><span class="stars">★★★★★</span></div>
+        <p>«Άκρως επαγγελματική αντιμετώπιση και υπηρεσία υψηλής ποιότητας. Συνεπείς και γρήγοροι όποτε χρειάστηκε η βοήθειά τους, με σεβασμό στον άνθρωπο και με ιδιαίτερη προσοχή στο όχημα. Το συστήνω ανεπιφύλακτα!»</p>
+        <span class="meta">Google Review</span>
+      </article>
+      <article class="rev-card rv">
+        <div class="rh"><img class="ava" src="assets/reviews/kostas-vompras.jpg" alt="" width="42" height="42" loading="lazy"><div class="who-wrap"><span class="who">Kostas Vompras</span><span class="when">πριν από 3 μήνες</span></div><span class="stars">★★★★★</span></div>
+        <p>«Γρήγορη ανταπόκριση, σωστή εξυπηρέτηση και πολύ καλή επικοινωνία. Έμεινα απόλυτα ικανοποιημένος.»</p>
+        <span class="meta">Google Review</span>
+      </article>
+      <article class="rev-card rv">
+        <div class="rh"><img class="ava" src="assets/reviews/dimitris-anagnostou.jpg" alt="" width="42" height="42" loading="lazy"><div class="who-wrap"><span class="who">Δημήτρης Αναγνώστου</span><span class="when">Google Review</span></div><span class="stars">★★★★★</span></div>
+        <p>«Αψογοι επαγγελματιες και εξαιρετικο παιδι ο Δημητρης!! Θα σας ξαναπροτιμησω για οποιαδηποτε μεταφορα των αυτοκινητων μου.»</p>
+        <span class="meta">Google Review</span>
+      </article>
+      <article class="rev-card rv">
+        <div class="rh"><img class="ava" src="assets/reviews/fotis-zintro.jpg" alt="" width="42" height="42" loading="lazy"><div class="who-wrap"><span class="who">Fotis Zintro</span><span class="when">πριν από έναν χρόνο</span></div><span class="stars">★★★★★</span></div>
+        <p>«Πολύ εξυπηρετικός και σωστός στη δουλειά του! Φόρτωσε το αμάξι μου με προσοχή, χωρίς καμία βιασύνη ή προχειρότητα. Φάνηκε επαγγελματίας και άνθρωπος που σέβεται τον πελάτη. Μπράβο στον κ. Γιώργο!»</p>
+        <span class="meta">Google Review</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="end" id="contact">
+  <div class="wrap rv">
+    <span class="eyebrow">Luxury Lane Assistance · Est. 2024</span>
+    <h2>Your vehicle deserves more than a transfer. <span>It deserves care.</span></h2>
+    <p>Επικοινωνήστε μαζί μας για τη μεταφορά του οχήματος ή του σκάφους σας. Απαντάμε άμεσα — με πλάνο, κόστος και χρόνο.</p>
+    <span class="cats">Supercars · Luxury Cars · Classic Cars · ATV · Buggies · Jet Ski · Boats<br>Greece · Greek Islands · 24/7 Assistance</span>
+    <div class="acts">
+      <a class="btn hz" href="#" data-offer="Γενική μεταφορά">Ζητήστε προσφορά</a>
+      <a class="btn out" href="#" data-contact>Επικοινωνήστε μαζί μας · 694 872 5763</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap in">
+    <span class="wm">Luxury Lane Assistance<small>Premium Vehicle, Marine &amp; Recreational Transport · G.Trasias Group</small></span>
+    <span class="links">
+      <a href="https://wa.me/306948725763" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.7 14.3c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.7-4.2-.1-.2-1-1.4-1-2.6 0-1.2.6-1.8.9-2 .2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2Z"/></svg>
+        WhatsApp
+      </a>
+      <a href="viber://chat?number=%2B306948725763" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3a8 8 0 0 1 8 8c0 4.4-3.6 8-8 8H7l-3 2 1-4.2A8 8 0 0 1 12 3Z"/><path d="M8.8 9.2c.5-1.6 1.2-1.7 1.7-1 .3.4.8 1.3.8 1.6 0 .5-.9.9-.9 1.4 0 .8 1.9 2.6 2.7 2.7.5 0 .9-.9 1.4-.9.3 0 1.2.5 1.6.8.7.5.6 1.2-1 1.7"/></svg>
+        Viber
+      </a>
+      <a href="https://www.instagram.com/luxury_lane_assistance/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+      <a href="https://www.google.com/maps/place/Luxury+Lane+Assistance/@38.058581,23.7722537,17z/data=!4m6!3m5!1s0x14a1993be17ee0e5:0xc1b0c43a5327482a!8m2!3d38.058581!4d23.7722537!16s%2Fg%2F11xctllrvd" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        Google Reviews
+      </a>
+    </span>
+    <span class="data">Athens · Greece · 24/7 · 694 872 5763</span>
+  </div>
+</footer>
+
+<!-- CONTACT CHOOSER MODAL -->
+<div class="omodal" id="cmodal" aria-hidden="true">
+  <div class="omodal-back" data-close></div>
+  <div class="omodal-plate" role="dialog" aria-modal="true" aria-label="Επικοινωνία">
+    <button class="omodal-x" data-close aria-label="Κλείσιμο">×</button>
+    <span class="data">Επικοινωνία · 24/7</span>
+    <h3>694 872 5763</h3>
+    <p class="hint">Πώς προτιμάτε να επικοινωνήσετε;</p>
+    <div class="omodal-acts">
+      <a href="tel:+306948725763">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"/></svg>
+        Κανονική κλήση<small>Τηλεφωνο</small>
+      </a>
+      <a href="https://wa.me/306948725763?text=%CE%93%CE%B5%CE%B9%CE%B1%20%CF%83%CE%B1%CF%82!%20%CE%98%CE%B1%20%CE%AE%CE%B8%CE%B5%CE%BB%CE%B1%20%CF%80%CE%BB%CE%B7%CF%81%CE%BF%CF%86%CE%BF%CF%81%CE%AF%CE%B5%CF%82%20%CE%B3%CE%B9%CE%B1%20%CE%BC%CE%B5%CF%84%CE%B1%CF%86%CE%BF%CF%81%CE%AC." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.7 14.3c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.7-4.2-.1-.2-1-1.4-1-2.6 0-1.2.6-1.8.9-2 .2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2Z"/></svg>
+        WhatsApp<small>Αμεση απάντηση</small>
+      </a>
+      <a href="viber://chat?number=%2B306948725763" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3a8 8 0 0 1 8 8c0 4.4-3.6 8-8 8H7l-3 2 1-4.2A8 8 0 0 1 12 3Z"/><path d="M8.8 9.2c.5-1.6 1.2-1.7 1.7-1 .3.4.8 1.3.8 1.6 0 .5-.9.9-.9 1.4 0 .8 1.9 2.6 2.7 2.7.5 0 .9-.9 1.4-.9.3 0 1.2.5 1.6.8.7.5.6 1.2-1 1.7"/></svg>
+        Viber<small>Αμεση επικοινωνια</small>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- OFFER MODAL -->
+<div class="omodal" id="omodal" aria-hidden="true">
+  <div class="omodal-back" data-close></div>
+  <div class="omodal-plate" role="dialog" aria-modal="true" aria-label="Ζητήστε προσφορά">
+    <button class="omodal-x" data-close aria-label="Κλείσιμο">×</button>
+
+    <div id="om-step1">
+      <span class="data">Ζητήστε προσφορά</span>
+      <h3 id="omodal-subj">Γενική μεταφορά</h3>
+      <p class="hint">Επιλέξτε πού θέλετε να σας απαντήσουμε.</p>
+      <div class="omodal-acts">
+        <a href="#" data-platform="whatsapp">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.7 14.3c-.2.6-1.2 1.2-1.7 1.2-.4 0-1 .1-3.3-.9-2.8-1.2-4.5-4-4.7-4.2-.1-.2-1-1.4-1-2.6 0-1.2.6-1.8.9-2 .2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2Z"/></svg>
+          WhatsApp<small>Αμεση απάντηση</small>
+        </a>
+        <a href="#" data-platform="viber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3a8 8 0 0 1 8 8c0 4.4-3.6 8-8 8H7l-3 2 1-4.2A8 8 0 0 1 12 3Z"/><path d="M8.8 9.2c.5-1.6 1.2-1.7 1.7-1 .3.4.8 1.3.8 1.6 0 .5-.9.9-.9 1.4 0 .8 1.9 2.6 2.7 2.7.5 0 .9-.9 1.4-.9.3 0 1.2.5 1.6.8.7.5.6 1.2-1 1.7"/></svg>
+          Viber<small>Αμεση επικοινωνια</small>
+        </a>
+        <a href="#" data-platform="email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg>
+          Email<small>Μέσα σε 24 ώρες</small>
+        </a>
+      </div>
+    </div>
+
+    <div id="om-step2" hidden>
+      <span class="data">Στοιχεία μεταφοράς</span>
+      <h3 id="om2-subj">Γενική μεταφορά</h3>
+      <p class="hint">Συμπληρώστε — το μήνυμα ετοιμάζεται αυτόματα.</p>
+      <form id="om-form">
+        <div class="om-row">
+          <div class="om-field"><label for="om-name">Ονοματεπώνυμο *</label><input id="om-name" required autocomplete="name" placeholder="π.χ. Γιώργος Παπαδόπουλος"></div>
+        </div>
+        <div class="om-row">
+          <div class="om-field"><label for="om-brand">Μάρκα *</label><input id="om-brand" required placeholder="π.χ. BMW"></div>
+          <div class="om-field"><label for="om-model">Μοντέλο</label><input id="om-model" placeholder="π.χ. M5"></div>
+        </div>
+        <div class="om-row" id="om-mover-row">
+          <div class="om-field"><label>Το όχημα κινείται; *</label>
+            <div class="om-toggle" id="om-move-toggle">
+              <button type="button" class="on" data-move="1">Ναι, κινείται</button>
+              <button type="button" data-move="0">Όχι, δεν κινείται</button>
+            </div>
+          </div>
+        </div>
+        <div class="om-row" id="om-fault-row" hidden>
+          <div class="om-field"><label for="om-fault">Τι βλάβη έχει; *</label><input id="om-fault" placeholder="π.χ. δεν βγάζει μπροστά, σκασμένο λάστιχο"></div>
+        </div>
+        <div class="om-row">
+          <div class="om-field"><label for="om-when">Πότε *</label><input id="om-when" type="date" required></div>
+        </div>
+        <div class="om-row">
+          <div class="om-field"><label for="om-from">Από *</label><input id="om-from" required placeholder="Περιοχή παραλαβής"></div>
+          <div class="om-field"><label for="om-to">Προς *</label><input id="om-to" required placeholder="Προορισμός"></div>
+        </div>
+        <button type="submit" id="om-send" class="om-send">Αποστολή στο WhatsApp</button>
+        <button type="button" id="om-back" class="om-back">← Αλλαγή πλατφόρμας</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<script>
+addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('stuck',scrollY>40)},{passive:true});
+var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('on');io.unobserve(x.target)}})},{threshold:.1});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+
+// offer modal — step 1: platform, step 2: details → hand off to platform
+var OFFER_EMAIL='info@luxurylane.gr';
+var omodal=document.getElementById('omodal');
+var step1=document.getElementById('om-step1'), step2=document.getElementById('om-step2');
+var offerSvc='Γενική μεταφορά', platform=null, moves=true;
+function openOffer(svc){
+  offerSvc=svc||'Γενική μεταφορά';
+  document.getElementById('omodal-subj').textContent=offerSvc;
+  document.getElementById('om2-subj').textContent=offerSvc;
+  var marine=/jet ski|σκάφ/i.test(offerSvc);
+  document.getElementById('om-mover-row').hidden=marine;
+  if(marine){document.getElementById('om-fault-row').hidden=true}
+  step1.hidden=false;step2.hidden=true;
+  omodal.classList.add('on');omodal.setAttribute('aria-hidden','false');
+}
+function closeOffer(){omodal.classList.remove('on');omodal.setAttribute('aria-hidden','true')}
+document.querySelectorAll('[data-offer]').forEach(function(el){
+  el.addEventListener('click',function(e){e.preventDefault();openOffer(el.getAttribute('data-offer'))});
+});
+omodal.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',closeOffer)});
+addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeOffer();closeContact()}
+});
+
+// contact chooser
+var cmodal=document.getElementById('cmodal');
+document.querySelectorAll('[data-contact]').forEach(function(el){
+  el.addEventListener('click',function(e){e.preventDefault();cmodal.classList.add('on');cmodal.setAttribute('aria-hidden','false')});
+});
+function closeContact(){cmodal.classList.remove('on');cmodal.setAttribute('aria-hidden','true')}
+cmodal.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',closeContact)});
+document.querySelectorAll('[data-platform]').forEach(function(el){
+  el.addEventListener('click',function(e){
+    e.preventDefault();
+    platform=el.getAttribute('data-platform');
+    document.getElementById('om-send').textContent='Αποστολή στο '+(
+      platform==='whatsapp'?'WhatsApp':platform==='viber'?'Viber':'Email');
+    step1.hidden=true;step2.hidden=false;
+    document.getElementById('om-name').focus();
+  });
+});
+document.getElementById('om-back').addEventListener('click',function(){step2.hidden=true;step1.hidden=false});
+document.querySelectorAll('#om-move-toggle button').forEach(function(b){
+  b.addEventListener('click',function(){
+    moves=b.getAttribute('data-move')==='1';
+    document.querySelectorAll('#om-move-toggle button').forEach(function(x){x.classList.toggle('on',x===b)});
+    document.getElementById('om-fault-row').hidden=moves;
+  });
+});
+document.getElementById('om-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var v=function(id){return document.getElementById(id).value.trim()};
+  var veh=v('om-brand')+(v('om-model')?' '+v('om-model'):'');
+  var when=v('om-when');
+  var whenGr=when?when.split('-').reverse().join('/'):'';
+  var marine=document.getElementById('om-mover-row').hidden;
+  var msg='Γεια σας! Θα ήθελα προσφορά για: '+offerSvc+'.\n'
+    +'Ονοματεπώνυμο: '+v('om-name')+'\n'
+    +'Όχημα: '+veh+'\n';
+  if(!marine){
+    msg+='Κινείται: '+(moves?'Ναι':'Όχι')+'\n';
+    if(!moves){msg+='Βλάβη: '+v('om-fault')+'\n'}
+  }
+  msg+='Πότε: '+whenGr+'\n'
+    +'Από: '+v('om-from')+'\n'
+    +'Προς: '+v('om-to');
+  var sub='Ζήτηση προσφοράς — '+offerSvc;
+  if(platform==='whatsapp'){window.open('https://wa.me/306948725763?text='+encodeURIComponent(msg),'_blank','noopener')}
+  else if(platform==='viber'){location.href='viber://chat?number=%2B306948725763&draft='+encodeURIComponent(msg)}
+  else{location.href='mailto:'+OFFER_EMAIL+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(msg)}
+  closeOffer();
+});
+</script>
+</body>
+</html>
