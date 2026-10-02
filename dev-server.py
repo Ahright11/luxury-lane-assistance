@@ -30,6 +30,13 @@ class H(SimpleHTTPRequestHandler):
         sys.stderr.write("%s - %s\n" % (self.address_string(), fmt % args))
 
     # ---------- helpers ----------
+    def end_headers(self):
+        # μην κρατάει ο browser παλιά html/json όσο δουλεύουμε
+        p = self.path.split("?")[0]
+        if p in ("/", "/index.html", "/content.json", "/admin", "/admin.html"):
+            self.send_header("Cache-Control", "no-store, must-revalidate")
+        super().end_headers()
+
     def _json(self, code, obj):
         body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
