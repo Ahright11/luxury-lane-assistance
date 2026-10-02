@@ -87,6 +87,13 @@ class H(SimpleHTTPRequestHandler):
         if p == "/api/login":
             return self._json(200, {"authed": True})
 
+        if p == "/api/lead":
+            try:
+                leads = json.load(open(os.path.join(ROOT, "leads.json"), encoding="utf-8"))
+            except (OSError, ValueError):
+                leads = []
+            return self._json(200, {"ok": True, "leads": leads, "count": len(leads)})
+
         if p.startswith("/img/"):
             key = SAFE.sub("", unquote(p[5:]))
             fp = os.path.join(UPLOADS, key)
@@ -133,7 +140,63 @@ class H(SimpleHTTPRequestHandler):
         if p == "/api/login":
             return self._json(200, {"ok": True})
 
+        if p == "/api/lead":
+            n = int(self.headers.get("Content-Length") or 0)
+            try:
+                b = json.loads(self._body(n).decode("utf-8"))
+            except Exception:
+                return self._json(400, {"ok": False, "error": "bad json"})
+            fp = os.path.join(ROOT, "leads.json")
+            try:
+                leads = json.load(open(fp, encoding="utf-8"))
+            except (OSError, ValueError):
+                leads = []
+            import time
+            lead = {
+                "id": format(int(time.time() * 1000), "x") + os.urandom(2).hex(),
+                "at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+                "name": (b.get("name") or "")[:80],
+                "service": (b.get("service") or "")[:60],
+                "vehicle": (b.get("vehicle") or "")[:80],
+                "moves": b.get("moves") or "",
+                "fault": (b.get("fault") or "")[:120],
+                "when": (b.get("when") or "")[:24],
+                "from": (b.get("from") or "")[:80],
+                "to": (b.get("to") or "")[:80],
+                "platform": b.get("platform") or "",
+                "ua": (self.headers.get("User-Agent") or "")[:80],
+                "done": False,
+            }
+            leads.insert(0, lead)
+            with open(fp, "w", encoding="utf-8") as f:
+                json.dump(leads[:300], f, ensure_ascii=False, indent=2)
+            return self._json(200, {"ok": True, "id": lead["id"]})
+
         return self._json(404, {"ok": False, "error": "unknown endpoint"})
+
+    def do_PATCH(self):
+        p = urlparse(self.path).path
+        if p != "/api/lead":
+            return self._json(404, {"ok": False, "error": "unknown endpoint"})
+        n = int(self.headers.get("Content-Length") or 0)
+        try:
+            b = json.loads(self._body(n).decode("utf-8"))
+        except Exception:
+            return self._json(400, {"ok": False, "error": "bad json"})
+        fp = os.path.join(ROOT, "leads.json")
+        try:
+            leads = json.load(open(fp, encoding="utf-8"))
+        except (OSError, ValueError):
+            leads = []
+        if b.get("delete"):
+            leads = [x for x in leads if x.get("id") != b.get("id")]
+        else:
+            for x in leads:
+                if x.get("id") == b.get("id"):
+                    x["done"] = bool(b.get("done"))
+        with open(fp, "w", encoding="utf-8") as f:
+            json.dump(leads, f, ensure_ascii=False, indent=2)
+        return self._json(200, {"ok": True})
 
 
 if __name__ == "__main__":

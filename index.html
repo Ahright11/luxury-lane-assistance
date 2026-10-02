@@ -856,6 +856,15 @@ document.getElementById('om-form').addEventListener('submit',function(e){
     +'Από: '+v('om-from')+'\n'
     +'Προς: '+v('om-to');
   var sub='Ζήτηση προσφοράς — '+offerSvc;
+
+  /* Καταγραφή του αιτήματος στο CMS (αν αποτύχει, ο πελάτης δεν καταλαβαίνει τίποτα) */
+  try{
+    fetch('api/lead',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:v('om-name'),service:offerSvc,vehicle:veh,when:whenGr,
+        from:v('om-from'),to:v('om-to'),fault:(!marine&&!moves)?v('om-fault'):'',
+        moves:marine?'':(moves?'1':'0'),platform:platform})}).catch(function(){});
+  }catch(err){}
+
   if(platform==='whatsapp'){window.open('https://wa.me/306948725763?text='+encodeURIComponent(msg),'_blank','noopener')}
   else if(platform==='viber'){location.href='viber://chat?number=%2B306948725763&draft='+encodeURIComponent(msg)}
   else{location.href='mailto:'+OFFER_EMAIL+'?subject='+encodeURIComponent(sub)+'&body='+encodeURIComponent(msg)}

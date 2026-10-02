@@ -169,6 +169,37 @@
   .sup.w{background:#25D366;border-color:#25D366;color:#04310F}
   .sup svg{width:14px;height:14px}
 
+  /* ══════════ ΑΙΤΗΜΑΤΑ ══════════ */
+  .sec.leads{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#FFFDF8,#fff)}
+  .sec.leads>button.head{padding:14px 16px}
+  .sec.leads .ico{background:rgba(201,146,47,.16);color:var(--gold)}
+  .badge{background:var(--gold);color:#1A1305;font:600 10.5px/1 Inter,sans-serif;padding:4px 8px;border-radius:99px;letter-spacing:.02em}
+  .badge.grey{background:#EDEFF4;color:#6C7381}
+  .leadstats{display:flex;gap:7px;margin:2px 0 12px}
+  .stat{flex:1;border:1px solid var(--line);border-radius:10px;padding:9px 6px;text-align:center;background:#fff}
+  .stat b{display:block;font-size:19px;line-height:1.1;font-weight:600;letter-spacing:-.02em}
+  .stat span{font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut2)}
+  .leadfilters{display:flex;gap:6px;margin-bottom:11px}
+  .leadfilters button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 11px;font-size:11.5px;color:var(--mut)}
+  .leadfilters button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:500}
+  .lead{border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:9px;background:#fff;position:relative;transition:box-shadow .16s,border-color .16s}
+  .lead:hover{box-shadow:var(--shadow)}
+  .lead.new{border-color:#E6D3AA;background:#FFFDF7}
+  .lead.done{opacity:.62}
+  .lead .t{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .lead .t b{font-size:13.5px;font-weight:600}
+  .lead .t .at{margin-left:auto;font:10.5px/1 'IBM Plex Mono',ui-monospace,monospace;color:var(--mut2);white-space:nowrap}
+  .lead .tagline{margin:0 0 9px;font-size:12.5px;color:#3C4250;line-height:1.55}
+  .lead .tagline em{font-style:normal;color:var(--mut);font-size:11px}
+  .lead .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)}
+  .lead .acts .sm{padding:5px 10px;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;color:var(--ink)}
+  .lead .acts .sm svg{width:12px;height:12px}
+  .lead .acts .sm.wa{background:#25D366;border-color:#25D366;color:#04310F}
+  .lead .acts .sm.vi{background:#7360FF;border-color:#7360FF;color:#fff}
+  .lead .acts .grow{flex:1}
+  .empty{text-align:center;padding:26px 14px;color:var(--mut);font-size:12.5px;line-height:1.7}
+  .empty b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:5px}
+
   /* ══════════ MODAL / TOAST ══════════ */
   .modal{position:fixed;inset:0;background:rgba(9,11,16,.62);backdrop-filter:blur(3px);display:none;place-items:center;z-index:60;padding:20px}
   .modal.on{display:grid}
@@ -226,6 +257,7 @@
   </span>
 
   <span class="pill ok" id="status"><i></i>Φόρτωση…</span>
+  <span class="pill warn" id="leadsPill" hidden style="cursor:pointer"><i></i><b id="leadsN">0</b>&nbsp;νέα αιτήματα</span>
   <span class="pill" id="dirtyPill" hidden style="background:rgba(201,146,47,.16);color:#F0CB84;border-color:rgba(201,146,47,.3)"><i style="background:var(--gold)"></i><b id="dirtyN">0</b>&nbsp;αλλαγές</span>
 
   <span class="tool">
@@ -611,6 +643,7 @@ function redoAll(){ if(hIndex<history.length-1){ hIndex++; applySnap(); toast('�
 /* ---------- φόρμα ---------- */
 function buildForm(){
   const side=$('#side'); side.innerHTML='';
+  side.appendChild(buildLeadsSection());
   SCHEMA.forEach((sec,i)=>{
     const el=document.createElement('section');
     el.className='sec'+(i===0?' open':'');
@@ -743,6 +776,141 @@ function refreshAll(){
   });
 }
 
+/* ---------- αιτήματα (leads) ---------- */
+let LEADS=[], leadFilter='all', leadsAuthed=false;
+const SEEN_KEY='lla_leads_seen';
+const seenAt = () => +(localStorage.getItem(SEEN_KEY)||0);
+
+function buildLeadsSection(){
+  const el=document.createElement('section');
+  el.className='sec leads'; el.setAttribute('data-sec','leads');
+  el.innerHTML=`<button class="head" type="button">
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M6.5 9.5a5.5 5.5 0 0 1 11 0c0 4 1.5 5.5 1.5 5.5H5S6.5 13.5 6.5 9.5Z"/><path d="M10.5 18.5a1.8 1.8 0 0 0 3 0"/></svg></span>
+      <span class="nm">Αιτήματα<span class="sub">Ζητήσεις προσφοράς από τη σελίδα</span></span>
+      <span class="badge grey" id="leadBadge">…</span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="m9 6 6 6-6 6"/></svg></button>
+    <div class="body">
+      <div class="leadstats" id="leadStats"></div>
+      <div class="leadfilters" id="leadFilters">
+        <button type="button" data-f="all" aria-pressed="true">Όλα</button>
+        <button type="button" data-f="new" aria-pressed="false">Νέα</button>
+        <button type="button" data-f="todo" aria-pressed="false">Εκκρεμούν</button>
+      </div>
+      <div id="leadList"></div>
+    </div>`;
+  el.querySelector('button.head').addEventListener('click',()=>{
+    const open=el.classList.contains('open');
+    $$('.sec').forEach(s=>s.classList.remove('open'));
+    if(!open){ el.classList.add('open'); if(leadsAuthed) localStorage.setItem(SEEN_KEY, Date.now()); renderLeads(); updateLeadsBadge(); }
+  });
+  el.querySelector('#leadFilters').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-f]'); if(!b) return;
+    leadFilter=b.getAttribute('data-f');
+    el.querySelectorAll('#leadFilters button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    renderLeads();
+  });
+  return el;
+}
+
+const ago = iso => {
+  const t=new Date(iso), d=Date.now()-t.getTime();
+  if(d<60000) return 'μόλις τώρα';
+  if(d<3600000) return 'πριν '+Math.round(d/60000)+'′';
+  const today=new Date(); today.setHours(0,0,0,0);
+  const hm=t.toLocaleTimeString('el-GR',{hour:'2-digit',minute:'2-digit'});
+  if(t>=today) return 'σήμερα '+hm;
+  if(t>=new Date(today.getTime()-864e5)) return 'χθες '+hm;
+  return t.toLocaleDateString('el-GR',{day:'2-digit',month:'2-digit'})+' '+hm;
+};
+const isNewLead = l => !l.done && new Date(l.at).getTime() > seenAt();
+
+function updateLeadsBadge(){
+  const b=$('#leadBadge'); if(!b) return;
+  if(!leadsAuthed){ b.className='badge grey'; b.textContent='κλειδωμένο'; $('#leadsPill').hidden=true; return }
+  const n=LEADS.filter(isNewLead).length;
+  b.className='badge'+(n?'':' grey');
+  b.textContent = n ? n+' νέα' : (LEADS.length ? LEADS.length+' σύνολο' : 'κανένα');
+  const p=$('#leadsPill'); p.hidden = !n; if(n) $('#leadsN').textContent=n;
+}
+
+function renderLeads(){
+  const list=$('#leadList'); if(!list) return;
+  const st=$('#leadStats');
+  const d0=new Date(); d0.setHours(0,0,0,0);
+  const today=LEADS.filter(l=>new Date(l.at)>=d0).length;
+  const week=LEADS.filter(l=>Date.now()-new Date(l.at).getTime()<7*864e5).length;
+  st.innerHTML = `<div class="stat"><b>${today}</b><span>σήμερα</span></div>
+                  <div class="stat"><b>${week}</b><span>7 ημέρες</span></div>
+                  <div class="stat"><b>${LEADS.length}</b><span>σύνολο</span></div>`;
+
+  if(!leadsAuthed){
+    list.innerHTML='<div class="empty"><b>Συνδεθείτε για να δείτε τα αιτήματα</b>Τα στοιχεία των πελατών είναι ορατά μόνο σε εσένα.</div>'; return;
+  }
+  let rows = LEADS;
+  if(leadFilter==='new') rows = LEADS.filter(isNewLead);
+  if(leadFilter==='todo') rows = LEADS.filter(l=>!l.done);
+
+  if(!rows.length){
+    list.innerHTML='<div class="empty"><b>'+(LEADS.length?'Δεν υπάρχει κάτι εδώ':'Κανένα αίτημα ακόμα')+'</b>'+
+      (LEADS.length?'Δοκίμασε άλλο φίλτρο.':'Όταν κάποιος ζητήσει προσφορά από τη σελίδα, θα εμφανιστεί αυτόματα εδώ — με το όχημα, τη διαδρομή και την ημερομηνία.')+'</div>';
+    return;
+  }
+  list.innerHTML='';
+  rows.forEach(l=>{
+    const el=document.createElement('article');
+    el.className='lead'+(isNewLead(l)?' new':'')+(l.done?' done':'');
+    const parts=[];
+    if(l.service) parts.push('<b>'+esc(l.service)+'</b>');
+    if(l.vehicle) parts.push(esc(l.vehicle));
+    if(l.from||l.to) parts.push(esc(l.from||'?')+' → '+esc(l.to||'?'));
+    if(l.when) parts.push('📅 '+esc(l.when));
+    if(l.moves==='0') parts.push('δεν κινείται');
+    if(l.fault) parts.push('βλάβη: '+esc(l.fault));
+    el.innerHTML = `<div class="t"><b>${esc(l.name)}</b>${l.done?'<span class="badge grey">το ανέλαβα</span>':''}<span class="at">${ago(l.at)}</span></div>
+      <p class="tagline">${parts.join(' · ')}</p>
+      <p class="tagline"><em>ήρθε μέσω ${l.platform==='whatsapp'?'WhatsApp':l.platform==='viber'?'Viber':l.platform==='email'?'email':'φόρμας'}${l.ua?(/Mobi|Android|iPhone/i.test(l.ua)?' · κινητό':' · υπολογιστής'):''}</em></p>
+      <div class="acts">
+        <a class="sm wa" target="_blank" href="https://wa.me/?text=${encodeURIComponent(reply(l))}">WhatsApp</a>
+        <a class="sm" href="mailto:?subject=${encodeURIComponent('Προσφορά — '+l.name)}&body=${encodeURIComponent(reply(l))}">Email</a>
+        <button class="sm copy" type="button">⧉ Αντιγραφή</button>
+        <span class="grow" style="flex:1"></span>
+        <button class="sm mark" type="button">${l.done?'↺ Εκκρεμεί':'✓ Το ανέλαβα'}</button>
+        <button class="sm del" type="button" title="Διαγραφή">🗑</button>
+      </div>`;
+    el.querySelector('.mark').addEventListener('click',async()=>{ await leadPatch({id:l.id,done:!l.done}); l.done=!l.done; renderLeads(); updateLeadsBadge() });
+    el.querySelector('.del').addEventListener('click',async()=>{
+      if(!confirm('Να διαγραφεί το αίτημα του/της '+l.name+' οριστικά;')) return;
+      await leadPatch({id:l.id,delete:true}); LEADS=LEADS.filter(x=>x.id!==l.id); renderLeads(); updateLeadsBadge();
+    });
+    el.querySelector('.copy').addEventListener('click',()=>{
+      const txt=l.name+' · '+(l.service||'')+' · '+(l.vehicle||'')+' · '+(l.from||'')+' → '+(l.to||'')+' · '+(l.when||'')+' · '+new Date(l.at).toLocaleString('el-GR');
+      navigator.clipboard.writeText(txt).then(()=>toast('Αντιγράφηκε'),()=>toast('Δεν αντιγράφηκε',true));
+    });
+    list.appendChild(el);
+  });
+}
+
+function reply(l){
+  return 'Γεια σας'+(l.name?' '+l.name:'')+'!\n\nΣχετικά με το αίτημα σας για '+(l.service||'μεταφορά')+
+    (l.vehicle?' ('+l.vehicle+')':'')+(l.from||l.to?'\nΔιαδρομή: '+(l.from||'?')+' → '+(l.to||'?'):'')+
+    (l.when?'\nΗμερομηνία: '+l.when:'')+'\n\nΜπορώ να σας δώσω τιμή αμέσως. Ισχύει 24/7, σε όλη την Ελλάδα και τα νησιά.\n\nΜανώλης Φωτιάδης — Luxury Lane Assistance';
+}
+
+async function leadPatch(body){
+  const r=await fetch(API+'lead',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok) toast('Δεν αποθηκεύτηκε η αλλαγή',true);
+  return r.ok;
+}
+
+async function loadLeads(){
+  try{
+    const r=await fetch(API+'lead?t='+Date.now());
+    if(r.status===401){ leadsAuthed=false }
+    else if(r.ok){ const j=await r.json(); LEADS=j.leads||[]; leadsAuthed=true }
+  }catch(e){ leadsAuthed=false }
+  renderLeads(); updateLeadsBadge();
+}
+
 /* ---------- συσκευές ---------- */
 function buildDevMenu(){
   const m=$('#devMenu'); m.innerHTML='';
@@ -818,7 +986,7 @@ async function doLogin(){
   const r=await fetch(API+'login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pass})});
   const j=await r.json().catch(()=>({}));
   if(!r.ok||!j.ok){ toast(j.error||'Λάθος κωδικός',true); return }
-  authed=true; reflectAuth(); $('#modal').classList.remove('on'); toast('Συνδεθήκατε'); refreshDirty();
+  authed=true; reflectAuth(); $('#modal').classList.remove('on'); toast('Συνδεθήκατε'); refreshDirty(); loadLeads();
 }
 
 /* ---------- αναζήτηση ---------- */
@@ -855,7 +1023,7 @@ $('#saveBtn').addEventListener('click',save);
 $('#loginBtn').addEventListener('click',toggleLogin);
 $('#loginBtn2').addEventListener('click',()=>{ $('#toolsModal').classList.remove('on'); toggleLogin() });
 async function toggleLogin(){
-  if(authed){ await fetch(API+'login',{method:'DELETE'}); authed=false; reflectAuth(); toast('Αποσυνδεθήκατε'); refreshDirty(); return }
+  if(authed){ await fetch(API+'login',{method:'DELETE'}); authed=false; reflectAuth(); LEADS=[]; leadsAuthed=false; renderLeads(); updateLeadsBadge(); toast('Αποσυνδεθήκατε'); refreshDirty(); return }
   openLogin();
 }
 $('#modalClose').addEventListener('click',()=>$('#modal').classList.remove('on'));
@@ -957,7 +1125,13 @@ pv.addEventListener('load',()=>{ setTimeout(()=>{ push(); buildMap(); installPre
   collectPaths(); buildForm(); buildDevMenu(); layoutDevice(); reflectPick();
   setTimeout(buildMap,900);
   try{ const j=await (await fetch(API+'login')).json(); authed=!!j.authed }catch(e){ authed=false }
-  reflectAuth(); refreshDirty();
+  reflectAuth(); refreshDirty(); loadLeads();
+  $('#leadsPill').addEventListener('click',()=>{
+    const s=$('.sec[data-sec=leads]'); if(!s) return;
+    $$('.sec').forEach(x=>x.classList.remove('open')); s.classList.add('open');
+    localStorage.setItem(SEEN_KEY, Date.now()); renderLeads(); updateLeadsBadge();
+    $('#scroll').scrollTo({top:0,behavior:'smooth'});
+  });
 
   /* πρόχειρο που δεν αποθηκεύτηκε */
   try{
