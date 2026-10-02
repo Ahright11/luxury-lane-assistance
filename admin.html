@@ -232,7 +232,7 @@
     <button class="tb icon" id="mobileView" title="Προβολή σελίδας" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M11 18h2"/></svg>
     </button>
-    <a class="tb viber" id="viberBtn" target="_blank">
+    <a class="tb viber" id="viberBtn" target="_blank" title="Viber στον Μανώλη Φωτιάδη">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a8 8 0 0 1 8 8c0 4.4-3.6 8-8 8H7l-3 2 1-4.2A8 8 0 0 1 12 3Z"/></svg>
       Viber
     </a>
@@ -261,8 +261,8 @@
       <div id="notices"></div>
       <div id="side"></div>
       <div class="support">
-        <h4>Χρειάζεσαι βοήθεια;</h4>
-        <p>Στείλε μου Viber ή WhatsApp και το φτιάχνουμε αμέσως — ό,τι ώρα είναι.</p>
+        <h4>Πρόβλημα με τη σελίδα;</h4>
+        <p>Στείλε Viber ή WhatsApp στον <b>Μανώλη Φωτιάδη</b> — <span id="supNum"></span>. Ό,τι ώρα και αν είναι.</p>
         <div class="row">
           <a class="sup v" id="supViber" target="_blank">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a8 8 0 0 1 8 8c0 4.4-3.6 8-8 8H7l-3 2 1-4.2A8 8 0 0 1 12 3Z"/></svg>
@@ -291,7 +291,7 @@
       <span id="devInfo">Desktop · 1280 × 800</span>
       <span id="zoomInfo" style="font:10.5px/1 ui-monospace,monospace;color:#98A0AF"></span>
       <span class="grow" style="flex:1"></span>
-      <button class="sm" id="pickBtn" title="Πάτησε ένα σημείο της σελίδας για να πας στο πεδίο του">🎯 Επιλογή πεδίου: <b>ναι</b></button>
+      <button class="sm" id="pickBtn" title="Όταν είναι στο «πεδίο», το κλικ μέσα στη σελίδα ανοίγει το πεδίο που το ελέγχει. Στο «κανονικό» η σελίδα λειτουργεί όπως για τον επισκέπτη (σύνδεσμοι, φόρμες).">🎯 Κλικ στη σελίδα: <b>πεδίο</b></button>
       <button class="sm" id="openSite">Άνοιγμα σελίδας ↗</button>
     </div>
     <div class="holder" id="holder">
@@ -328,7 +328,7 @@
       <button class="sm" id="revertAll" style="padding:10px;text-align:left">↺ Επαναφορά όλων στο τελευταίο αποθηκευμένο</button>
       <button class="sm" id="hardReload" style="padding:10px;text-align:left">⟳ Φόρτωση ξανά από τον server</button>
       <button class="sm" id="loginBtn2" style="padding:10px;text-align:left">🔑 Σύνδεση</button>
-      <a class="sm" id="viberBtn2" target="_blank" style="padding:10px;text-align:left;text-decoration:none;display:block">💬 Viber στον Μανώλη</a>
+      <a class="sm" id="viberBtn2" target="_blank" style="padding:10px;text-align:left;text-decoration:none;display:block">💬 Viber στον Μανώλη Φωτιάδη · <span id="viberNum2"></span></a>
     </div>
     <div class="row"><button class="sm" id="toolsClose">Κλείσιμο</button></div>
   </div>
@@ -343,7 +343,7 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ---------- στοιχεία υποστήριξης (άλλαξέ τα εδώ) ---------- */
-const SUPPORT = { name:'Μανώλης', viber:'+306948725763', wa:'306948725763', tel:'+306948725763' };
+const SUPPORT = { name:'Μανώλης Φωτιάδης', viber:'+306986993168', wa:'306986993168', tel:'+306986993168' };
 
 /* ---------- συσκευές (πραγματικές διαστάσεις σε CSS px) ---------- */
 const DEVICES = [
@@ -903,12 +903,16 @@ $('#viberBtn2').href='viber://chat?number='+encodeURIComponent(SUPPORT.viber);
 $('#supViber').href='viber://chat?number='+encodeURIComponent(SUPPORT.viber);
 $('#supWa').href='https://wa.me/'+SUPPORT.wa;
 $('#supTel').href='tel:'+SUPPORT.tel;
-$('#supTelTxt').textContent=SUPPORT.tel.replace('+30','').replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3');
+const fmt = n => n.replace(/^\+?30/,'').replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3');
+$('#supTelTxt').textContent=fmt(SUPPORT.tel);
+$('#supNum').textContent=fmt(SUPPORT.tel);
+$('#viberNum2').textContent=fmt(SUPPORT.tel);
+$('#viberBtn').title='Viber: '+SUPPORT.name+' · '+fmt(SUPPORT.tel);
 if(matchMedia('(max-width:1080px)').matches) $('#mobileView').hidden=false;
 
 /* ---------- προβολή: κλικ/χάιλαϊτ ---------- */
 let pick=true;
-function reflectPick(){ $('#pickBtn').innerHTML='🎯 Επιλογή πεδίου: <b>'+(pick?'ναι':'όχι')+'</b>' }
+function reflectPick(){ $('#pickBtn').innerHTML='🎯 Κλικ στη σελίδα: <b>'+(pick?'πεδίο':'κανονικό')+'</b>' }
 function installPreviewHooks(){
   const d=pdoc(); if(!d) return;
   HL_STYLE=false; hlEl=null;
