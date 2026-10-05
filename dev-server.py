@@ -21,6 +21,10 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOADS = os.path.join(ROOT, "assets", "uploads")
 SAFE = re.compile(r"[^A-Za-z0-9._-]+")
 
+# LLA_AUTH=0 -> το τοπικό api/login γυρίζει authed:false, για να δοκιμάζεις την πύλη
+DEV_AUTH = os.environ.get("LLA_AUTH", "1") != "0"
+DEV_PASS = os.environ.get("LLA_PASS", "testpass")
+
 
 class H(SimpleHTTPRequestHandler):
     def __init__(self, *a, **kw):
@@ -85,7 +89,9 @@ class H(SimpleHTTPRequestHandler):
             return
 
         if p == "/api/login":
-            return self._json(200, {"authed": True})
+            if DEV_AUTH:
+                return self._json(200, {"authed": True})
+            return self._json(200, {"authed": False})
 
         if p == "/api/lead":
             try:
@@ -138,7 +144,16 @@ class H(SimpleHTTPRequestHandler):
             return self._json(200, {"ok": True, "path": "/img/" + name})
 
         if p == "/api/login":
-            return self._json(200, {"ok": True})
+            if DEV_AUTH:
+                return self._json(200, {"ok": True})
+            n = int(self.headers.get("Content-Length") or 0)
+            try:
+                pass_ = json.loads(self._body(n).decode("utf-8")).get("pass", "")
+            except Exception:
+                pass_ = ""
+            if pass_ == DEV_PASS:
+                return self._json(200, {"ok": True})
+            return self._json(401, {"ok": False, "error": "Λάθος κωδικός"})
 
         if p == "/api/lead":
             n = int(self.headers.get("Content-Length") or 0)

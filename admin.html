@@ -198,6 +198,34 @@
   .empty{text-align:center;padding:26px 14px;color:var(--mut);font-size:12.5px;line-height:1.7}
   .empty b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:5px}
 
+  /* ══════════ ΠΥΛΗ ΣΥΝΔΕΣΗΣ ══════════ */
+  body.locked header.app,body.locked main{display:none}
+  .gate{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:24px;
+    background:radial-gradient(900px 500px at 50% -10%,rgba(201,146,47,.13),transparent 62%),linear-gradient(180deg,#101215,#0B0C0D)}
+  body.locked .gate{display:grid}
+  .gate .gwrap{width:100%;max-width:390px;text-align:center}
+  .gate img{height:52px;margin-bottom:22px;filter:drop-shadow(0 3px 10px rgba(0,0,0,.55))}
+  .gate h1{font-family:'Roboto Condensed',Inter,sans-serif;font-size:15px;font-weight:700;letter-spacing:.2em;
+    text-transform:uppercase;color:#F4F1EB;margin:0 0 4px}
+  .gate p.s{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#8C94A6;margin:0 0 26px}
+  .gate .box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.11);border-radius:18px;padding:22px;
+    text-align:left;backdrop-filter:blur(6px)}
+  .gate label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8C94A6;margin-bottom:7px}
+  .gate input{width:100%;padding:12px 13px;border-radius:10px;border:1px solid rgba(255,255,255,.16);
+    background:rgba(0,0,0,.28);color:#fff;outline:0;font-size:15px;letter-spacing:.04em;transition:.15s}
+  .gate input:focus{border-color:rgba(201,146,47,.75);box-shadow:0 0 0 4px rgba(201,146,47,.16)}
+  .gate button{width:100%;margin-top:12px;height:44px;border:0;border-radius:10px;font-weight:600;font-size:13.5px;
+    background:linear-gradient(180deg,#D8A43C,#C08A26);color:#1A1305;cursor:pointer;transition:.15s}
+  .gate button:hover{filter:brightness(1.06)}
+  .gate button[disabled]{opacity:.55;pointer-events:none}
+  .gate .err{color:#F0A8A8;font-size:12.5px;margin-top:10px;min-height:17px;text-align:center}
+  .gate .help{margin-top:22px;font-size:12px;color:#8C94A6;line-height:1.7}
+  .gate .help a{color:#CFC6FF;text-decoration:none;border-bottom:1px solid rgba(207,198,255,.35)}
+  .gate .back{display:block;margin-top:16px;font-size:12px;color:#8C94A6;text-decoration:none}
+  .gate .back:hover{color:#E4E8F0}
+  .gate.shake .box{animation:gshake .4s}
+  @keyframes gshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
   /* ══════════ MODAL / TOAST ══════════ */
   .modal{position:fixed;inset:0;background:rgba(9,11,16,.62);backdrop-filter:blur(3px);display:none;place-items:center;z-index:60;padding:20px}
   .modal.on{display:grid}
@@ -239,7 +267,24 @@
   }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div class="gate" id="gate">
+  <div class="gwrap">
+    <img src="assets/logo-main.png?v=3" alt="Luxury Lane Assistance">
+    <h1>Διαχείριση περιεχομένου</h1>
+    <p class="s">Luxury Lane Assistance</p>
+    <div class="box">
+      <label for="gatePass">Κωδικός πρόσβασης</label>
+      <input type="password" id="gatePass" autocomplete="current-password" placeholder="••••••••">
+      <button id="gateBtn" type="button">Σύνδεση</button>
+      <div class="err" id="gateErr"></div>
+    </div>
+    <div class="help">Ξέχασες τον κωδικό; Στείλε Viber στο <a id="gateViber" target="_blank">698 699 3168</a></div>
+    <a class="back" href="index.html">← Πίσω στη σελίδα</a>
+  </div>
+</div>
+
 <header class="app">
   <span class="brand">
     <img src="assets/logo-badge.png" alt="Luxury Lane Assistance">
@@ -1021,7 +1066,13 @@ $('#saveBtn').addEventListener('click',save);
 $('#loginBtn').addEventListener('click',toggleLogin);
 $('#loginBtn2').addEventListener('click',()=>{ $('#toolsModal').classList.remove('on'); toggleLogin() });
 async function toggleLogin(){
-  if(authed){ await fetch(API+'login',{method:'DELETE'}); authed=false; reflectAuth(); LEADS=[]; leadsAuthed=false; renderLeads(); updateLeadsBadge(); toast('Αποσυνδεθήκατε'); refreshDirty(); return }
+  if(authed){
+    await fetch(API+'login',{method:'DELETE'});
+    authed=false; reflectAuth();
+    try{ sessionStorage.clear() }catch(e){}
+    location.reload();   /* ξανακλειδώνει με την πύλη */
+    return;
+  }
   openLogin();
 }
 $('#modalClose').addEventListener('click',()=>$('#modal').classList.remove('on'));
@@ -1109,10 +1160,31 @@ function revealField(path){
   highlight(path,false);
 }
 
-/* ---------- εκκίνηση ---------- */
-pv.addEventListener('load',()=>{ setTimeout(()=>{ push(); buildMap(); installPreviewHooks(); },200) });
+/* ---------- πύλη σύνδεσης ---------- */
+function lockUI(){ document.body.classList.add('locked'); $('#gate').hidden=false; setTimeout(()=>{ const p=$('#gatePass'); if(p) p.focus() },80) }
+function unlockUI(){ document.body.classList.remove('locked'); $('#gate').hidden=true }
+async function gateLogin(){
+  const inp=$('#gatePass'), btn=$('#gateBtn'), err=$('#gateErr');
+  const pass=inp.value; if(!pass) return;
+  btn.disabled=true; btn.textContent='Έλεγχος…'; err.textContent='';
+  try{
+    const r=await fetch(API+'login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pass})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.ok){ throw new Error(j.error||'Λάθος κωδικός') }
+    authed=true; inp.value=''; btn.textContent='Σύνδεση'; btn.disabled=false;
+    unlockUI(); reflectAuth();
+    await startEditor();
+  }catch(e){
+    err.textContent=e.message||'Λάθος κωδικός';
+    $('#gate').classList.add('shake'); setTimeout(()=>$('#gate').classList.remove('shake'),450);
+    btn.disabled=false; btn.textContent='Σύνδεση'; inp.select();
+  }
+}
 
-(async function boot(){
+/* ---------- εκκίνηση ---------- */
+let started=false;
+async function startEditor(){
+  if(started) return; started=true;
   try{
     const r=await fetch(API+'content?t='+Date.now());
     if(!r.ok) throw new Error('HTTP '+r.status);
@@ -1122,7 +1194,6 @@ pv.addEventListener('load',()=>{ setTimeout(()=>{ push(); buildMap(); installPre
   history=[JSON.stringify(content)]; hIndex=0;
   collectPaths(); buildForm(); buildDevMenu(); layoutDevice(); reflectPick();
   setTimeout(buildMap,900);
-  try{ const j=await (await fetch(API+'login')).json(); authed=!!j.authed }catch(e){ authed=false }
   reflectAuth(); refreshDirty(); loadLeads();
   $('#leadsPill').addEventListener('click',()=>{
     const s=$('.sec[data-sec=leads]'); if(!s) return;
@@ -1130,26 +1201,47 @@ pv.addEventListener('load',()=>{ setTimeout(()=>{ push(); buildMap(); installPre
     localStorage.setItem(SEEN_KEY, Date.now()); renderLeads(); updateLeadsBadge();
     $('#scroll').scrollTo({top:0,behavior:'smooth'});
   });
-
-  /* πρόχειρο που δεν αποθηκεύτηκε */
-  try{
-    const d=JSON.parse(localStorage.getItem('lla_draft')||'null');
-    if(d&&d.content&&JSON.stringify(d.content)!==JSON.stringify(saved)){
-      const t=new Date(d.at).toLocaleString('el-GR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'});
-      const n=$('#notices');
-      n.innerHTML=`<div class="notice warn" id="draftNote">
-        <span>Βρήκα <b>μη αποθηκευμένες αλλαγές</b> από ${t}. Να τις επαναφέρω;</span>
-        <button class="x">×</button>
-        <div class="row"><button class="sm gold" id="draftYes">Επαναφορά</button><button class="sm" id="draftNo">Απόρριψη</button></div></div>`;
-      $('#draftYes').onclick=()=>{ content=d.content; history=[JSON.stringify(content)]; hIndex=0; refreshAll(); refreshDirty(); push(); $('#draftNote').remove(); toast('Οι αλλαγές επανήλθαν — πάτησε Αποθήκευση') };
-      $('#draftNo').onclick=()=>{ localStorage.removeItem('lla_draft'); $('#draftNote').remove() };
-      n.querySelector('.x').onclick=()=>$('#draftNote').remove();
-    }
-  }catch(e){}
-
+  draftPrompt();
   setTimeout(layoutDevice,400);
   setTimeout(()=>window.dispatchEvent(new Event('resize')),700);
+}
+pv.addEventListener('load',()=>{ setTimeout(()=>{ push(); buildMap(); installPreviewHooks(); },200) });
+
+/* ---------- πρόχειρο που δεν αποθηκεύτηκε ---------- */
+function draftPrompt(){
+    try{
+      const d=JSON.parse(localStorage.getItem('lla_draft')||'null');
+      if(d&&d.content&&JSON.stringify(d.content)!==JSON.stringify(saved)){
+        const t=new Date(d.at).toLocaleString('el-GR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'});
+        const n=$('#notices');
+        n.innerHTML=`<div class="notice warn" id="draftNote">
+          <span>Βρήκα <b>μη αποθηκευμένες αλλαγές</b> από ${t}. Να τις επαναφέρω;</span>
+          <button class="x">×</button>
+          <div class="row"><button class="sm gold" id="draftYes">Επαναφορά</button><button class="sm" id="draftNo">Απόρριψη</button></div></div>`;
+        $('#draftYes').onclick=()=>{ content=d.content; history=[JSON.stringify(content)]; hIndex=0; refreshAll(); refreshDirty(); push(); $('#draftNote').remove(); toast('Οι αλλαγές επανήλθαν — πάτησε Αποθήκευση') };
+        $('#draftNo').onclick=()=>{ localStorage.removeItem('lla_draft'); $('#draftNote').remove() };
+        n.querySelector('.x').onclick=()=>$('#draftNote').remove();
+      }
+    }catch(e){}
+
+
+}
+
+/* ---------- boot: πρώτα η πύλη, μετά ο editor ---------- */
+(async function boot(){
+  $('#gateBtn').addEventListener('click', gateLogin);
+  $('#gatePass').addEventListener('keydown', e => { if(e.key === 'Enter') gateLogin() });
+  $('#gateViber').href = 'viber://chat?number=' + encodeURIComponent(SUPPORT.viber);
+
+  let ok = false;
+  try{ const j = await (await fetch(API + 'login')).json(); ok = !!j.authed }catch(e){ ok = false }
+
+  if(!ok){ authed = false; lockUI(); return }
+
+  authed = true; unlockUI(); reflectAuth();
+  await startEditor();
 })();
+
 </script>
 </body>
 </html>
