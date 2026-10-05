@@ -18,9 +18,9 @@
 <meta property="og:image:height" content="1024">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.luxurylaneassistance.gr/assets/og-logo.png?v=3">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/roboto-condensed-var-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/roboto-condensed-var-greek.woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>
 :root{
   --asphalt:#0B0C0D;
@@ -372,7 +372,7 @@ img,video{display:block;max-width:100%}
 <nav class="nav" id="nav">
   <div class="in">
     <a class="mark" href="#" aria-label="Luxury Lane Assistance — G.Trasias Group">
-      <img class="logo-img" src="assets/logo-main.png?v=2" alt="Luxury Lane Assistance — G.Trasias Group" width="160" height="128">
+      <img class="logo-img" src="assets/logo-main.png?v=3" alt="Luxury Lane Assistance — G.Trasias Group" width="240" height="92">
     </a>
     <a class="ctaC-call" href="#" data-contact aria-label="Επικοινωνία — 694 872 5763">
   <svg class="ctaC-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2Z"/></svg>
@@ -385,13 +385,11 @@ img,video{display:block;max-width:100%}
 </nav>
 
 <header class="hero">
-  <video class="vid-desk" autoplay muted loop playsinline preload="auto"
-         poster="assets/hero-fs.jpg" aria-label="Supercar πάνω στην πλατφόρμα">
-    <source src="assets/hero-fs.mp4" type="video/mp4">
+  <video class="vid-desk" muted loop playsinline preload="none" data-src="assets/hero-fs.mp4"
+         poster="assets/hero-fs.webp" aria-label="Supercar πάνω στην πλατφόρμα">
   </video>
-  <video class="vid-mob" autoplay muted loop playsinline preload="auto"
-         poster="assets/hero-mob.jpg" aria-label="Supercar πάνω στην πλατφόρμα">
-    <source src="assets/hero-mob.mp4" type="video/mp4">
+  <video class="vid-mob" muted loop playsinline preload="none" data-src="assets/hero-mob.mp4"
+         poster="assets/hero-mob.webp" aria-label="Supercar πάνω στην πλατφόρμα">
   </video>
   <div class="wrap in">
    <div class="col">
@@ -423,8 +421,7 @@ img,video{display:block;max-width:100%}
   <div class="wrap">
     <div class="band rv">
       <div class="m">
-        <video autoplay muted loop playsinline preload="metadata" poster="assets/clip-load-poster.jpg" aria-label="Φόρτωση στην πλατφόρμα">
-          <source src="assets/clip-load.mp4" type="video/mp4">
+        <video muted loop playsinline preload="none" data-src="assets/clip-load.mp4" poster="assets/clip-load-poster.webp" aria-label="Φόρτωση στην πλατφόρμα">
         </video>
       </div>
       <div class="c">
@@ -872,14 +869,51 @@ document.getElementById('om-form').addEventListener('submit',function(e){
 });
 </script>
 
+<!-- ===== lazy video: το βίντεο φορτώνει αφού η σελίδα είναι έτοιμη ===== -->
+<script>
+(function(){
+  function play(v){
+    v.preload='auto';
+    v.src=v.getAttribute('data-src');
+    v.removeAttribute('data-src');
+    var p=v.play(); if(p&&p.catch) p.catch(function(){});
+  }
+  /* hero: μόνο το βίντεο που φαίνεται, αφού φορτώσει η σελίδα */
+  function hero(){
+    [].slice.call(document.querySelectorAll('video[data-src]')).forEach(function(v){
+      if(v.closest('.hero')){ if(getComputedStyle(v).display!=='none') play(v); }
+    });
+  }
+  /* το βίντεο του «σχετικά» μόνο όταν πλησιάζει στην οθόνη */
+  function deferred(){
+    var below=[].slice.call(document.querySelectorAll('video[data-src]')).filter(function(v){return !v.closest('.hero')});
+    if(!below.length) return;
+    if(!('IntersectionObserver' in window)){ below.forEach(play); return }
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ play(e.target); io.unobserve(e.target) } });
+    },{rootMargin:'300px'});
+    below.forEach(function(v){ io.observe(v) });
+  }
+  function go(){ hero(); setTimeout(deferred,1200) }
+  if(document.readyState==='complete') go();
+  else window.addEventListener('load',function(){
+    (window.requestIdleCallback||function(f){setTimeout(f,200)})(go);
+  });
+})();
+</script>
+
 <!-- ===== CMS content renderer: γεμίζει τη σελίδα από το content.json ===== -->
 <script>
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)};
   var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+  /* WebP: ίδιο αρχείο, ~30% μικρότερο. Αν ο browser δεν το υποστηρίζει, μένει το .jpg */
+  var WEBP_OK=(function(){try{return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp')===0}catch(e){return false}})();
+  var WEBP=['assets/car-ferrari.jpg','assets/car-maserati.jpg','assets/car-jaguar.jpg','assets/car-porsche.jpg','assets/hero-truck.jpg','assets/jetski.jpg'];
+  function imgsrc(s){ return (WEBP_OK && WEBP.indexOf(s)>=0) ? s.replace(/\.[^.]+$/,'.webp') : s }
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
   function T(sel,v,root){var n=$(sel,root); if(n&&v!=null)n.textContent=v; return n}
-  function I(sel,src,alt,root){var im=$(sel,root); if(im&&src){im.src=src; if(alt!=null)im.alt=alt}}
+  function I(sel,src,alt,root){var im=$(sel,root); if(im&&src){im.src=imgsrc(src); if(alt!=null)im.alt=alt}}
   function B(sel,v,root){ /* κρατάει το svg μέσα στο κουμπί, αλλάζει μόνο το κείμενο */
     var b=sel?$(sel,root):root; if(!b||b.nodeType!==1||v==null)return;
     var ns=[].slice.call(b.childNodes),hit=null,i;

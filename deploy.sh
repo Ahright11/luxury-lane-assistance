@@ -12,6 +12,7 @@ rm -rf "$STAGE"
 mkdir -p "$STAGE"
 rsync -a \
   --exclude '.git' --exclude '.deploy' --exclude '__pycache__' \
+  --exclude '_unused' --exclude '_src-media' --exclude '*.md' --exclude 'leads.json' --exclude '*.py' \
   --exclude 'dev-server.py' --exclude 'deploy.sh' \
   --exclude 'upscale.py' --exclude 'ws_upscale.py' \
   --exclude 'luxurylaneassistance.gr.conf' \
