@@ -543,6 +543,7 @@ img,video{display:block;max-width:100%}
 .svc .plate img{width:100%;height:100%;object-fit:cover;filter:grayscale(.45) brightness(.66) contrast(1.05);
   transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}
 .svc article:hover .plate img,.svc article:focus-within .plate img{transform:scale(1.04);filter:grayscale(0) brightness(.86) contrast(1)}
+.plate picture{display:contents}
 .svc .plate::after{content:"";position:absolute;right:0;bottom:0;width:14px;height:14px;
   border-right:2px solid var(--hazard);border-bottom:2px solid var(--hazard);opacity:.9}
 .svc .c{position:relative;z-index:2;padding:var(--mount) 0 0;display:flex;flex-direction:column;flex:1}
@@ -803,7 +804,7 @@ img,video{display:block;max-width:100%}
       <div class="svc">
         <article>
           <div class="idx"><span class="no">Υ-01</span><span class="code">Supercars</span></div>
-          <div class="plate"><img src="assets/car-ferrari.jpg" alt="Ferrari σε μεταφορά" loading="lazy"></div>
+          <div class="plate"><picture><source type="image/webp" srcset="assets/car-ferrari.webp"><img src="assets/car-ferrari.jpg" alt="Ferrari σε μεταφορά" loading="lazy"></picture></div>
           <div class="c">
             <h3>Supercars</h3>
             <p class="lede">Μεταφορά οχημάτων υψηλών επιδόσεων — Ferrari, Lamborghini, Porsche, Maserati, McLaren και άλλων premium κατασκευαστών.</p>
@@ -812,7 +813,7 @@ img,video{display:block;max-width:100%}
         </article>
         <article>
           <div class="idx"><span class="no">Υ-02</span><span class="code">Luxury &amp; Premium</span></div>
-          <div class="plate"><img src="assets/car-maserati.jpg" alt="Luxury sedan σε μεταφορά" loading="lazy"></div>
+          <div class="plate"><picture><source type="image/webp" srcset="assets/car-maserati.webp"><img src="assets/car-maserati.jpg" alt="Luxury sedan σε μεταφορά" loading="lazy"></picture></div>
           <div class="c">
             <h3>Luxury &amp; Premium Cars</h3>
             <p class="lede">Μεταφορά πολυτελών και premium αυτοκινήτων με ιδιαίτερη προσοχή στη φόρτωση και τη μεταφορά.</p>
@@ -821,7 +822,7 @@ img,video{display:block;max-width:100%}
         </article>
         <article>
           <div class="idx"><span class="no">Υ-03</span><span class="code">Classic &amp; Vintage</span></div>
-          <div class="plate"><img src="assets/car-jaguar.jpg" alt="Κλασικό αυτοκίνητο σε μεταφορά" loading="lazy"></div>
+          <div class="plate"><picture><source type="image/webp" srcset="assets/car-jaguar.webp"><img src="assets/car-jaguar.jpg" alt="Κλασικό αυτοκίνητο σε μεταφορά" loading="lazy"></picture></div>
           <div class="c">
             <h3>Classic &amp; Vintage Cars</h3>
             <p class="lede">Μεταφορά κλασικών, συλλεκτικών και ιστορικών αυτοκινήτων με την απαιτούμενη φροντίδα.</p>
@@ -830,7 +831,7 @@ img,video{display:block;max-width:100%}
         </article>
         <article>
           <div class="idx"><span class="no">Υ-04</span><span class="code">Low-Clearance</span></div>
-          <div class="plate"><img src="assets/car-porsche.jpg" alt="Χαμηλό όχημα σε μεταφορά" loading="lazy"></div>
+          <div class="plate"><picture><source type="image/webp" srcset="assets/car-porsche.webp"><img src="assets/car-porsche.jpg" alt="Χαμηλό όχημα σε μεταφορά" loading="lazy"></picture></div>
           <div class="c">
             <h3>Low-Clearance Vehicles</h3>
             <p class="lede">Εξειδικευμένη μεταφορά οχημάτων με χαμηλό ύψος από το έδαφος — ράμπα χαμηλής γωνίας, χωρίς επαφή με το αμάξωμα.</p>
@@ -845,7 +846,7 @@ img,video{display:block;max-width:100%}
       <div class="svc">
         <article>
           <div class="idx"><span class="no">Υ-05</span><span class="code">ATV &amp; Buggies</span></div>
-          <div class="plate"><img src="assets/hero-truck.jpg" alt="Mercedes Atego — το όχημα μεταφοράς ATV και buggies" loading="lazy"></div>
+          <div class="plate"><picture><source type="image/webp" srcset="assets/hero-truck.webp"><img src="assets/hero-truck.jpg" alt="Mercedes Atego — το όχημα μεταφοράς ATV και buggies" loading="lazy"></picture></div>
           <div class="c">
             <h3>ATV, Γουρούνες &amp; Buggies</h3>
             <p class="lede">Μεταφορά ATV, γουρούνων και buggies για ιδιώτες, ξενοδοχεία, τουριστικές επιχειρήσεις και επαγγελματίες — σε όλη την Ελλάδα και προς και από τα ελληνικά νησιά.</p>
@@ -854,7 +855,7 @@ img,video{display:block;max-width:100%}
         </article>
         <article>
           <div class="idx"><span class="no">Υ-06</span><span class="code">Jet Ski &amp; Σκάφη</span></div>
-          <div class="plate"><img src="assets/jetski.jpg" alt="Jet ski σε μεταφορά" loading="lazy"></div>
+          <div class="plate"><picture><source type="image/webp" srcset="assets/jetski.webp"><img src="assets/jetski.jpg" alt="Jet ski σε μεταφορά" loading="lazy"></picture></div>
           <div class="c">
             <h3>Jet Ski &amp; Φουσκωτά Σκάφη</h3>
             <p class="lede">Μεταφορά jet ski και φουσκωτών σκαφών από και προς λιμάνια, μαρίνες, κατοικίες και νησιωτικούς προορισμούς, με προσεκτική φόρτωση και παράδοση.</p>
@@ -1244,13 +1245,27 @@ document.getElementById('om-form').addEventListener('submit',function(e){
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)};
   var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
-  /* WebP: ίδιο αρχείο, ~30% μικρότερο. Αν ο browser δεν το υποστηρίζει, μένει το .jpg */
-  var WEBP_OK=(function(){try{return document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp')===0}catch(e){return false}})();
+  /* WebP: το <source> δίνει webp, το <img> κρατάει το jpg ως εφεδρικό.
+     Έτσι ο browser κατεβάζει ένα από τα δύο, ποτέ και τα δύο. */
   var WEBP=['assets/car-ferrari.jpg','assets/car-maserati.jpg','assets/car-jaguar.jpg','assets/car-porsche.jpg','assets/hero-truck.jpg','assets/jetski.jpg'];
-  function imgsrc(s){ return (WEBP_OK && WEBP.indexOf(s)>=0) ? s.replace(/\.[^.]+$/,'.webp') : s }
+  function imgsrc(s){ return WEBP.indexOf(s)>=0 ? s.replace(/\.[^.]+$/,'.webp') : null }
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
   function T(sel,v,root){var n=$(sel,root); if(n&&v!=null)n.textContent=v; return n}
-  function I(sel,src,alt,root){var im=$(sel,root); if(im&&src){im.src=imgsrc(src); if(alt!=null)im.alt=alt}}
+  function I(sel,src,alt,root){
+    var im=$(sel,root); if(!im||!src) return;
+    var webp=imgsrc(src);
+    var pic=(im.parentNode && im.parentNode.tagName==='PICTURE') ? im.parentNode : null;
+    if(webp){
+      if(!pic){ pic=document.createElement('picture'); im.parentNode.insertBefore(pic,im); pic.appendChild(im) }
+      var so=pic.querySelector('source[type="image/webp"]');
+      if(!so){ so=document.createElement('source'); so.type='image/webp'; pic.insertBefore(so,im) }
+      so.srcset=webp;
+    } else if(pic){
+      /* ο πελάτης ανέβασε δική του εικόνα -> χωρίς webp source */
+      var old=pic.querySelector('source[type="image/webp"]'); if(old) old.remove();
+    }
+    im.src=src; if(alt!=null)im.alt=alt;
+  }
   function B(sel,v,root){ /* κρατάει το svg μέσα στο κουμπί, αλλάζει μόνο το κείμενο */
     var b=sel?$(sel,root):root; if(!b||b.nodeType!==1||v==null)return;
     var ns=[].slice.call(b.childNodes),hit=null,i;
