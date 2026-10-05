@@ -1,4 +1,4 @@
-import { json, isAuthed } from '../_lib.js';
+import { json, isAuthed, tooFast } from '../_lib.js';
 
 /* Αιτήματα προσφοράς από τη σελίδα.
    POST   /api/lead          (δημόσιο — έρχεται από τη φόρμα του site)
@@ -29,9 +29,22 @@ export async function onRequestGet({ request, env }) {
 export async function onRequestPost({ request, env }) {
   if (!env.LLA_KV) return json({ ok: false }, 500);
 
+  /* ΠΡΟΣΤΑΣΙΑ ΤΟΥ ΔΗΜΟΣΙΟΥ ENDPOINT
+     Χωρίς αυτό, κάποιος μπορεί να πλημμυρίσει τα αιτήματα με σκουπίδια και να
+     κάψει το ημερήσιο όριο εγγραφών του KV (1.000/ημέρα) — που θα εμπόδιζε
+     τον πελάτη να αποθηκεύσει αλλαγές. */
+  const ip = request.headers.get('CF-Connecting-IP') || 'x';
+  if (tooFast(ip)) return json({ ok: false, error: 'too many' }, 429);
+
   let b;
   try { b = await request.json(); } catch { return json({ ok: false, error: 'bad json' }, 400); }
   if (!b || typeof b !== 'object') return json({ ok: false, error: 'bad body' }, 400);
+
+  /* 1. Χρόνος: μια πραγματική φόρμα θέλει πάνω από ~1.5" να συμπληρωθεί.
+        Τα bots στέλνουν αμέσως. Επίσης κόβει παλιά/ανακυκλωμένα payloads. */
+  const t0 = Number(b.t0) || 0;
+  const age = Date.now() - t0;
+  if (!t0 || age < 1200 || age > 6 * 3600e3) return json({ ok: false, error: 'rejected' }, 400);
 
   const lead = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),

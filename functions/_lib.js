@@ -17,6 +17,26 @@ async function hmac(secret, data) {
   return b64url(await crypto.subtle.sign('HMAC', key, enc.encode(data)));
 }
 
+/* Το κλειδί υπογραφής δεν είναι ο ίδιος ο κωδικός: βγαίνει από HMAC(salt, κωδικός)
+   όπου το salt είναι τυχαίο και μένει στο KV. Έτσι:
+   - αλλαγή κωδικού ακυρώνει όλες τις συνδέσεις (καλό)
+   - ένα κλεμμένο cookie ΔΕΝ επιτρέπει offline μαντεψιά του κωδικού,
+     γιατί ο επιτιθέμενος δεν ξέρει το salt */
+let SKEY_CACHE = null;
+export async function signingKey(env) {
+  if (SKEY_CACHE) return SKEY_CACHE;
+  let salt = null;
+  try { salt = await env.LLA_KV.get('_skey'); } catch (e) { throw new Error('no kv'); }
+  if (!salt) {
+    const b = new Uint8Array(16);
+    crypto.getRandomValues(b);
+    salt = Array.from(b).map(x => x.toString(16).padStart(2, '0')).join('');
+    try { await env.LLA_KV.put('_skey', salt); } catch (e) { /* ignore */ }
+  }
+  SKEY_CACHE = await hmac(salt, env.ADMIN_PASS);
+  return SKEY_CACHE;
+}
+
 /** Δημιουργεί session token: <expiry>.<υπογραφή> */
 export async function makeToken(secret, days = 30) {
   const exp = Date.now() + days * 864e5;
@@ -47,11 +67,12 @@ export function readCookie(request, name) {
   return null;
 }
 
-/** Είναι ο χρήστης συνδεδεμένος; (το μυστικό είναι ο κωδικός του admin) */
+/** Είναι ο χρήστης συνδεδεμένος; */
 export async function isAuthed(request, env) {
-  const secret = env.ADMIN_PASS;
-  if (!secret) return false;
-  return checkToken(secret, readCookie(request, COOKIE));
+  if (!env.ADMIN_PASS) return false;
+  let key;
+  try { key = await signingKey(env); } catch (e) { return false }
+  return checkToken(key, readCookie(request, COOKIE));
 }
 
 /** Είσοδος με κωδικό πρόσβασης. */
@@ -64,7 +85,9 @@ export async function login(request, env, pass) {
   const n = Math.max(a.length, b.length);
   for (let i = 0; i < n; i++) diff |= (a[i] || 0) ^ (b[i] || 0);
   if (diff !== 0) return null;
-  return makeToken(secret);
+  let key;
+  try { key = await signingKey(env); } catch (e) { return null }
+  return makeToken(key);
 }
 
 export function cookieHeader(token, maxAge = 30 * 86400) {
@@ -91,6 +114,18 @@ export function sane(raw) {
     if (c[k] != null && !Array.isArray(c[k])) return false;
   }
   return true;
+}
+
+/* Απλό όριο συχνότητας στη μνήμη της κάθε διεργασίας (isolate).
+   Δεν είναι τέλειο, αλλά κόβει τις πλημμύρες πριν γράψουν στο KV. */
+const HITS = new Map();
+export function tooFast(ip, max = 6, winMs = 60000) {
+  const now = Date.now();
+  if (HITS.size > 5000) HITS.clear();
+  const arr = (HITS.get(ip) || []).filter(t => now - t < winMs);
+  arr.push(now);
+  HITS.set(ip, arr);
+  return arr.length > max;
 }
 
 export const KV_KEY = 'content';
