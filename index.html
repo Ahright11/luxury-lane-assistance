@@ -1232,7 +1232,13 @@ document.getElementById('om-form').addEventListener('submit',function(e){
     },{rootMargin:'300px'});
     below.forEach(function(v){ io.observe(v) });
   }
-  function go(){ hero(); setTimeout(deferred,1200) }
+  function go(){
+    /* σε πολύ αργή σύνδεση ή με αποθηκευμένα δεδομένα, μένει η αφίσα */
+    var c=navigator.connection||{};
+    var slow=c.saveData||/^(slow-)?2g$/.test(c.effectiveType||'');
+    if(!slow) hero();
+    setTimeout(deferred,1200);
+  }
   if(document.readyState==='complete') go();
   else window.addEventListener('load',function(){
     (window.requestIdleCallback||function(f){setTimeout(f,200)})(go);
