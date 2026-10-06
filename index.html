@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/roboto-condensed-var-greek.woff2" crossorigin>
 <!-- LCP: το poster του hero ξεκινάει αμέσως (είναι το μεγαλύτερο στοιχείο) -->
 <link rel="preload" as="image" href="assets/hero-mob.webp" media="(max-width:820px)" fetchpriority="high">
-<link rel="preload" as="image" href="assets/hero-p-a.webp" media="(min-width:821px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/hero-p-a.webp?v=2" media="(min-width:821px)" fetchpriority="high">
 <!-- γραμματοσειρές: ενσωματωμένες ώστε να μην μπλοκάρουν το πρώτο ζωγραφικό -->
 <style>/* Τοπικές γραμματοσειρές (ίδιες με Google Fonts, χωρίς εξωτερικές συνδέσεις) */
 /* latin-ext */
@@ -762,10 +762,10 @@ img,video{display:block;max-width:100%}
 
 <header class="hero">
   <div class="hero-split vid-desk" id="heroSplit">
-    <div class="panel p1"><video muted loop playsinline preload="none" data-src="assets/hero-p-b.mp4"
-         poster="assets/hero-p-b.webp" aria-label="Μεταφορά οχήματος σε πλατφόρμα"></video></div>
-    <div class="panel p2"><video muted loop playsinline preload="none" data-src="assets/hero-p-a.mp4"
-         poster="assets/hero-p-a.webp" aria-label="Μεταφορά οχήματος σε πλατφόρμα"></video></div>
+    <div class="panel p1"><video muted loop playsinline preload="none" data-src="assets/hero-p-b.mp4?v=2"
+         poster="assets/hero-p-b.webp?v=2" aria-label="Μεταφορά οχήματος σε πλατφόρμα"></video></div>
+    <div class="panel p2"><video muted loop playsinline preload="none" data-src="assets/hero-p-a.mp4?v=2"
+         poster="assets/hero-p-a.webp?v=2" aria-label="Μεταφορά οχήματος σε πλατφόρμα"></video></div>
   </div>
   <video class="vid-mob" muted loop playsinline preload="none" data-src="assets/hero-mob.mp4"
          poster="assets/hero-mob.webp" aria-label="Supercar πάνω στην πλατφόρμα">
