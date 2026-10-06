@@ -1,4 +1,19 @@
-# AI answer engines — explicitly welcome
+# Luxury Lane Assistance — robots.txt
+#
+# Τι κάνει αυτό το αρχείο: λέει στους crawlers (Google, AI μηχανές, scrapers)
+# τι επιτρέπεται να διαβάζουν. Είναι «παράκληση», όχι τοίχος: όποιος σέβεται
+# το πρωτόκολλο τηρεί, όποιος δεν σέβεται (κάποια κινέζικα bots) το αγνοεί.
+#
+# ΣΗΜΑΝΤΙΚΟ: το /admin ΔΕΝ μπλοκάρεται εδώ. Ο σωστός τρόπος να μη βγει στη
+# Google είναι το noindex header (το έχουμε), γιατί ένα blocked URL μπορεί
+# ακόμα να εμφανιστεί ως γυμνός σύνδεσμος χωρίς περιεχόμενο.
+#
+# ΠΡΟΣΟΧΗ: ένα μόνο block «User-agent: *». Δύο ίδια blocks στο ίδιο αρχείο
+# διαβάζονται απρόβλεπτα από τους crawlers.
+
+# ── AI απαντήσεις: ΤΟΥΣ ΑΦΗΝΟΥΜΕ ─────────────────────────────────
+# Θέλουμε να μπορούν να μας αναφέρουν (ChatGPT, Perplexity, Gemini, Claude).
+# Ο κόσμος ρωτάει όλο και πιο συχνά εκεί.
 User-agent: GPTBot
 Allow: /
 User-agent: OAI-SearchBot
@@ -11,23 +26,28 @@ User-agent: PerplexityBot
 Allow: /
 User-agent: Google-Extended
 Allow: /
+User-agent: Applebot-Extended
+Allow: /
 
-# aggressive scrapers — blocked
+# ── Επιθετικοί scrapers που δεν μας δίνουν τίποτα ────────────────
 User-agent: Bytespider
 Disallow: /
 User-agent: ImagesiftBot
 Disallow: /
 User-agent: DataForSeoBot
 Disallow: /
+User-agent: PetalBot
+Disallow: /
 
-# everyone else: crawl the pages, not the video files (bandwidth)
+# ── Όλοι οι υπόλοιποι (περιλαμβάνει Googlebot και Bingbot) ──────
+# Τα βίντεο του hero είναι ~3MB, δεν τα θέλουμε στους crawlers.
+# Οι ΕΙΚΟΝΕΣ δεν μπλοκάρονται ποτέ: τις θέλουμε στο Google Images.
 User-agent: *
 Allow: /
-Disallow: /assets/hero-fs.mp4
+Disallow: /api/
+Disallow: /assets/hero-p-a.mp4
+Disallow: /assets/hero-p-b.mp4
 Disallow: /assets/hero-mob.mp4
 Disallow: /assets/clip-load.mp4
-Disallow: /assets/clip-road.mp4
-Disallow: /assets/lift.mp4
-Disallow: /assets/lift.webm
 
 Sitemap: https://www.luxurylaneassistance.gr/sitemap.xml
