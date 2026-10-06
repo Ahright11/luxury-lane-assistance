@@ -566,14 +566,21 @@ img,video{display:block;max-width:100%}
 .svc .plate img.car-l{position:absolute;inset:0;opacity:0;
   transition:opacity .55s ease,transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}
 .svc .plate img.car-l.on{opacity:1}
-/* dots: εμφανίζονται στο hover, σαν gallery */
-.svc .plate .dots{position:absolute;left:0;right:0;bottom:9px;z-index:3;display:flex;gap:5px;
-  justify-content:center;opacity:0;transition:opacity .25s;pointer-events:none}
-.svc article:hover .plate .dots,.svc article:focus-within .plate .dots{opacity:1;pointer-events:auto}
-.svc .plate .dots button{width:6px;height:6px;padding:0;border:0;border-radius:50%;cursor:pointer;
-  background:rgba(255,255,255,.5);box-shadow:0 1px 3px rgba(0,0,0,.5);transition:width .25s,background .2s}
-.svc .plate .dots button.on{width:18px;border-radius:3px;background:var(--hazard)}
-.svc .plate .dots button:hover{background:#fff}
+/* μικρογραφίες: στο desktop εμφανίζονται στο hover, στο κινητό είναι πάντα ορατές
+   γιατί δεν υπάρχει hover — εκεί αλλάζει και με σύρσιμο */
+.svc .plate .car-thumbs{position:absolute;left:0;right:0;bottom:8px;z-index:3;display:flex;gap:5px;
+  justify-content:center;padding:0 8px;opacity:0;transition:opacity .25s;pointer-events:none}
+.svc article:hover .plate .car-thumbs,.svc article:focus-within .plate .car-thumbs{opacity:1;pointer-events:auto}
+.svc .plate .car-thumbs button{width:36px;height:25px;padding:0;border:0;border-radius:4px;overflow:hidden;cursor:pointer;
+  background:none;opacity:.55;outline:2px solid transparent;outline-offset:1px;
+  transition:opacity .2s,outline-color .2s}
+.svc .plate .car-thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
+.svc .plate .car-thumbs button.on{opacity:1;outline-color:var(--hazard)}
+.svc .plate .car-thumbs button:hover{opacity:1}
+@media(hover:none){
+  .svc .plate .car-thumbs{opacity:1;pointer-events:auto}
+  .svc .plate .car-thumbs button{opacity:.8;width:32px;height:22px}
+}
 @media(prefers-reduced-motion:reduce){.svc .plate img.car-l{transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}}
 .svc .plate::after{content:"";position:absolute;right:0;bottom:0;width:14px;height:14px;
   border-right:2px solid var(--hazard);border-bottom:2px solid var(--hazard);opacity:.9}
@@ -1340,7 +1347,7 @@ document.getElementById('om-form').addEventListener('submit',function(e){
     var base=plate.querySelector('img'); if(!base) return;
     [].slice.call(plate.querySelectorAll('img.car-l')).forEach(function(n){ if(n!==base) n.remove() });
     base.classList.remove('car-l','on');
-    var oldDots=plate.querySelector('.dots'); if(oldDots) oldDots.remove();
+    var oldThumbs=plate.querySelector('.car-thumbs'); if(oldThumbs) oldThumbs.remove();
     if(!list || list.length<2) return;
 
     base.classList.add('car-l','on');
@@ -1351,11 +1358,11 @@ document.getElementById('om-form').addEventListener('submit',function(e){
       im.src=layerSrc(list[i]);
       plate.appendChild(im); layers.push(im);
     }
-    var cur=0, timer=null, io=null, dots=null;
+    var cur=0, timer=null, io=null, thumbs=null;
     function show(n){
       cur=n;
       layers.forEach(function(L,k){ L.classList.toggle('on', k===n) });
-      if(dots) [].forEach.call(dots.children,function(d,k){ d.classList.toggle('on', k===n) });
+      if(thumbs) [].forEach.call(thumbs.children,function(d,k){ d.classList.toggle('on', k===n) });
     }
     function tick(){
       if(document.hidden) return;
@@ -1365,32 +1372,53 @@ document.getElementById('om-form').addEventListener('submit',function(e){
     }
     function start(){ if(!timer) timer=setInterval(tick, Math.round(secs*1000)) }
     function stop(){ if(timer){ clearInterval(timer); timer=null } }
+    function go(n){ show(n); stop(); start() }
 
-    /* dots: ο χρήστης διαλέγει μόνος του — και η αυτόματη αλλαγή παύει όσο είναι πάνω */
-    dots=document.createElement('div'); dots.className='dots';
-    dots.setAttribute('role','group'); dots.setAttribute('aria-label','Φωτογραφίες υπηρεσίας');
+    /* gallery με μικρογραφίες: ο χρήστης βλέπει ΟΛΕΣ τις φωτογραφίες και διαλέγει */
+    thumbs=document.createElement('div'); thumbs.className='car-thumbs';
+    thumbs.setAttribute('role','group'); thumbs.setAttribute('aria-label','Φωτογραφίες υπηρεσίας');
     layers.forEach(function(_,k){
       var b=document.createElement('button');
       b.type='button'; b.setAttribute('aria-label','Φωτογραφία '+(k+1)+' από '+layers.length);
-      b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); show(k); stop(); start() });
-      dots.appendChild(b);
+      var t=document.createElement('img'); t.src=layerSrc(list[k]); t.alt=''; t.loading='lazy'; t.decoding='async';
+      b.appendChild(t);
+      b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); go(k) });
+      thumbs.appendChild(b);
     });
-    plate.appendChild(dots);
+    plate.appendChild(thumbs);
     show(0);
 
-    if(!plate._carHover){
-      plate._carHover=true;
+    /* δέσιμο μία φορά: hover (παύση) και touch (σύρσιμο) */
+    if(!plate._carWired){
+      plate._carWired=true;
       plate.addEventListener('mouseenter',function(){ if(plate._carPause) plate._carPause() });
       plate.addEventListener('mouseleave',function(){ if(plate._carWake) plate._carWake() });
       plate.addEventListener('focusin',function(){ if(plate._carPause) plate._carPause() });
+      var sx=0, sy=0, tracking=false;
+      plate.addEventListener('touchstart',function(e){
+        var t=e.touches[0]; sx=t.clientX; sy=t.clientY; tracking=true;
+      },{passive:true});
+      plate.addEventListener('touchend',function(e){
+        if(!tracking) return; tracking=false;
+        var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy;
+        if(Math.abs(dx)<35 || Math.abs(dx)<=Math.abs(dy)) return;   /* κάθετο scroll, άσχετο */
+        if(!plate._carGo) return;
+        e.preventDefault();
+        plate._carGo(dx<0 ? 1 : -1);
+      },{passive:false});
     }
     plate._carPause=stop; plate._carWake=start;
+    plate._carGo=function(dir){
+      var n=(cur+dir+layers.length)%layers.length;
+      var L=layers[n]; if(!(L.complete && L.naturalWidth)) return;
+      go(n);
+    };
 
     if('IntersectionObserver' in window){
       io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? start() : stop() }) },{rootMargin:'150px'});
       io.observe(plate);
     } else start();
-    plate._carStop=function(){ stop(); if(io) io.disconnect(); var d=plate.querySelector('.dots'); if(d) d.remove() };
+    plate._carStop=function(){ stop(); if(io) io.disconnect(); var d=plate.querySelector('.car-thumbs'); if(d) d.remove() };
   }
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
   function T(sel,v,root){var n=$(sel,root); if(n&&v!=null)n.textContent=v; return n}

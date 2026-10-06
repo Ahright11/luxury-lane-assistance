@@ -497,7 +497,7 @@ const SCHEMA = [
     { name:'Οι 6 λόγοι', list:'why', card:'Λόγος {n}', fields:[ T('title','Τίτλος'), A('desc','Περιγραφή') ]},
   ]},
   { id:'services', icon:ICON.services, title:'Υπηρεσίες', sub:'6 κάρτες με φωτογραφίες', anchor:'#services', groups:[
-    { name:'Carousel φωτογραφιών', fields:[ N('settings.carouselSeconds','Αλλαγή εικόνας κάθε','Σε δευτερόλεπτα. Ισχύει για όλες τις κάρτες που έχουν 2+ φωτογραφίες.') ]},
+    { name:'Carousel φωτογραφιών', fields:[ N('settings.carouselSeconds','Αυτόματη αλλαγή κάθε','Δευτερόλεπτα. 2 για γρήγορο, 5 για πιο ήρεμο. Ισχύει σε όλες τις κάρτες που έχουν 2 ή περισσότερες φωτογραφίες.') ]},
     { name:'Τίτλοι', fields:[ T('headings.services.title','Επικεφαλίδα'), T('headings.services.em','Τονισμένη λέξη'), A('headings.services.intro','Εισαγωγικό κείμενο') ]},
     { name:'Τίτλοι ομάδων', list:'serviceGroups', card:'Ομάδα {n}', fields:[ T('title','Τίτλος ομάδας'), T('sub','Υπότιτλος ομάδας') ]},
     { name:'Κάρτες υπηρεσιών', list:'services', card:'Κάρτα {n}', fields:[ T('code','Κωδικός (Υ-01)'), T('cat','Ετικέτα'), T('title','Τίτλος',null,26), A('desc','Περιγραφή'), GAL('images','Φωτογραφίες'), T('alt','Περιγραφή εικόνας','Ισχύει για όλες τις φωτογραφίες της κάρτας. Βοηθάει στο Google.',70) ]},
