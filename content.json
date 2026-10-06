@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "carouselSeconds": 2
+  },
   "hero": {
     "kick1": "Est. 2024",
     "kick2": "Αθήνα · Ελλάδα · Νησιά",
@@ -90,7 +93,11 @@
       "title": "Supercars",
       "desc": "Μεταφορά οχημάτων υψηλών επιδόσεων — Ferrari, Lamborghini, Porsche, Maserati, McLaren και άλλων premium κατασκευαστών.",
       "img": "assets/car-ferrari.jpg",
-      "alt": "Ferrari σε μεταφορά"
+      "alt": "Μεταφορά supercar σε πλατφόρμα οχημάτων",
+      "images": [
+        "assets/car-ferrari.jpg",
+        "assets/car-supra.jpg"
+      ]
     },
     {
       "code": "Υ-02",
@@ -98,7 +105,11 @@
       "title": "Luxury & Premium Cars",
       "desc": "Μεταφορά πολυτελών και premium αυτοκινήτων με ιδιαίτερη προσοχή στη φόρτωση και τη μεταφορά.",
       "img": "assets/car-maserati.jpg",
-      "alt": "Luxury sedan σε μεταφορά"
+      "alt": "Μεταφορά luxury και premium αυτοκινήτου",
+      "images": [
+        "assets/car-maserati.jpg",
+        "assets/car-bmw.jpg"
+      ]
     },
     {
       "code": "Υ-03",
@@ -106,7 +117,11 @@
       "title": "Classic & Vintage Cars",
       "desc": "Μεταφορά κλασικών, συλλεκτικών και ιστορικών αυτοκινήτων με την απαιτούμενη φροντίδα.",
       "img": "assets/car-jaguar.jpg",
-      "alt": "Κλασικό αυτοκίνητο σε μεταφορά"
+      "alt": "Μεταφορά κλασικού αυτοκινήτου σε πλατφόρμα",
+      "images": [
+        "assets/car-jaguar.jpg",
+        "assets/car-evo.jpg"
+      ]
     },
     {
       "code": "Υ-04",
@@ -114,7 +129,10 @@
       "title": "Low-Clearance Vehicles",
       "desc": "Εξειδικευμένη μεταφορά οχημάτων με χαμηλό ύψος από το έδαφος — ράμπα χαμηλής γωνίας, χωρίς επαφή με το αμάξωμα.",
       "img": "assets/car-porsche.jpg",
-      "alt": "Χαμηλό όχημα σε μεταφορά"
+      "alt": "Μεταφορά χαμηλού οχήματος σε πλατφόρμα",
+      "images": [
+        "assets/car-porsche.jpg"
+      ]
     },
     {
       "code": "Υ-05",
@@ -122,7 +140,11 @@
       "title": "ATV, Γουρούνες & Buggies",
       "desc": "Μεταφορά ATV, γουρούνων και buggies για ιδιώτες, ξενοδοχεία, τουριστικές επιχειρήσεις και επαγγελματίες — σε όλη την Ελλάδα και προς και από τα ελληνικά νησιά.",
       "img": "assets/hero-truck.jpg",
-      "alt": "Mercedes Atego — το όχημα μεταφοράς ATV και buggies"
+      "alt": "Μεταφορά ATV και buggy με φορτηγό πλατφόρμα",
+      "images": [
+        "assets/hero-truck.jpg",
+        "assets/car-ferrari-road.jpg"
+      ]
     },
     {
       "code": "Υ-06",
@@ -130,7 +152,11 @@
       "title": "Jet Ski & Φουσκωτά Σκάφη",
       "desc": "Μεταφορά jet ski και φουσκωτών σκαφών από και προς λιμάνια, μαρίνες, κατοικίες και νησιωτικούς προορισμούς, με προσεκτική φόρτωση και παράδοση.",
       "img": "assets/jetski.jpg",
-      "alt": "Jet ski σε μεταφορά"
+      "alt": "Μεταφορά jet ski και φουσκωτού σκάφους",
+      "images": [
+        "assets/jetski.jpg",
+        "assets/jetski-truck.jpg"
+      ]
     }
   ],
   "coverage": {

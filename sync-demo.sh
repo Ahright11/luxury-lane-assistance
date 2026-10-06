@@ -1,7 +1,8 @@
 #!/bin/sh
 # Στέλνει τη σελίδα στο demo (lla-demo.httpal.com) για να τη δείξουμε στον πελάτη.
 #
-#   ./sync-demo.sh
+#   ./sync-demo.sh            # φέρνει πρώτα το ζωντανό περιεχόμενο
+#   ./sync-demo.sh --keep     # κρατάει το τοπικό content.json (όταν δοκιμάζουμε νέα πράγματα)
 #
 # Τι κάνει:
 #   1. τραβάει το περιεχόμενο που είναι ΤΩΡΑ live, ώστε το demo να μη δείχνει παλιά κείμενα
@@ -13,9 +14,13 @@
 set -e
 cd "$(dirname "$0")"
 
-echo "→ 1/3 φέρνω το ζωντανό περιεχόμενο"
-curl -fsS "https://www.luxurylaneassistance.gr/api/content?t=$(date +%s)" \
-  | python3 -c "import sys,json; json.dump(json.load(sys.stdin), open('content.json','w'), ensure_ascii=False, indent=2); open('content.json','a').write('\n')"
+if [ "$1" = "--keep" ]; then
+  echo "→ 1/3 κρατάω το τοπικό content.json (--keep)"
+else
+  echo "→ 1/3 φέρνω το ζωντανό περιεχόμενο"
+  curl -fsS "https://www.luxurylaneassistance.gr/api/content?t=$(date +%s)" \
+    | python3 -c "import sys,json; json.dump(json.load(sys.stdin), open('content.json','w'), ensure_ascii=False, indent=2); open('content.json','a').write('\n')"
+fi
 
 echo "→ 2/3 ανεβάζω assets"
 rsync -a assets/ hetzner:/var/www/lla-demo/assets/

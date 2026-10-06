@@ -226,6 +226,25 @@
   .gate.shake .box{animation:gshake .4s}
   @keyframes gshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 
+  /* ══════════ GALLERY (carousel) ══════════ */
+  .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:7px}
+  .gal-cell{position:relative;aspect-ratio:16/10;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:#F4F5F8}
+  .gal-cell img{width:100%;height:100%;object-fit:cover;display:block;cursor:pointer}
+  .gal-tools{position:absolute;inset:auto 0 0 0;display:flex;gap:2px;justify-content:center;padding:3px;
+    background:rgba(11,12,13,.74);opacity:0;transition:.15s}
+  .gal-cell:hover .gal-tools{opacity:1}
+  .gal-tools button{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:5px;width:21px;height:21px;
+    font-size:12px;line-height:1;padding:0;cursor:pointer}
+  .gal-tools button:hover{background:rgba(255,255,255,.34)}
+  .gal-tools button[disabled]{opacity:.28;cursor:default}
+  .gal-tools button[data-a=del]:hover{background:#C0392B}
+  .gal-badge{position:absolute;top:5px;left:5px;background:var(--gold);color:#1A1305;font-size:8.5px;font-weight:600;
+    letter-spacing:.07em;text-transform:uppercase;padding:2px 5px;border-radius:4px}
+  .gal-add{margin-top:8px;width:100%;border:1.5px dashed #D3D8E2;background:#FCFDFE;color:var(--mut);
+    border-radius:9px;padding:9px;font-size:12px;cursor:pointer;transition:.15s}
+  .gal-add:hover{border-color:var(--gold);color:#8A6416;background:#FFFAF0}
+  .gal-empty{grid-column:1/-1;text-align:center;color:var(--mut2);font-size:12px;padding:12px}
+
   /* ══════════ MODAL / TOAST ══════════ */
   .modal{position:fixed;inset:0;background:rgba(9,11,16,.62);backdrop-filter:blur(3px);display:none;place-items:center;z-index:60;padding:20px}
   .modal.on{display:grid}
@@ -448,6 +467,8 @@ let device = DEVICES[0];
 const T = (k,label,hint,warn)=>({t:'text',k,label,hint,warn});
 const A = (k,label,hint,warn)=>({t:'area',k,label,hint,warn});
 const IMG = (k,label)=>({t:'img',k,label});
+const N = (k,label,hint)=>({t:'num',k,label,hint});
+const GAL = (k,label)=>({t:'gallery',k,label});
 const ICON = {
   hero:'M12 3.2l2.4 5.4 5.6.5-4.3 3.8 1.3 5.6L12 15.6 6.9 18.5 8.2 12.9 3.9 9.1l5.7-.5z',
   about:'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Z M12 11.3v4.9 M12 8.1h.01',
@@ -476,9 +497,10 @@ const SCHEMA = [
     { name:'Οι 6 λόγοι', list:'why', card:'Λόγος {n}', fields:[ T('title','Τίτλος'), A('desc','Περιγραφή') ]},
   ]},
   { id:'services', icon:ICON.services, title:'Υπηρεσίες', sub:'6 κάρτες με φωτογραφίες', anchor:'#services', groups:[
+    { name:'Carousel φωτογραφιών', fields:[ N('settings.carouselSeconds','Αλλαγή εικόνας κάθε','Σε δευτερόλεπτα. Ισχύει για όλες τις κάρτες που έχουν 2+ φωτογραφίες.') ]},
     { name:'Τίτλοι', fields:[ T('headings.services.title','Επικεφαλίδα'), T('headings.services.em','Τονισμένη λέξη'), A('headings.services.intro','Εισαγωγικό κείμενο') ]},
     { name:'Τίτλοι ομάδων', list:'serviceGroups', card:'Ομάδα {n}', fields:[ T('title','Τίτλος ομάδας'), T('sub','Υπότιτλος ομάδας') ]},
-    { name:'Κάρτες υπηρεσιών', list:'services', card:'Κάρτα {n}', fields:[ T('code','Κωδικός (Υ-01)'), T('cat','Ετικέτα'), T('title','Τίτλος',null,26), A('desc','Περιγραφή'), IMG('img','Φωτογραφία'), T('alt','Περιγραφή εικόνας','Βοηθάει στο Google',70) ]},
+    { name:'Κάρτες υπηρεσιών', list:'services', card:'Κάρτα {n}', fields:[ T('code','Κωδικός (Υ-01)'), T('cat','Ετικέτα'), T('title','Τίτλος',null,26), A('desc','Περιγραφή'), GAL('images','Φωτογραφίες'), T('alt','Περιγραφή εικόνας','Ισχύει για όλες τις φωτογραφίες της κάρτας. Βοηθάει στο Google.',70) ]},
   ]},
   { id:'coverage', icon:ICON.coverage, title:'Κάλυψη — Ελλάδα & Νησιά', sub:'Πού πάμε', anchor:'#coverage', groups:[
     { fields:[ T('coverage.title','Τίτλος — γραμμή 1'), T('coverage.title2','Τίτλος — γραμμή 2'), A('coverage.p','Κείμενο'), A('coverage.slogan','Σλόγκαν') ]},
@@ -514,6 +536,14 @@ const SCHEMA = [
 const $ = s => document.querySelector(s);
 const $$ = s => [].slice.call(document.querySelectorAll(s));
 const clone = o => JSON.parse(JSON.stringify(o));
+/* αντικαθιστά μια τιμή οπουδήποτε μέσα στο περιεχόμενο (για blob URLs εικόνων) */
+function replaceDeep(o, from, to){
+  if(!o || typeof o!=='object') return;
+  for(const k in o){
+    if(o[k]===from) o[k]=to;
+    else if(o[k] && typeof o[k]==='object') replaceDeep(o[k], from, to);
+  }
+}
 const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function getP(o,p){ return p.split('.').reduce((a,k)=>(a==null?a:a[k]),o) }
 function setP(o,p,v){ const ks=p.split('.');let c=o;
@@ -723,14 +753,16 @@ function renderFields(container,fields,base){
     lab.innerHTML='<span>'+esc(f.label)+'</span>'+(f.warn?'<em></em>':'')+'<button class="undo" type="button" title="Επαναφορά στο αποθηκευμένο">↺</button>';
     wrap.appendChild(lab);
     if(f.t==='img') wrap.appendChild(imgField(path));
+    else if(f.t==='gallery') wrap.appendChild(galleryField(path));
     else{
       const inp=document.createElement(f.t==='area'?'textarea':'input');
-      if(f.t!=='area') inp.type='text';
+      if(f.t==='num'){ inp.type='number'; inp.min='0.5'; inp.max='30'; inp.step='0.5'; inp.style.maxWidth='130px' }
+      else if(f.t!=='area') inp.type='text';
       inp.value=getP(content,path)??'';
       inp.dataset.path=path;
       const count=()=>{ const em=lab.querySelector('em'); if(!em) return;
         const n=(inp.value||'').length; em.textContent=n+'/'+f.warn; em.className=(n>f.warn?'hot':''); };
-      inp.addEventListener('input',()=>{ setP(content,path,inp.value); count(); snap(); refreshDirty(); push(); });
+      inp.addEventListener('input',()=>{ setP(content,path, f.t==='num' ? (parseFloat(inp.value)||0) : inp.value); count(); snap(); refreshDirty(); push(); });
       inp.addEventListener('change',()=>{ snap(true) });
       inp.addEventListener('blur',()=>{ snap(true) });
       inp.addEventListener('focus',()=>{ highlight(path,true) });
@@ -750,6 +782,78 @@ function renderFields(container,fields,base){
   });
 }
 
+/* ---------- γκαλερί φωτογραφιών (carousel) ---------- */
+const GALLERIES={};
+function galleryField(path){
+  const box=document.createElement('div'); box.className='gal';
+  const grid=document.createElement('div'); grid.className='gal-grid';
+  const add=document.createElement('button'); add.type='button'; add.className='gal-add';
+  add.textContent='+ Προσθήκη φωτογραφιών';
+  const hint=document.createElement('div'); hint.className='hint';
+  hint.style.cssText='font-size:11px;color:#A6ADBC;margin-top:6px';
+  const file=document.createElement('input'); file.type='file'; file.accept='image/*'; file.multiple=true; file.hidden=true;
+  add.addEventListener('click',()=>file.click());
+
+  file.addEventListener('change',()=>{
+    const arr=getP(content,path)||[];
+    [].slice.call(file.files||[]).forEach(f=>{
+      if(!/^image\//.test(f.type)){ toast('Το «'+f.name+'» δεν είναι εικόνα',true); return }
+      if(f.size>12*1024*1024){ toast('Η «'+f.name+'» είναι πολύ μεγάλη (max 12MB)',true); return }
+      const url=URL.createObjectURL(f); pending[url]=f; arr.push(url);
+    });
+    setP(content,path,arr); commit();
+  });
+
+  function commit(){
+    const arr=getP(content,path)||[];
+    setP(content,path.replace(/\.images$/,'.img'), arr[0]||'');   /* η πρώτη μένει στο img για schema/no-JS */
+    snap(); refreshDirty(); push(); render();
+  }
+  function swap(i,j){
+    const a=getP(content,path); const t=a[i]; a[i]=a[j]; a[j]=t;
+    setP(content,path,a); commit();
+  }
+
+  function render(){
+    const arr=getP(content,path)||[];
+    grid.innerHTML='';
+    arr.forEach((src,i)=>{
+      const cell=document.createElement('div'); cell.className='gal-cell';
+      const im=document.createElement('img'); im.src=src; im.alt=''; im.title='Πάτησε για αλλαγή';
+      const tools=document.createElement('div'); tools.className='gal-tools';
+      const mk=(txt,act,dis)=>{
+        const b=document.createElement('button'); b.type='button'; b.textContent=txt; b.disabled=!!dis;
+        b.addEventListener('click',e=>{ e.stopPropagation(); act() }); return b;
+      };
+      tools.appendChild(mk('←',()=>{ if(i>0) swap(i-1,i) }, i===0));
+      tools.appendChild(mk('→',()=>{ if(i<arr.length-1) swap(i,i+1) }, i===arr.length-1));
+      const del=mk('×',()=>{ if(!confirm('Να αφαιρεθεί η φωτογραφία;')) return; const a=getP(content,path); a.splice(i,1); setP(content,path,a); commit() });
+      del.setAttribute('data-a','del'); tools.appendChild(del);
+      const one=document.createElement('input'); one.type='file'; one.accept='image/*'; one.hidden=true;
+      one.addEventListener('change',()=>{
+        const f=one.files&&one.files[0]; if(!f) return;
+        if(!/^image\//.test(f.type)){ toast('Το αρχείο δεν είναι εικόνα',true); return }
+        if(f.size>12*1024*1024){ toast('Η εικόνα είναι πολύ μεγάλη (max 12MB)',true); return }
+        const url=URL.createObjectURL(f); pending[url]=f;
+        const a=getP(content,path); a[i]=url; setP(content,path,a); commit();
+      });
+      im.addEventListener('click',()=>one.click());
+      cell.appendChild(im); cell.appendChild(tools);
+      if(i===0){ const b=document.createElement('span'); b.className='gal-badge'; b.textContent='κύρια'; cell.appendChild(b) }
+      cell.appendChild(one); grid.appendChild(cell);
+    });
+    if(!arr.length){ const e=document.createElement('div'); e.className='gal-empty'; e.textContent='Καμία φωτογραφία'; grid.appendChild(e) }
+    hint.textContent = arr.length<2
+      ? 'Με 2 ή περισσότερες φωτογραφίες ενεργοποιείται το carousel.'
+      : 'Carousel ενεργό: '+arr.length+' φωτογραφίες. Η πρώτη είναι η κύρια.';
+  }
+
+  box.appendChild(grid); box.appendChild(add); box.appendChild(hint); box.appendChild(file);
+  GALLERIES[path]=render;
+  render();
+  return box;
+}
+
 function imgField(path){
   const cur=getP(content,path)||'';
   const row=document.createElement('div'); row.className='imgrow';
@@ -766,8 +870,8 @@ function imgField(path){
   function take(f){
     if(!/^image\//.test(f.type)){ toast('Το αρχείο δεν είναι εικόνα',true); return; }
     if(f.size>12*1024*1024){ toast('Η εικόνα είναι πολύ μεγάλη (max 12MB)',true); return; }
-    pending[path]=f;
     const url=URL.createObjectURL(f);
+    pending[url]=f;
     thumb.style.backgroundImage=`url('${url}')`;
     row.querySelector('.fn').textContent=f.name+' — θα ανέβει με την αποθήκευση';
     setP(content,path,url); snap(); refreshDirty(); push();
@@ -800,6 +904,7 @@ function renderList(container,g,sec){
 
 /* τα κείμενα των πεδίων ξαναδιαβάζονται από το `content` (για undo/redo) */
 function refreshAll(){
+  Object.keys(GALLERIES).forEach(function(p){ try{ GALLERIES[p]() }catch(e){} });
   $$('[data-path]').forEach(inp=>{
     const p=inp.dataset.path; const v=getP(content,p);
     if(inp.tagName!=='TEXTAREA'&&v==null) return;
@@ -1002,8 +1107,14 @@ async function save(){
   const btn=$('#saveBtn'); btn.disabled=true;
   try{
     if(!authed){ openLogin('Για να αποθηκεύσεις χρειάζεται πρώτα σύνδεση.'); throw new Error('__auth') }
-    const paths=Object.keys(pending);
-    if(paths.length){ status('Ανέβασμα εικόνων…','warn'); for(const p of paths){ setP(content,p,await uploadImage(pending[p])); delete pending[p]; } }
+    /* Ανέβασμα εικόνων. Τα εκκρεμή κρατιούνται με κλειδί το blob URL, ώστε να
+       αντέχουν σε αλλαγή σειράς ή διαγραφή μέσα στο carousel. */
+    const blobUrls=Object.keys(pending);
+    if(blobUrls.length){
+      status('Ανέβασμα εικόνων…','warn');
+      for(const url of blobUrls){ replaceDeep(content, url, await uploadImage(pending[url])); delete pending[url] }
+      Object.keys(GALLERIES).forEach(p=>{ try{ GALLERIES[p]() }catch(e){} });
+    }
     status('Αποθήκευση…','warn');
     const r=await fetch(API+'save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content})});
     if(r.status===401){ authed=false; reflectAuth(); openLogin('Η σύνδεση έληξε. Ξαναβάλε τον κωδικό.'); throw new Error('__auth') }

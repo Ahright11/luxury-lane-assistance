@@ -561,6 +561,12 @@ img,video{display:block;max-width:100%}
   transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}
 .svc article:hover .plate img,.svc article:focus-within .plate img{transform:scale(1.04);filter:grayscale(0) brightness(.86) contrast(1)}
 .plate picture{display:contents}
+/* carousel: στρώματα που εναλλάσσονται. Κρατάμε το transform/filter transition
+   της εικόνας, γι' αυτό το ξαναδηλώνουμε μαζί με το opacity. */
+.svc .plate img.car-l{position:absolute;inset:0;opacity:0;
+  transition:opacity .55s ease,transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}
+.svc .plate img.car-l.on{opacity:1}
+@media(prefers-reduced-motion:reduce){.svc .plate img.car-l{transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}}
 .svc .plate::after{content:"";position:absolute;right:0;bottom:0;width:14px;height:14px;
   border-right:2px solid var(--hazard);border-bottom:2px solid var(--hazard);opacity:.9}
 .svc .c{position:relative;z-index:2;padding:var(--mount) 0 0;display:flex;flex-direction:column;flex:1}
@@ -1307,8 +1313,51 @@ document.getElementById('om-form').addEventListener('submit',function(e){
   var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
   /* WebP: το <source> δίνει webp, το <img> κρατάει το jpg ως εφεδρικό.
      Έτσι ο browser κατεβάζει ένα από τα δύο, ποτέ και τα δύο. */
-  var WEBP=['assets/car-ferrari.jpg','assets/car-maserati.jpg','assets/car-jaguar.jpg','assets/car-porsche.jpg','assets/hero-truck.jpg','assets/jetski.jpg'];
+  var WEBP=['assets/car-ferrari.jpg','assets/car-maserati.jpg','assets/car-jaguar.jpg','assets/car-porsche.jpg','assets/hero-truck.jpg','assets/jetski.jpg','assets/car-supra.jpg','assets/car-bmw.jpg','assets/car-evo.jpg','assets/car-ferrari-road.jpg','assets/jetski-truck.jpg'];
   function imgsrc(s){ return WEBP.indexOf(s)>=0 ? s.replace(/\.[^.]+$/,'.webp') : null }
+  function layerSrc(s){ return imgsrc(s) || s }
+
+  /* ---- carousel φωτογραφιών στις κάρτες υπηρεσιών ----
+     Τα στρώματα είναι απολύτως τοποθετημένα και εναλλάσσονται με crossfade.
+     Τρέχει μόνο όταν η κάρτα είναι στην οθόνη, και δεν ξαναχτίζεται όταν
+     το CMS σπρώχνει το ίδιο περιεχόμενο (αλλιώς θα γέμιζε timers). */
+  function CAROUSEL(plate, list, alt){
+    if(!plate) return;
+    var st=(window.LA_CONTENT||{}).settings||{};
+    var secs=parseFloat(st.carouselSeconds); if(!(secs>0)) secs=2; if(secs<0.5) secs=0.5;
+    var key=(list||[]).join('|')+'@'+secs;
+    if(plate._carKey===key) return;
+    plate._carKey=key;
+    if(plate._carStop){ plate._carStop(); plate._carStop=null }
+    var base=plate.querySelector('img'); if(!base) return;
+    [].slice.call(plate.querySelectorAll('img.car-l')).forEach(function(n){ if(n!==base) n.remove() });
+    base.classList.remove('car-l','on');
+    if(!list || list.length<2) return;
+
+    base.classList.add('car-l','on');
+    var layers=[base], i, im;
+    for(i=1;i<list.length;i++){
+      im=document.createElement('img');
+      im.className='car-l'; im.alt=''; im.loading='lazy'; im.decoding='async';
+      im.src=layerSrc(list[i]);
+      plate.appendChild(im); layers.push(im);
+    }
+    var cur=0, timer=null, io=null;
+    function show(n){ cur=n; layers.forEach(function(L,k){ L.classList.toggle('on', k===n) }) }
+    function tick(){
+      if(document.hidden) return;
+      var n=(cur+1)%layers.length, L=layers[n];
+      if(!(L.complete && L.naturalWidth)) return;   /* δεν φόρτωσε ακόμα, περίμενε */
+      show(n);
+    }
+    function start(){ if(!timer) timer=setInterval(tick, Math.round(secs*1000)) }
+    function stop(){ if(timer){ clearInterval(timer); timer=null } }
+    if('IntersectionObserver' in window){
+      io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? start() : stop() }) },{rootMargin:'150px'});
+      io.observe(plate);
+    } else start();
+    plate._carStop=function(){ stop(); if(io) io.disconnect() };
+  }
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
   function T(sel,v,root){var n=$(sel,root); if(n&&v!=null)n.textContent=v; return n}
   function I(sel,src,alt,root){
@@ -1367,7 +1416,10 @@ document.getElementById('om-form').addEventListener('submit',function(e){
     each(c.serviceGroups,'#services .gtitle',function(el,g){T('b',g.title,el); T('span',g.sub,el)});
     each(c.services,'.svc article',function(el,s){
       T('.idx .no',s.code,el); T('.idx .code',s.cat,el);
-      I('.plate img',s.img,s.alt,el);
+      var shots=(s.images&&s.images.length?s.images.slice():[]);
+      if(!shots.length && s.img) shots=[s.img];
+      I('.plate img',shots[0]||s.img,s.alt,el);
+      CAROUSEL($('.plate',el),shots,s.alt);
       T('.c h3',s.title,el); T('.c .lede',s.desc,el);
     });
 
