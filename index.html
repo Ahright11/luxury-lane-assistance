@@ -572,14 +572,15 @@ img,video{display:block;max-width:100%}
   justify-content:center;padding:0 8px;opacity:0;transition:opacity .25s;pointer-events:none}
 .svc article:hover .plate .car-thumbs,.svc article:focus-within .plate .car-thumbs{opacity:1;pointer-events:auto}
 .svc .plate .car-thumbs button{width:36px;height:25px;padding:0;border:0;border-radius:4px;overflow:hidden;cursor:pointer;
-  background:none;opacity:.55;outline:2px solid transparent;outline-offset:1px;
-  transition:opacity .2s,outline-color .2s}
+  background:none;opacity:.34;outline:1px solid transparent;outline-offset:1px;
+  transition:opacity .25s,outline-color .25s}
 .svc .plate .car-thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
-.svc .plate .car-thumbs button.on{opacity:1;outline-color:var(--hazard)}
-.svc .plate .car-thumbs button:hover{opacity:1}
+.svc .plate .car-thumbs button.on{opacity:.92;outline-color:rgba(255,255,255,.42)}
+.svc .plate .car-thumbs button:hover{opacity:1;outline-color:rgba(255,255,255,.35)}
 @media(hover:none){
   .svc .plate .car-thumbs{opacity:1;pointer-events:auto}
-  .svc .plate .car-thumbs button{opacity:.8;width:32px;height:22px}
+  .svc .plate .car-thumbs button{opacity:.42;width:32px;height:22px}
+  .svc .plate .car-thumbs button.on{opacity:.95}
 }
 @media(prefers-reduced-motion:reduce){.svc .plate img.car-l{transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s ease}}
 .svc .plate::after{content:"";position:absolute;right:0;bottom:0;width:14px;height:14px;
