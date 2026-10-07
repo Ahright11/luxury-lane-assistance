@@ -610,6 +610,13 @@ img,video{display:block;max-width:100%}
      έδειχναν ζουμαρισμένες στο κινητό — κρατάμε 16:9 παντού. */
   .svc .plate{aspect-ratio:16/9}
 }
+/* Στο κινητό η φωτογραφία βγαίνει έξω από το περιθώριο της σελίδας και της
+   κάρτας, ώστε να πιάνει όλο το πλάτος. Το κείμενο μένει με το περιθώριό του. */
+@media(max-width:600px){
+  .svc .plate{
+    margin-left:calc((var(--pad) + var(--mount)) * -1);
+    margin-right:calc((var(--pad) + var(--mount)) * -1)}
+}
 
 /* ===== coverage ===== */
 .cover{display:grid;grid-template-columns:1.2fr 1fr;border:1px solid var(--hair);background:var(--concrete)}
