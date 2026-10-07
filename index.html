@@ -606,7 +606,9 @@ img,video{display:block;max-width:100%}
 .svcgroup .gtitle span{font-family:var(--data);font-size:.62rem;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
 @media(max-width:980px){
   .svc{grid-template-columns:1fr}
-  .svc .plate{aspect-ratio:21/9}
+  /* Οι φωτογραφίες είναι 16:9. Με 21:9 η πλάκα έκοβε το 24% του ύψους και
+     έδειχναν ζουμαρισμένες στο κινητό — κρατάμε 16:9 παντού. */
+  .svc .plate{aspect-ratio:16/9}
 }
 
 /* ===== coverage ===== */
