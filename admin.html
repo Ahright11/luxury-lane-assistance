@@ -783,6 +783,48 @@ function renderFields(container,fields,base){
   });
 }
 
+/* ---------- επεξεργασία εικόνας πριν το ανέβασμα ----------
+   Ο πελάτης ανεβάζει ό,τι τράβηξε με το κινητό (συνήθως 3-9MB, κάθετο).
+   Το κόβουμε σε 16:9 και το συμπιέζουμε στη μνήμη του browser, ώστε να φτάνει
+   ~250KB. Έτσι το site μένει γρήγορο χωρίς να σκέφτεται ο πελάτης τίποτα. */
+async function bitmapOf(file){
+  try{ return await createImageBitmap(file,{imageOrientation:'from-image'}) }
+  catch(e){ return await createImageBitmap(file) }
+}
+async function canvased(bmp, W, H, sx, sy, sw, sh, q){
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d'); ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+  ctx.drawImage(bmp,sx,sy,sw,sh,0,0,W,H);
+  if(bmp.close) bmp.close();
+  const blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',q));
+  return blob;
+}
+/* οριζόντιο 16:9, κομμένο κεντρικά με μικρή κλίση προς τα κάτω */
+async function prepareWide(file, W=1600, H=900, q=0.85){
+  if(!/^image\//.test(file.type) || /gif|svg/i.test(file.type) || file.size < 200*1024) return file;
+  try{
+    const bmp=await bitmapOf(file);
+    const R=W/H; let sw=bmp.width, sh=bmp.height;
+    if(sw/sh > R) sw=Math.round(sh*R); else sh=Math.round(sw/R);
+    const sx=Math.round((bmp.width-sw)/2), sy=Math.round((bmp.height-sh)*0.52);
+    const blob=await canvased(bmp,W,H,sx,sy,sw,sh,q);
+    if(!blob) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/,'')+'.jpg', {type:'image/jpeg'});
+  }catch(e){ return file }   /* αν κάτι πάει λάθος, ανεβαίνει το πρωτότυπο */
+}
+/* τετράγωνο/μικρό, για φωτογραφίες προφίλ — χωρίς κόψιμο */
+async function prepareSmall(file, MAX=400, q=0.85){
+  if(!/^image\//.test(file.type) || /gif|svg/i.test(file.type) || file.size < 60*1024) return file;
+  try{
+    const bmp=await bitmapOf(file);
+    let w=bmp.width, h=bmp.height;
+    if(Math.max(w,h) > MAX){ const r=MAX/Math.max(w,h); w=Math.round(w*r); h=Math.round(h*r) }
+    const blob=await canvased(bmp,w,h,0,0,bmp.width,bmp.height,q);
+    if(!blob) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/,'')+'.jpg', {type:'image/jpeg'});
+  }catch(e){ return file }
+}
+
 /* ---------- γκαλερί φωτογραφιών (carousel) ---------- */
 const GALLERIES={};
 function galleryField(path){
@@ -795,14 +837,18 @@ function galleryField(path){
   const file=document.createElement('input'); file.type='file'; file.accept='image/*'; file.multiple=true; file.hidden=true;
   add.addEventListener('click',()=>file.click());
 
-  file.addEventListener('change',()=>{
+  file.addEventListener('change',async()=>{
     const arr=getP(content,path)||[];
-    [].slice.call(file.files||[]).forEach(f=>{
-      if(!/^image\//.test(f.type)){ toast('Το «'+f.name+'» δεν είναι εικόνα',true); return }
-      if(f.size>12*1024*1024){ toast('Η «'+f.name+'» είναι πολύ μεγάλη (max 12MB)',true); return }
+    const list=[].slice.call(file.files||[]);
+    if(list.length) toast('Επεξεργασία '+list.length+' φωτογραφίας…');
+    for(const raw of list){
+      if(!/^image\//.test(raw.type)){ toast('Το «'+raw.name+'» δεν είναι εικόνα',true); continue }
+      if(raw.size>40*1024*1024){ toast('Η «'+raw.name+'» είναι πολύ μεγάλη (max 40MB)',true); continue }
+      const f=await prepareWide(raw);
       const url=URL.createObjectURL(f); pending[url]=f; arr.push(url);
-    });
+    }
     setP(content,path,arr); commit();
+    toast('Οι φωτογραφίες συμπιέστηκαν και θα ανέβουν με την αποθήκευση');
   });
 
   function commit(){
@@ -831,10 +877,11 @@ function galleryField(path){
       const del=mk('×',()=>{ if(!confirm('Να αφαιρεθεί η φωτογραφία;')) return; const a=getP(content,path); a.splice(i,1); setP(content,path,a); commit() });
       del.setAttribute('data-a','del'); tools.appendChild(del);
       const one=document.createElement('input'); one.type='file'; one.accept='image/*'; one.hidden=true;
-      one.addEventListener('change',()=>{
-        const f=one.files&&one.files[0]; if(!f) return;
-        if(!/^image\//.test(f.type)){ toast('Το αρχείο δεν είναι εικόνα',true); return }
-        if(f.size>12*1024*1024){ toast('Η εικόνα είναι πολύ μεγάλη (max 12MB)',true); return }
+      one.addEventListener('change',async()=>{
+        const raw=one.files&&one.files[0]; if(!raw) return;
+        if(!/^image\//.test(raw.type)){ toast('Το αρχείο δεν είναι εικόνα',true); return }
+        if(raw.size>40*1024*1024){ toast('Η εικόνα είναι πολύ μεγάλη (max 40MB)',true); return }
+        const f=await prepareWide(raw);
         const url=URL.createObjectURL(f); pending[url]=f;
         const a=getP(content,path); a[i]=url; setP(content,path,a); commit();
       });
@@ -845,8 +892,8 @@ function galleryField(path){
     });
     if(!arr.length){ const e=document.createElement('div'); e.className='gal-empty'; e.textContent='Καμία φωτογραφία'; grid.appendChild(e) }
     hint.textContent = arr.length<2
-      ? 'Με 2 ή περισσότερες φωτογραφίες ενεργοποιείται το carousel.'
-      : 'Carousel ενεργό: '+arr.length+' φωτογραφίες. Η πρώτη είναι η κύρια.';
+      ? 'Με 2 ή περισσότερες φωτογραφίες ενεργοποιείται το carousel. Οι φωτογραφίες κόβονται αυτόματα σε οριζόντιο 16:9 και συμπιέζονται.'
+      : 'Carousel ενεργό: '+arr.length+' φωτογραφίες. Η πρώτη είναι η κύρια. Κόβονται αυτόματα σε 16:9.';
   }
 
   box.appendChild(grid); box.appendChild(add); box.appendChild(hint); box.appendChild(file);
@@ -870,12 +917,14 @@ function imgField(path){
   file.addEventListener('change',()=>{ const f=file.files&&file.files[0]; if(f) take(f) });
   function take(f){
     if(!/^image\//.test(f.type)){ toast('Το αρχείο δεν είναι εικόνα',true); return; }
-    if(f.size>12*1024*1024){ toast('Η εικόνα είναι πολύ μεγάλη (max 12MB)',true); return; }
-    const url=URL.createObjectURL(f);
-    pending[url]=f;
-    thumb.style.backgroundImage=`url('${url}')`;
-    row.querySelector('.fn').textContent=f.name+' — θα ανέβει με την αποθήκευση';
-    setP(content,path,url); snap(); refreshDirty(); push();
+    if(f.size>40*1024*1024){ toast('Η εικόνα είναι πολύ μεγάλη (max 40MB)',true); return; }
+    prepareSmall(f).then(pf=>{
+      const url=URL.createObjectURL(pf);
+      pending[url]=pf;
+      thumb.style.backgroundImage=`url('${url}')`;
+      row.querySelector('.fn').textContent=pf.name+' — θα ανέβει με την αποθήκευση';
+      setP(content,path,url); snap(); refreshDirty(); push();
+    });
   }
   return row;
 }
