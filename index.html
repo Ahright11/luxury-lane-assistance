@@ -613,12 +613,18 @@ img,video{display:block;max-width:100%}
      έδειχναν ζουμαρισμένες στο κινητό — κρατάμε 16:9 παντού. */
   .svc .plate{aspect-ratio:16/9}
 }
-/* Στο κινητό η φωτογραφία βγαίνει έξω από το περιθώριο της σελίδας και της
-   κάρτας, ώστε να πιάνει όλο το πλάτος. Το κείμενο μένει με το περιθώριό του. */
+/* Στο κινητό η ΚΑΡΤΑ πάει ως τις άκρες και η φωτογραφία γεμίζει την κάρτα.
+   Έτσι η εικόνα πιάνει όλο το πλάτος χωρίς να βγαίνει έξω από το πλαίσιο.
+   Το κείμενο κρατά το εσωτερικό του περιθώριο. */
 @media(max-width:600px){
-  .svc .plate{
-    margin-left:calc((var(--pad) + var(--mount)) * -1);
-    margin-right:calc((var(--pad) + var(--mount)) * -1)}
+  .svc article{
+    margin-left:calc(var(--pad) * -1);
+    margin-right:calc(var(--pad) * -1);
+    padding-left:0;padding-right:0;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.15),inset 0 -1px 0 rgba(0,0,0,.72)}
+  .svc .plate{margin-left:0;margin-right:0}
+  .svc .idx{padding-left:var(--mount);padding-right:var(--mount)}
+  .svc .c{padding-left:var(--mount);padding-right:var(--mount)}
 }
 
 /* ===== coverage ===== */
