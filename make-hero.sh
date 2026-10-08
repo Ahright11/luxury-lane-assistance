@@ -18,6 +18,7 @@
 #   mclaren-garage.mov (3.0", νύχτα, φωτισμένο γκαράζ, το πιο καθαρό)
 #   mclaren-rear.mov   (1.6", νύχτα, πίσω φώτα)
 #   mclaren-rear2.mov  (1.1", νύχτα, πίσω 3/4, σκοτεινό)
+#   mclaren-street.mov (2.5", νύχτα, πίσω όψη κάτω από φανάρι, φωτεινό)
 #
 # Τα δύο πάνελ του desktop ΠΡΕΠΕΙ να έχουν ίδιο πλήθος καρέ (105 = 4.2"),
 # αλλιώς ξεφεύγει ο συγχρονισμός και η εναλλαγή πλευρών.
@@ -27,6 +28,7 @@ cd "$(dirname "$0")"
 DAY="_src-media/hero-mob.mp4"
 MCL="_src-media/mclaren-garage.mov"
 MCL2="_src-media/mclaren-rear.mov"
+MCL3="_src-media/mclaren-street.mov"
 FPS=25
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
@@ -56,12 +58,15 @@ fi
 # γυρίζει μόνο του τα κάθετα .mov του iPhone)
 cropf () { echo "crop=w='min(iw,ih*$1/$2)':h='min(ih,iw*$2/$1)':x='(iw-ow)/2':y='(ih-oh)/2',scale=$1:$2:flags=lanczos,fps=$FPS"; }
 
-# κομμάτι από πηγή: out src start len W H [extra filters]
+# κομμάτι από πηγή: out src start len W H [grade] [slow]
 # trim στο filter (όχι -ss): αλλιώς έμπαινε ένα καρέ από το προηγούμενο
 # keyframe ως πρώτο καρέ. -frames:v για ακριβές πλήθος καρέ.
+# slow (π.χ. 1.2): ήπιο slow-motion για να «κρατάει» ένα κοντό πλάνο· ως 1.25
+# η πηγή (30fps) δίνει ακόμα ~24 μοναδικά καρέ/δευτ., δεν τραβάει.
 seg () {
-  ffmpeg -y -v error -i "$2" -vf "trim=start=$3:duration=$4,setpts=PTS-STARTPTS,$(cropf "$5" "$6")${7:+,$7}" \
-    -frames:v "$(python3 -c "print(round($4*$FPS))")" $ENC "$1"
+  slow="${8:-1}"
+  ffmpeg -y -v error -i "$2" -vf "trim=start=$3:duration=$4,setpts=(PTS-STARTPTS)*$slow,$(cropf "$5" "$6")${7:+,$7}" \
+    -frames:v "$(python3 -c "print(round($4*$slow*$FPS))")" $ENC "$1"
 }
 
 # νυχτερινά κλιπ: λίγο σήκωμα σκιών + αντίθεση για να κάθονται δίπλα στη μέρα
@@ -92,16 +97,16 @@ echo "κινητό: μέρα (χωρίς Porsche) + McLaren γκαράζ + πί�
 seg "$TMP/m1.mp4" "$DAY" 2.5 6.4 $MW $MH
 seg "$TMP/m2.mp4" "$DAY" 11.2 2.4 $MW $MH
 seg "$TMP/m3.mp4" "$MCL" 0.2 2.6 $MW $MH "$NIGHT"
-seg "$TMP/m4.mp4" "$MCL2" 0.1 1.4 $MW $MH "$NIGHT"
+seg "$TMP/m4.mp4" "$MCL3" 0 2.5 $MW $MH "$NIGHT" 1.2
 join "assets/hero-mob.mp4" 29 "$TMP/m1.mp4" "$TMP/m2.mp4" "$TMP/m3.mp4" "$TMP/m4.mp4"
 poster hero-mob
 sips -s format jpeg -s formatOptions 80 "$TMP/p.png" --out assets/hero-mob.jpg >/dev/null 2>&1 || true
 
-echo "desktop μοντάζ: 4 ανεξάρτητα κλιπ (κάθε πάνελ κυλάει τα δικά του με crossfade)"
-seg "assets/hero-d-truck.mp4"      "$DAY"  4.7  2.8  $PW $PH
-seg "assets/hero-d-ferrari.mp4"    "$DAY"  11.2 2.4  $PW $PH
-seg "assets/hero-d-mcl-garage.mp4" "$MCL"  0.2  2.7  $PW $PH "$NIGHT"
-seg "assets/hero-d-mcl-rear.mp4"   "$MCL2" 0.1  1.45 $PW $PH "$NIGHT"
+echo "desktop μοντάζ: 4 ανεξάρτητα κλιπ, όλα >= 3\" (κάθε πάνελ κυλάει τα δικά του με crossfade)"
+seg "assets/hero-d-truck.mp4"      "$DAY"  4.5  4.4  $PW $PH ""       1      # coupe -> jetski pan, ολόκληρο
+seg "assets/hero-d-ferrari.mp4"    "$DAY"  11.2 2.4  $PW $PH ""       1.25   # 3.0"
+seg "assets/hero-d-mcl-garage.mp4" "$MCL"  0.05 2.9  $PW $PH "$NIGHT" 1.15   # 3.3"
+seg "assets/hero-d-mcl-rear.mp4"   "$MCL3" 0    2.5  $PW $PH "$NIGHT" 1.2    # 3.0", πίσω όψη στον δρόμο
 poster hero-d-truck
 poster hero-d-ferrari
 
