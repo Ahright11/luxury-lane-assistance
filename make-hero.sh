@@ -1,50 +1,43 @@
 #!/bin/sh
-# Φτιάχνει τα βίντεο του hero από το βίντεο-πηγή + φωτογραφίες (stills).
+# Φτιάχνει τα βίντεο του hero από τα βίντεο-πηγές.
 #
-#   ./make-hero.sh                       # με τις τρέχουσες ρυθμίσεις
-#   ./make-hero.sh --scan                # δείχνει πού είναι τα θολά καρέ της πηγής
-#   STILLS="a.jpg b.jpg" ./make-hero.sh  # άλλες φωτογραφίες για το τελευταίο πλάνο
+#   ./make-hero.sh            # με τις τρέχουσες ρυθμίσεις
+#   ./make-hero.sh --scan ΑΡΧΕΙΟ   # οξύτητα ανά 0.2" για να διαλέξεις καθαρά σημεία
 #
 # Βγάζει: assets/hero-p-a.mp4  δεξί πάνελ desktop (παίζει πρώτο)
 #         assets/hero-p-b.mp4  αριστερό πάνελ desktop
 #         assets/hero-mob.mp4  κινητό (κάθετο, ολόκληρο)
-#         + .webp αφίσες
+#         + .webp αφίσες (πρώτο καρέ κάθε κλιπ)
 #
-# Η πηγή (_src-media/hero-mob.mp4, 13.6") έχει αυτά τα πλάνα:
-#   2.4-3.9   Porsche Macan πίσω όψη (καθαρό)
-#   4.4-8.9   μαύρο coupe + φορτηγό (καθαρό)
-#   8.9-11.2 παλιά Porsche Boxster  -> ΚΟΒΕΤΑΙ (ζήτημα πελάτη)
-#   11.2-13.6  Ferrari F430 (καθαρό)
+# Πηγές (_src-media/, δεν ανεβαίνουν στο deploy):
+#   hero-mob.mp4 (13.6", μέρα)
+#     2.4-3.9    Porsche Macan πίσω όψη (καθαρό)
+#     4.4-8.9    μαύρο coupe + φορτηγό (καθαρό)
+#     9.0-11.2   παλιά Porsche Boxster  -> ΚΟΒΕΤΑΙ (ζήτημα πελάτη)
+#     11.2-13.6  Ferrari F430 (καθαρό)
+#   mclaren-garage.mov (3.0", νύχτα, φωτισμένο γκαράζ, το πιο καθαρό)
+#   mclaren-rear.mov   (1.6", νύχτα, πίσω φώτα)
+#   mclaren-rear2.mov  (1.1", νύχτα, πίσω 3/4, σκοτεινό)
 #
-# Οι φωτογραφίες γίνονται «πλάνο»: ίδιο κάδρο, αργό push-in και ελαφρύ
-# τρέμουλο χεριού, ίδιο encode. Έτσι δεν ξεχωρίζουν από το βίντεο.
+# Τα δύο πάνελ του desktop ΠΡΕΠΕΙ να έχουν ίδιο πλήθος καρέ (105 = 4.2"),
+# αλλιώς ξεφεύγει ο συγχρονισμός και η εναλλαγή πλευρών.
 set -e
 cd "$(dirname "$0")"
 
-SRC="_src-media/hero-mob.mp4"
-STILLS="${STILLS:-assets/still-mclaren-1.jpg assets/still-mclaren-2.jpg}"
+DAY="_src-media/hero-mob.mp4"
+MCL="_src-media/mclaren-garage.mov"
+MCL2="_src-media/mclaren-rear.mov"
 FPS=25
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 
-# --- desktop πάνελ (8:9 = ό,τι δείχνει το μισό μιας 16:9 οθόνης) ---
+# desktop πάνελ (8:9 = το μισό μιας 16:9 οθόνης) / κινητό
 PW=810; PH=912
-# --- κινητό ---
 MW=720; MH=1280
-
-# πάνελ A: το φορτηγό με το μαύρο coupe
-A_START=4.7; A_LEN=4.2   # τελειώνει 8.9, στο 9.0 μπαίνει η Porsche
-# πάνελ B: Ferrari (2.4") + φωτογραφία (1.8") = 4.2" -> ίδιο μήκος με το A,
-# αλλιώς ξεφεύγει ο συγχρονισμός των δύο πάνελ
-B_SEG_START=11.2; B_SEG_LEN=2.4
-STILL_LEN=1.8
-# κινητό: η πηγή από 2.5" (τα πρώτα 2.4" είναι θολό whip pan) χωρίς το 8.9-11.2,
-# + φωτογραφία στο τέλος
-M_START=2.5; M_CUT_START=8.9; M_CUT_END=11.2
 
 ENC="-c:v libx264 -crf 23 -preset medium -profile:v high -pix_fmt yuv420p -r $FPS -g 50 -movflags +faststart -an"
 
 if [ "$1" = "--scan" ]; then
-  D="$TMP/scan"; mkdir -p "$D"; ffmpeg -v error -i "$SRC" -vf "fps=5,scale=270:-1" -q:v 4 "$D/f%04d.jpg"
+  D="$TMP/scan"; mkdir -p "$D"; ffmpeg -v error -i "${2:?δώσε βίντεο}" -vf "fps=5,scale=270:-1" -q:v 4 "$D/f%04d.jpg"
   python3 - "$D" <<'PYX'
 import sys, glob, numpy as np
 from PIL import Image
@@ -59,30 +52,22 @@ PYX
   exit 0
 fi
 
-# κέντραρε και κόψε στην αναλογία W:H, όποια κι αν είναι η πηγή
+# κέντραρε και κόψε στην αναλογία W:H, όποια κι αν είναι η πηγή (το ffmpeg
+# γυρίζει μόνο του τα κάθετα .mov του iPhone)
 cropf () { echo "crop=w='min(iw,ih*$1/$2)':h='min(ih,iw*$2/$1)':x='(iw-ow)/2':y='(ih-oh)/2',scale=$1:$2:flags=lanczos,fps=$FPS"; }
 
-# κομμάτι βίντεο από την πηγή
-seg () { # out start len W H
-  # -ss ΜΕΤΑ το -i: με -ss πριν το -i, το fps filter έβγαζε ένα καρέ από το
-  # προηγούμενο keyframe ως πρώτο καρέ (εμφανιζόταν η Porsche στην αφίσα)
-  # -frames:v: ακριβές πλήθος καρέ, ώστε τα δύο πάνελ να έχουν ίδιο μήκος
-  ffmpeg -y -v error -i "$SRC" -vf "trim=start=$2:duration=$3,setpts=PTS-STARTPTS,$(cropf "$4" "$5")" \
-    -frames:v "$(python3 -c "print(round($3*$FPS))")" $ENC "$1"
+# κομμάτι από πηγή: out src start len W H [extra filters]
+# trim στο filter (όχι -ss): αλλιώς έμπαινε ένα καρέ από το προηγούμενο
+# keyframe ως πρώτο καρέ. -frames:v για ακριβές πλήθος καρέ.
+seg () {
+  ffmpeg -y -v error -i "$2" -vf "trim=start=$3:duration=$4,setpts=PTS-STARTPTS,$(cropf "$5" "$6")${7:+,$7}" \
+    -frames:v "$(python3 -c "print(round($4*$FPS))")" $ENC "$1"
 }
 
-# φωτογραφία ως πλάνο: cover-crop, αργό push-in 8%, ελαφρύ sway, ήπιο grade
-# ώστε να «κάθεται» δίπλα σε βίντεο κινητού (λίγη αντίθεση, λίγος κόκκος).
-still () { # out photo len W H
-  W=$4; H=$5; N=$(python3 -c "print(int($3*$FPS))")
-  ffmpeg -y -v error -loop 1 -t "$3" -i "$2" -vf "\
-scale=w='if(gt(a,$W/$H),-2,$((W*2)))':h='if(gt(a,$W/$H),$((H*2)),-2)':flags=lanczos,\
-crop=$((W*2)):$((H*2)),\
-zoompan=z='1+0.08*on/$N':x='iw/2-iw/zoom/2+7*sin(on/9)':y='ih/2-ih/zoom/2+5*cos(on/12)':d=1:s=${W}x${H}:fps=$FPS,\
-eq=contrast=1.04:saturation=1.03,noise=alls=3:allf=t,format=yuv420p" $ENC "$1"
-}
+# νυχτερινά κλιπ: λίγο σήκωμα σκιών + αντίθεση για να κάθονται δίπλα στη μέρα
+NIGHT="eq=brightness=0.03:contrast=1.06:saturation=1.08"
 
-poster () { # name
+poster () {
   ffmpeg -y -v error -i "assets/$1.mp4" -frames:v 1 "$TMP/p.png"
   cwebp -quiet -q 76 "$TMP/p.png" -o "assets/$1.webp"
 }
@@ -90,40 +75,32 @@ poster () { # name
 join () { # out crf piece...
   out="$1"; crf="$2"; shift 2; : > "$TMP/list.txt"
   for p in "$@"; do echo "file '$p'" >> "$TMP/list.txt"; done
-  # ξανακωδικοποίηση στην ένωση: τα κομμάτια έχουν διαφορετικό timebase (zoompan)
   ffmpeg -y -v error -f concat -safe 0 -i "$TMP/list.txt" -vf "fps=$FPS,format=yuv420p" $ENC -crf "$crf" "$out"
 }
 
-# ποιες φωτογραφίες υπάρχουν
-HAVE=""; for s in $STILLS; do [ -f "$s" ] && HAVE="$HAVE $s"; done
-if [ -z "$HAVE" ]; then
-  echo "!! δεν βρέθηκαν φωτογραφίες ($STILLS) — το πάνελ B παίρνει το Macan αντί για φωτογραφία"
-fi
-FIRST=$(echo $HAVE | awk '{print $1}')
-
-echo "πάνελ A"
-seg "assets/hero-p-a.mp4" "$A_START" "$A_LEN" $PW $PH
+echo "πάνελ A: φορτηγό + coupe (4.7-8.9)"
+seg "assets/hero-p-a.mp4" "$DAY" 4.7 4.2 $PW $PH
 poster hero-p-a
 
-echo "πάνελ B"
-seg "$TMP/b1.mp4" "$B_SEG_START" "$B_SEG_LEN" $PW $PH
-if [ -n "$FIRST" ]; then still "$TMP/b2.mp4" "$FIRST" "$STILL_LEN" $PW $PH
-else seg "$TMP/b2.mp4" 2.4 "$STILL_LEN" $PW $PH; fi
+echo "πάνελ B: Ferrari (1.8\") + McLaren γκαράζ (2.4\")"
+seg "$TMP/b1.mp4" "$DAY" 11.8 1.8 $PW $PH
+seg "$TMP/b2.mp4" "$MCL" 0.3 2.4 $PW $PH "$NIGHT"
 join "assets/hero-p-b.mp4" 23 "$TMP/b1.mp4" "$TMP/b2.mp4"
 poster hero-p-b
 
-echo "κινητό"
-seg "$TMP/m1.mp4" "$M_START" "$(python3 -c "print($M_CUT_START-$M_START)")" $MW $MH
-seg "$TMP/m2.mp4" "$M_CUT_END" 99 $MW $MH
-PIECES="$TMP/m1.mp4 $TMP/m2.mp4"
-i=0; for s in $HAVE; do i=$((i+1)); still "$TMP/ms$i.mp4" "$s" "$STILL_LEN" $MW $MH; PIECES="$PIECES $TMP/ms$i.mp4"; done
-join "assets/hero-mob.mp4" 29 $PIECES   # κινητό: πιο σφιχτό, ~2 MB
+echo "κινητό: μέρα (χωρίς Porsche) + McLaren γκαράζ + πίσω φώτα"
+seg "$TMP/m1.mp4" "$DAY" 2.5 6.4 $MW $MH
+seg "$TMP/m2.mp4" "$DAY" 11.2 2.4 $MW $MH
+seg "$TMP/m3.mp4" "$MCL" 0.2 2.6 $MW $MH "$NIGHT"
+seg "$TMP/m4.mp4" "$MCL2" 0.1 1.4 $MW $MH "$NIGHT"
+join "assets/hero-mob.mp4" 29 "$TMP/m1.mp4" "$TMP/m2.mp4" "$TMP/m3.mp4" "$TMP/m4.mp4"
 poster hero-mob
-cp "$TMP/p.png" "$TMP/mob.png"; sips -s format jpeg -s formatOptions 80 "$TMP/mob.png" --out assets/hero-mob.jpg >/dev/null 2>&1 || true
+sips -s format jpeg -s formatOptions 80 "$TMP/p.png" --out assets/hero-mob.jpg >/dev/null 2>&1 || true
 
 echo
 for n in hero-p-a hero-p-b hero-mob; do
-  printf "  %-14s %6.0f KB  %5.2f s\n" "$n.mp4" "$(wc -c < assets/$n.mp4 | awk '{print $1/1024}')" \
-    "$(ffprobe -v error -show_entries format=duration -of csv=p=0 assets/$n.mp4)"
+  printf "  %-14s %6.0f KB  %5.2f s  %s καρέ\n" "$n.mp4" "$(wc -c < assets/$n.mp4 | awk '{print $1/1024}')" \
+    "$(ffprobe -v error -show_entries format=duration -of csv=p=0 assets/$n.mp4)" \
+    "$(ffprobe -v error -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -of csv=p=0 assets/$n.mp4)"
 done
 echo "Έλεγξε τις αφίσες στο assets/*.webp. Μετά: ./deploy.sh"
