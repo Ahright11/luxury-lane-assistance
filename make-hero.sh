@@ -97,8 +97,16 @@ join "assets/hero-mob.mp4" 29 "$TMP/m1.mp4" "$TMP/m2.mp4" "$TMP/m3.mp4" "$TMP/m4
 poster hero-mob
 sips -s format jpeg -s formatOptions 80 "$TMP/p.png" --out assets/hero-mob.jpg >/dev/null 2>&1 || true
 
+echo "desktop μοντάζ: 4 ανεξάρτητα κλιπ (κάθε πάνελ κυλάει τα δικά του με crossfade)"
+seg "assets/hero-d-truck.mp4"      "$DAY"  4.7  2.8  $PW $PH
+seg "assets/hero-d-ferrari.mp4"    "$DAY"  11.2 2.4  $PW $PH
+seg "assets/hero-d-mcl-garage.mp4" "$MCL"  0.2  2.7  $PW $PH "$NIGHT"
+seg "assets/hero-d-mcl-rear.mp4"   "$MCL2" 0.1  1.45 $PW $PH "$NIGHT"
+poster hero-d-truck
+poster hero-d-ferrari
+
 echo
-for n in hero-p-a hero-p-b hero-mob; do
+for n in hero-p-a hero-p-b hero-mob hero-d-truck hero-d-ferrari hero-d-mcl-garage hero-d-mcl-rear; do
   printf "  %-14s %6.0f KB  %5.2f s  %s καρέ\n" "$n.mp4" "$(wc -c < assets/$n.mp4 | awk '{print $1/1024}')" \
     "$(ffprobe -v error -show_entries format=duration -of csv=p=0 assets/$n.mp4)" \
     "$(ffprobe -v error -select_streams v:0 -count_frames -show_entries stream=nb_read_frames -of csv=p=0 assets/$n.mp4)"
