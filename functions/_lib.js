@@ -128,4 +128,21 @@ export function tooFast(ip, max = 6, winMs = 60000) {
   return arr.length > max;
 }
 
+/* Μετρητής αποτυχιών (για το login): μετράμε ΜΟΝΟ τις λάθος προσπάθειες,
+   ώστε ο ιδιοκτήτης που μπαίνει σωστά να μην κλειδώνεται ποτέ από μόνος του. */
+const FAILS = new Map();
+export function failCount(key, winMs = 600000) {
+  const now = Date.now();
+  const arr = (FAILS.get(key) || []).filter(t => now - t < winMs);
+  FAILS.set(key, arr);
+  return arr.length;
+}
+export function failHit(key) {
+  if (FAILS.size > 5000) FAILS.clear();
+  const arr = FAILS.get(key) || [];
+  arr.push(Date.now());
+  FAILS.set(key, arr);
+}
+export function failClear(key) { FAILS.delete(key); }
+
 export const KV_KEY = 'content';
