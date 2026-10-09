@@ -666,7 +666,8 @@ img,video{display:block;max-width:100%}
 
 /* ===== roadside band ===== */
 .roadside{background:var(--concrete);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
-.roadside .in2{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2.5rem;padding:clamp(48px,7vh,90px) 0}
+/* μόνο πάνω/κάτω: το «padding:X 0» μηδένιζε τα πλαϊνά του .wrap και η λωρίδα έβγαινε εκτός στοίχισης */
+.roadside .in2{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2.5rem;padding-top:clamp(48px,7vh,90px);padding-bottom:clamp(48px,7vh,90px)}
 .roadside h2{font-family:var(--sign);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,5vw,3.8rem);line-height:.92}
 .roadside h2 em{font-style:normal;color:var(--hazard)}
 .roadside p{color:#BEB9B2;margin-top:1rem;max-width:48ch}
