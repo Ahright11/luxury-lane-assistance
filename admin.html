@@ -1151,7 +1151,30 @@ async function uploadImage(file){
   const r=await fetch(API+'upload?name='+encodeURIComponent(name),{method:'POST',headers:{'Content-Type':file.type||'image/jpeg'},body:file});
   if(r.status===401) throw new Error('unauthorized');
   const j=await r.json(); if(!j.ok) throw new Error(j.error||'upload failed');
+  await makeVariants(file, j.path);
   return j.path;
+}
+/* Μικρότερες εκδοχές (800 / 1280 πλάτος) για κινητά και μικρές οθόνες.
+   Το πρωτότυπο έχει ήδη ανέβει· αν εδώ κάτι αποτύχει, το site απλώς δείχνει
+   το πρωτότυπο. Γι' αυτό τα λάθη καταπίνονται σιωπηλά. */
+async function makeVariants(file, path){
+  try{
+    if(!/^image\/(jpeg|png|webp)$/.test(file.type) || !/^\/img\//.test(path)) return;
+    const key=decodeURIComponent(path.slice(5));
+    for(const W of [800,1280]){
+      const bmp=await bitmapOf(file);
+      if(bmp.width<=W){ if(bmp.close) bmp.close(); continue }
+      const H=Math.round(bmp.height*W/bmp.width);
+      const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+      const ctx=cv.getContext('2d'); ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+      ctx.drawImage(bmp,0,0,W,H); if(bmp.close) bmp.close();
+      /* webp όπου ο browser ξέρει να το γράψει (Chrome), αλλιώς jpeg (Safari) */
+      let blob=await new Promise(r=>cv.toBlob(r,'image/webp',0.82));
+      if(!blob || blob.type!=='image/webp') blob=await new Promise(r=>cv.toBlob(r,'image/jpeg',0.82));
+      if(!blob) continue;
+      await fetch(API+'upload?of='+encodeURIComponent(key)+'&w='+W,{method:'POST',headers:{'Content-Type':blob.type},body:blob});
+    }
+  }catch(e){ /* το πρωτότυπο αρκεί */ }
 }
 async function save(){
   const btn=$('#saveBtn'); btn.disabled=true;

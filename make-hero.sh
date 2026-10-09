@@ -74,7 +74,8 @@ NIGHT="eq=brightness=0.03:contrast=1.06:saturation=1.08"
 
 poster () {
   ffmpeg -y -v error -i "assets/$1.mp4" -frames:v 1 "$TMP/p.png"
-  cwebp -quiet -q 76 "$TMP/p.png" -o "assets/$1.webp"
+  # q50 -m 6: δίπλα-δίπλα με το lossless καρέ δεν ξεχωρίζει, ~25% λιγότερα bytes από q76
+  cwebp -quiet -q 50 -m 6 "$TMP/p.png" -o "assets/$1.webp"
 }
 
 join () { # out crf piece...
@@ -98,7 +99,7 @@ seg "$TMP/m1.mp4" "$DAY" 2.5 6.4 $MW $MH
 seg "$TMP/m2.mp4" "$DAY" 11.2 2.4 $MW $MH
 seg "$TMP/m3.mp4" "$MCL" 0.2 2.6 $MW $MH "$NIGHT"
 seg "$TMP/m4.mp4" "$MCL3" 0 2.5 $MW $MH "$NIGHT" 1.2
-join "assets/hero-mob.mp4" 29 "$TMP/m1.mp4" "$TMP/m2.mp4" "$TMP/m3.mp4" "$TMP/m4.mp4"
+join "assets/hero-mob.mp4" 31 "$TMP/m1.mp4" "$TMP/m2.mp4" "$TMP/m3.mp4" "$TMP/m4.mp4"
 poster hero-mob
 sips -s format jpeg -s formatOptions 80 "$TMP/p.png" --out assets/hero-mob.jpg >/dev/null 2>&1 || true
 
