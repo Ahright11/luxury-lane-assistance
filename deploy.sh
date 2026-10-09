@@ -16,6 +16,8 @@ rsync -a \
   --exclude 'dev-server.py' --exclude 'deploy.sh' \
   --exclude 'upscale.py' --exclude 'ws_upscale.py' \
   --exclude 'luxurylaneassistance.gr.conf' \
+  --exclude 'preview.html' --exclude 'preview.css' --exclude 'preview.js' --exclude 'preview-content.json' \
+  --exclude 'make-preview.sh' --exclude 'assets/uploads' --exclude 'assets/load-seq' \
   --exclude 'dirA.html' --exclude 'dirB.html' --exclude 'dirC.html' \
   --exclude 'lla.html' --exclude 'logoA.html' --exclude 'logoB.html' --exclude 'logoC.html' \
   ./ "$STAGE"/

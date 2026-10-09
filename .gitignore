@@ -4,3 +4,8 @@ luxurylaneassistance.gr.conf
 __pycache__/
 .wrangler/
 leads.json
+
+# τοπική προεπισκόπηση σχεδιασμού
+assets/uploads/
+preview-content.json
+preview.html
