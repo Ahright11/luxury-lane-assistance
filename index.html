@@ -1325,8 +1325,8 @@ document.getElementById('om-form').addEventListener('submit',function(e){
 
   /* ---- desktop: μοντάζ ανά πάνελ. Κάθε πάνελ έχει δύο <video>: το ένα
      παίζει, το άλλο προφορτώνει το επόμενο κλιπ. 0.55" πριν το τέλος, το
-     επόμενο ξεκινάει από πάνω με crossfade. Τα πάνελ ξεκινούν με διαφορά,
-     οπότε δεν κόβουν ποτέ μαζί. ---- */
+     επόμενο ξεκινάει από πάνω με crossfade. Τα κλιπ έχουν διαφορετικό μήκος
+     ανά πάνελ, οπότε οι αλλαγές δεν συμπίπτουν. ---- */
   function montage(){
     var split=document.getElementById('heroSplit'); if(!split) return;
     var mq=window.matchMedia('(max-width:820px)');
@@ -1363,7 +1363,7 @@ document.getElementById('om-form').addEventListener('submit',function(e){
           if(on) return; on=true; clearTimeout(timer);
           var v=vs[cur];
           if(v.getAttribute('src')&&v.paused&&!v.ended){ var pr=v.play(); if(pr&&pr.catch) pr.catch(function(){}) }
-          else timer=setTimeout(next, i*1400);
+          else next();   /* και τα δύο πάνελ ξεκινούν αμέσως· δεν κόβουν μαζί γιατί τα κλιπ έχουν διαφορετικό μήκος */
         },
         stop:function(){ on=false; clearTimeout(timer); vs.forEach(function(v){ if(!v.paused) v.pause() }) }
       };
