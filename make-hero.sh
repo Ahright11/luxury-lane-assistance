@@ -104,7 +104,9 @@ poster hero-mob
 sips -s format jpeg -s formatOptions 80 "$TMP/p.png" --out assets/hero-mob.jpg >/dev/null 2>&1 || true
 
 echo "desktop μοντάζ: 4 ανεξάρτητα κλιπ, όλα >= 3\" (κάθε πάνελ κυλάει τα δικά του με crossfade)"
-seg "assets/hero-d-truck.mp4"      "$DAY"  4.5  4.4  $PW $PH ""       1      # coupe -> jetski pan, ολόκληρο
+# ξεκινά στο 4.7: ως το 4.6 η πηγή δείχνει ακόμα το SUV του προηγούμενου πλάνου,
+# και το πρώτο καρέ γίνεται η αφίσα που φαίνεται πριν παίξει το βίντεο
+seg "assets/hero-d-truck.mp4"      "$DAY"  4.7  4.2  $PW $PH ""       1      # coupe -> jetski pan, ολόκληρο
 seg "assets/hero-d-ferrari.mp4"    "$DAY"  11.2 2.4  $PW $PH ""       1.25   # 3.0"
 seg "assets/hero-d-mcl-garage.mp4" "$MCL"  0.05 2.9  $PW $PH "$NIGHT" 1.15   # 3.3"
 seg "assets/hero-d-mcl-rear.mp4"   "$MCL3" 0    2.5  $PW $PH "$NIGHT" 1.2    # 3.0", πίσω όψη στον δρόμο
