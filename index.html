@@ -459,11 +459,16 @@ img,video{display:block;max-width:100%}
   padding-top:110px;padding-bottom:clamp(26px,4.5vh,44px)}
 .hero .col{position:relative;max-width:min(46%,560px)}
 .hero .col::before{content:"";position:absolute;z-index:-1;pointer-events:none;
-  top:calc(var(--gu) * -9);bottom:calc(var(--gu) * -6);left:-50vw;right:calc(var(--gu) * -10);
+  top:calc(var(--gu) * -24);bottom:calc(var(--gu) * -6);left:-50vw;right:calc(var(--gu) * -10);
   background:linear-gradient(96deg,rgba(11,12,13,.82) 0%,rgba(11,12,13,.74) 62%,rgba(11,12,13,.3) 86%,rgba(11,12,13,0) 100%);
   backdrop-filter:blur(5px) saturate(115%);-webkit-backdrop-filter:blur(5px) saturate(115%);
-  -webkit-mask-image:linear-gradient(96deg,#000 0%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%);
-          mask-image:linear-gradient(96deg,#000 0%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%)}
+  /* δύο μάσκες που τέμνονται: σβήνει προς τα δεξιά ΚΑΙ προς τα πάνω. Πριν είχε
+     μόνο την οριζόντια, οπότε το πάνω άκρο ήταν ίσια γραμμή πάνω στο βίντεο. */
+  -webkit-mask-image:linear-gradient(96deg,#000 0%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%),
+                     linear-gradient(180deg,transparent 0%,rgba(0,0,0,.25) 16%,rgba(0,0,0,.7) 30%,#000 42%);
+          mask-image:linear-gradient(96deg,#000 0%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%),
+                     linear-gradient(180deg,transparent 0%,rgba(0,0,0,.25) 16%,rgba(0,0,0,.7) 30%,#000 42%);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
 .kick{display:flex;align-items:baseline;gap:calc(var(--gu) * 1);
   padding-bottom:calc(var(--gu) * .9);margin-bottom:calc(var(--gu) * 1.6);
   border-bottom:1px solid rgba(255,255,255,.28)}
@@ -488,7 +493,8 @@ img,video{display:block;max-width:100%}
     left:calc(var(--pad) * -1);right:calc(var(--pad) * -1);
     background:linear-gradient(0deg,rgba(11,12,13,.62) 0%,rgba(11,12,13,.5) 55%,rgba(11,12,13,0) 100%);
     -webkit-mask-image:linear-gradient(0deg,#000 0%,#000 55%,transparent 100%);
-            mask-image:linear-gradient(0deg,#000 0%,#000 55%,transparent 100%)}
+            mask-image:linear-gradient(0deg,#000 0%,#000 55%,transparent 100%);
+    -webkit-mask-composite:source-over;mask-composite:add}
   .kick{padding-bottom:calc(var(--gu) * .8);margin-bottom:calc(var(--gu) * 1.2)}
   .hero h1{font-size:clamp(1.7rem,7.6vw,2.4rem)}
   .hero .sub{margin-top:calc(var(--gu) * 1.2);font-size:.8rem;max-width:none}
