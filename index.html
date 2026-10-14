@@ -1178,7 +1178,8 @@ img,video{display:block;max-width:100%}
           <div class="om-field"><label for="om-fault">Τι βλάβη έχει; *</label><input id="om-fault" placeholder="π.χ. δεν βγάζει μπροστά, σκασμένο λάστιχο"></div>
         </div>
         <div class="om-row">
-          <div class="om-field"><label for="om-when">Πότε *</label><input id="om-when" type="date" required></div>
+          <div class="om-field"><label for="om-when">Ημερομηνία *</label><input id="om-when" type="date" required></div>
+          <div class="om-field"><label for="om-time">Ώρα *</label><input id="om-time" type="time" step="900" required></div>
         </div>
         <div class="om-row">
           <div class="om-field"><label for="om-from">Από *</label><input id="om-from" required placeholder="Περιοχή παραλαβής"></div>
@@ -1252,7 +1253,7 @@ document.getElementById('om-form').addEventListener('submit',function(e){
   var v=function(id){return document.getElementById(id).value.trim()};
   var veh=v('om-brand')+(v('om-model')?' '+v('om-model'):'');
   var when=v('om-when');
-  var whenGr=when?when.split('-').reverse().join('/'):'';
+  var whenGr=(when?when.split('-').reverse().join('/'):'')+(v('om-time')?' '+v('om-time'):'');
   var marine=document.getElementById('om-mover-row').hidden;
   var msg='Γεια σας! Θα ήθελα προσφορά για: '+offerSvc+'.\n'
     +'Ονοματεπώνυμο: '+v('om-name')+'\n'
