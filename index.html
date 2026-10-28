@@ -752,9 +752,13 @@ img,video{display:block;max-width:100%}
   font-size:.8rem;letter-spacing:.04em;padding:.7rem .4rem;cursor:pointer;transition:.18s}
 .om-toggle button.on{background:var(--hazard);color:var(--hazard-ink);font-weight:600}
 .om-field label{font-family:var(--data);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#BEB9B2}
-.om-field input{background:var(--asphalt);border:1px solid var(--hair);color:var(--white);
+.om-field input,.om-field select{background:var(--asphalt);border:1px solid var(--hair);color:var(--white);
   font-family:'IBM Plex Sans',var(--body);font-weight:400;font-size:1rem;padding:.68rem .75rem;width:100%;outline:none;transition:border-color .18s;color-scheme:dark}
-.om-field input:focus{border-color:var(--hazard)}
+.om-field input:focus,.om-field select:focus{border-color:var(--hazard)}
+.om-field select{appearance:none;-webkit-appearance:none;border-radius:0;cursor:pointer;padding-right:2rem;
+  background-image:linear-gradient(45deg,transparent 50%,#BEB9B2 50%),linear-gradient(135deg,#BEB9B2 50%,transparent 50%);
+  background-position:calc(100% - 1rem) 52%,calc(100% - .7rem) 52%;background-size:.3rem .3rem;background-repeat:no-repeat}
+.om-field select:invalid{color:rgba(255,255,255,.48)}
 .om-field input::placeholder{color:rgba(255,255,255,.48)}
 .om-send{width:100%;margin-top:.4rem;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
   font-family:var(--sign);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.9rem;
@@ -1179,7 +1183,7 @@ img,video{display:block;max-width:100%}
         </div>
         <div class="om-row">
           <div class="om-field"><label for="om-when">Ημερομηνία *</label><input id="om-when" type="date" required></div>
-          <div class="om-field"><label for="om-time">Ώρα *</label><input id="om-time" type="time" required></div>
+          <div class="om-field"><label for="om-time">Ώρα *</label><select id="om-time" required><option value="">Επιλέξτε</option></select></div>
         </div>
         <div class="om-row">
           <div class="om-field"><label for="om-from">Από *</label><input id="om-from" required placeholder="Περιοχή παραλαβής"></div>
@@ -1202,6 +1206,7 @@ document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
 // offer modal — step 1: platform, step 2: details → hand off to platform
 var OFFER_EMAIL='luxurylaneassistance@gmail.com';
 var omodal=document.getElementById('omodal');
+(function(sel){for(var m=0;m<1440;m+=15){var t=('0'+(m/60|0)).slice(-2)+':'+('0'+m%60).slice(-2);sel.add(new Option(t,t))}})(document.getElementById('om-time'));
 var step1=document.getElementById('om-step1'), step2=document.getElementById('om-step2');
 var offerSvc='Γενική μεταφορά', platform=null, moves=true;
 function openOffer(svc){
