@@ -1179,7 +1179,7 @@ img,video{display:block;max-width:100%}
         </div>
         <div class="om-row">
           <div class="om-field"><label for="om-when">Ημερομηνία *</label><input id="om-when" type="date" required></div>
-          <div class="om-field"><label for="om-time">Ώρα *</label><input id="om-time" type="time" step="900" required></div>
+          <div class="om-field"><label for="om-time">Ώρα *</label><input id="om-time" type="time" required></div>
         </div>
         <div class="om-row">
           <div class="om-field"><label for="om-from">Από *</label><input id="om-from" required placeholder="Περιοχή παραλαβής"></div>
@@ -1200,7 +1200,7 @@ var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isInterse
 document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
 
 // offer modal — step 1: platform, step 2: details → hand off to platform
-var OFFER_EMAIL='info@luxurylane.gr';
+var OFFER_EMAIL='luxurylaneassistance@gmail.com';
 var omodal=document.getElementById('omodal');
 var step1=document.getElementById('om-step1'), step2=document.getElementById('om-step2');
 var offerSvc='Γενική μεταφορά', platform=null, moves=true;
@@ -1608,7 +1608,7 @@ document.getElementById('om-form').addEventListener('submit',function(e){
       $$('a[href*="wa.me"]').forEach(function(x){x.setAttribute('href','https://wa.me/'+ct.whatsappNumber)});
       $$('a[href^="viber:"]').forEach(function(x){x.setAttribute('href','viber://chat?number=%2B'+ct.whatsappNumber)});
     }
-    if(ct.email)$$('a[href^="mailto:"]').forEach(function(x){x.setAttribute('href','mailto:'+ct.email)});
+    if(ct.email){OFFER_EMAIL=ct.email; $$('a[href^="mailto:"]').forEach(function(x){x.setAttribute('href','mailto:'+ct.email)})}
     if(ct.instagram)$$('a[href*="instagram.com"]').forEach(function(x){x.setAttribute('href',ct.instagram)});
 
     document.documentElement.setAttribute('data-cms-applied','1');
