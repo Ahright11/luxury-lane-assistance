@@ -577,7 +577,8 @@ function elFor(path, doc){
   if(a==='hero'){
     if(b==='kick1') return q('.hero .kick b');
     if(b==='kick2') return q('.hero .kick > span');
-    if(b==='l1'||b==='l2'||b==='l3') return q('.hero h1 .'+b);
+    if(b==='l1'||b==='l2') return q('.hero h1 .'+b);
+    if(b==='l3') return q('.hero .l3');
     if(b==='sub') return q('.hero .sub');
     if(b==='cta1') return q('.hero .acts .btn.hz');
     if(b==='cta2') return q('.hero .acts .btn.out');

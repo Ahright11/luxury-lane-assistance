@@ -11,7 +11,7 @@ STAGE=".deploy"
 rm -rf "$STAGE"
 mkdir -p "$STAGE"
 rsync -a \
-  --exclude '.git' --exclude '.deploy' --exclude '__pycache__' \
+  --exclude '.git' --exclude '.gitignore' --exclude '.deploy' --exclude '.impeccable' --exclude '__pycache__' \
   --exclude '_unused' --exclude '_src-media' --exclude '*.md' --exclude 'leads.json' --exclude '*.py' \
   --exclude 'dev-server.py' --exclude 'deploy.sh' \
   --exclude 'upscale.py' --exclude 'ws_upscale.py' \
@@ -19,6 +19,7 @@ rsync -a \
   --exclude 'preview.html' --exclude 'preview.css' --exclude 'preview.js' --exclude 'preview-content.json' \
   --exclude 'make-preview.sh' --exclude 'assets/uploads' --exclude 'assets/load-seq' \
   --exclude 'dirA.html' --exclude 'dirB.html' --exclude 'dirC.html' \
+  --exclude 'odiki-voitheia-neo-irakleio' --exclude 'odiki-voitheia-voreia-proastia' \
   --exclude 'lla.html' --exclude 'logoA.html' --exclude 'logoB.html' --exclude 'logoC.html' \
   ./ "$STAGE"/
 
